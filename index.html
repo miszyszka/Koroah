@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- https://favicon.io/ -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="apple-mobile-web-app-bg-color" content="#FF0000" />
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>KOROAH</title>
+  </head>
+
+  <body>
+    <div class="BG"></div>
+    <div class="message-container"></div>
+
+    <div class="screen main-screen active">
+      <div class="btn btn-big new-game-BTN">Nowa gra</div>
+      <div class="btn btn-big join-game-BTN">Dołącz</div>
+    </div>
+
+    <!-- NEXT NEW GAME SCREEN -->
+    <div class="screen next-new-game-screen no-active">
+      <div class="top-bar">
+        <div class="btn-small go-back">
+          <img src="svg/angles-left-solid.svg" alt="" />
+        </div>
+      </div>
+      <div class="main-content">
+        <h2>NAZWA GRY</h2>
+        <input class="input name-game-input" type="text" />
+        <h2>ilość graczy</h2>
+        <div class="circle-container">
+          <div class="btn btn-small cricle">2</div>
+          <div class="btn btn-small cricle">3</div>
+          <div class="btn btn-small cricle">4</div>
+        </div>
+      </div>
+      <div class="menu-bar">
+        <div class="btn btn-big next-new-game-BTN btn-invisible">Dalej</div>
+      </div>
+    </div>
+
+    <!-- FINAL NEW GAME SCREEN -->
+    <div class="screen final-new-game-screen no-active">
+      <div class="top-bar">
+        <div class="btn-small go-back">
+          <img src="svg/angles-left-solid.svg" alt="" />
+        </div>
+      </div>
+      <div class="main-content">
+        <div class="container">
+          <div class="table"></div>
+          <div class="chair chair-top" data-chair-id="1"></div>
+          <div class="chair chair-right" data-chair-id="2"></div>
+          <div class="chair chair-bottom" data-chair-id="3"></div>
+          <div class="chair chair-left" data-chair-id="4"></div>
+        </div>
+        <div class="avatars-container">
+          <div class="avatar acalas" id="avatar-acalas"></div>
+          <div class="avatar umza" id="avatar-umza"></div>
+          <div class="avatar raona" id="avatar-raona"></div>
+          <div class="avatar hess" id="avatar-hess"></div>
+        </div>
+      </div>
+      <div class="menu-bar">
+        <div class="btn btn-big final-new-game-BTN btn-invisible">STWÓRZ</div>
+      </div>
+    </div>
+
+    <!-- NEXT JOIN GAME SCREEN -->
+    <div class="screen next-join-game-screen no-active">
+      <div class="top-bar">
+        <div class="btn-small go-back">
+          <img src="svg/angles-left-solid.svg" alt="" />
+        </div>
+      </div>
+      <div class="main-content">
+        <h2>NAZWA GRY</h2>
+        <input class="input join-game-input" type="text" />
+      </div>
+      <div class="menu-bar">
+        <div class="btn btn-big next-join-game-BTN btn-invisible">join</div>
+      </div>
+    </div>
+
+    <!-- FINAL JOIN GAME SCREEN -->
+    <div class="screen final-join-game-screen no-active">
+      <div class="top-bar">
+        <div class="btn-small go-home">
+          <img src="svg/house-solid.svg" alt="" />
+        </div>
+      </div>
+      <div class="main-content">
+        <h2>Kim grasz?</h2>
+        <div class="icon-container"></div>
+        <div class="pin-box el-invisible">
+          <h2 class="pin-label">Stwórz PIN</h2>
+          <input class="input pin-game-input" type="text" maxlength="4" />
+        </div>
+      </div>
+      <div class="menu-bar">
+        <div class="btn btn-big final-join-game-BTN btn-invisible">START</div>
+      </div>
+    </div>
+
+    <!-- SELLECT PLAYER SCREEN -->
+    <div class="screen select-player-screen no-active">
+      <div class="btn-small go-back">
+        <img src="svg/angles-left-solid.svg" alt="" />
+      </div>
+    </div>
+
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+
+    <!-- PLAYER PAGE -->
+    <div class="screen game-screen no-active">
+      <div class="game-top-bar">
+        <div class="btn testBTN btn-small"> TEST</div>
+        <div class="btn btn-small go-home">
+          <img src="svg/house-solid.svg" alt="" />
+        </div>
+      </div>
+      <div class="notification-container"></div>
+      <div class="deck deck-prices prices deck-active">
+        <h2>Ile chcesz mieć kryształu</h2>
+        <input class="crystal-input" type="text">
+        <div class="btn add-crystal">ADD</div>
+      </div>
+      <div class="deck deck-hierarchy hierarchy deck-inactive ">
+        <h2>Kim grasz?</h2>
+      </div>
+      <div class="deck deck-user user deck-inactive">
+        <h2>Kim grasz?</h2>
+      </div>
+      <div class="game-menu-bar">
+        <div class="btn game-menu-btn prices selected">1</div>
+        <div class="btn game-menu-btn hierarchy">1</div>
+        <div class="btn game-menu-btn user">1</div>
+      </div>
+    </div>
+
+    <script src="game.js"></script>
+    <script src="script.js" type="module"></script>
+  </body>
+</html>
