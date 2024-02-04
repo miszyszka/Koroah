@@ -1,7 +1,5 @@
 "use strict";
 
-// COMMIT 2
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
 import {
   getDatabase,
@@ -703,7 +701,10 @@ window.gamesArray = gamesArray;
 window.currentGame = currentGame;
 window.updateUserScreen = updateUserScreen;
 
+
 ///////// NA POZNIEJ - FUNKCJA DO DODAWANIA NA ZYWO DANYCH Z DB
+
+
 /*
 // Utwórz funkcję, która będzie aktualizować widok gier na podstawie danych z bazy
 function updateGamesView(gamesArray) {
@@ -722,13 +723,16 @@ function updateGamesView(gamesArray) {
 }
 */
 
-// if (player === currentPlayer.player) {
-//   const pinRef = ref(
-//     database,
-//     `games/${currentGame.id}/gameOrder/${chairId}/resources/`
-//   );
+/*
+if (player === currentPlayer.player) {
+  const pinRef = ref(
+    database,
+    `games/${currentGame.id}/gameOrder/${chairId}/resources/`
+  );
 
-//   update(pinRef, {
-//     crystal: crystalValue,
-//   });
-// }
+  update(pinRef, {
+    crystal: crystalValue,
+  });
+}
+
+*/
