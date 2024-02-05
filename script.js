@@ -53,6 +53,23 @@ const chairRight = document.querySelector(".chair-right");
 const chairBottom = document.querySelector(".chair-bottom");
 const chairLeft = document.querySelector(".chair-left");
 
+// GAME
+const gameMenuBTNs = document.querySelectorAll(".game-menu-btn");
+const testBTN = document.querySelector(".testBTN");
+const crystalInput = document.querySelector(".crystal-input");
+const addCrystal = document.querySelector(".add-crystal");
+
+// DECKS
+const allDecks = document.querySelectorAll(".deck");
+const deckPrices = document.querySelector(".deck-prices");
+const deckHierarchy = document.querySelector(".deck-hierarchy");
+const deckUser = document.querySelector(".deck-user");
+
+// OTHER
+const notificationContainer = document.querySelector(".notification-container");
+
+
+
 // DATABASE
 const appSettings = {
   databaseURL:
