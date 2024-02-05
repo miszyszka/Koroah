@@ -374,11 +374,10 @@ h2 {
 
 .notification-container {
   position: relative;
-  width: 100vw;
+  width: calc(100vw - 60px);
   height: 50vh;
   overflow: hidden;
   border: #273a48 1PX SOLID;
-  margin-left: 30px;
 }
 
 .notification {
@@ -444,10 +443,12 @@ h2 {
 }
 
 @media (min-width: 500px) {
-  .notification-container,
   .game-top-bar,
   .deck,
   .game-menu-bar {
     width: 500px;
+  }
+  .notification-container{
+    width: 440px;
   }
 }
