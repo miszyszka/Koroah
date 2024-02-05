@@ -68,8 +68,6 @@ const deckUser = document.querySelector(".deck-user");
 // OTHER
 const notificationContainer = document.querySelector(".notification-container");
 
-
-
 // DATABASE
 const appSettings = {
   databaseURL:
@@ -569,13 +567,13 @@ const moveOldNotifications = function () {
     let matchedNumber = parseInt(oldClassList);
     if (matchedNumber === 1) {
       not.style.transform = "translateY(20px)";
-      not.classList.remove('position1');
-      not.classList.add('position2');
+      not.classList.remove("position1");
+      not.classList.add("position2");
     } else {
       const transformedValue = `translateY(calc(${matchedNumber} * 20px))`;
-      const transformedOpacity = `calc(1 - ${matchedNumber*0.15})`
+      const transformedOpacity = `calc(1 - ${matchedNumber * 0.15})`;
       not.style.transform = transformedValue;
-      not.style.opacity = transformedOpacity
+      not.style.opacity = transformedOpacity;
 
       not.classList.remove(`position${matchedNumber}`);
       matchedNumber++;
@@ -692,21 +690,19 @@ onValue(gamesDB, (snapshot) => {
   }
 });
 
-
 /////////// SKIP LOGIN
 setTimeout(() => {
   const skipLogin = function () {
+    goToScreen(gameScreen);
+    currentGame = gamesArray[11];
 
-      goToScreen(gameScreen);
-      currentGame = gamesArray[11];
+    setTimeout(() => {
+      allNots = currentGame.notifications;
+    }, 500);
 
-      setTimeout(() => {
-        allNots = currentGame.notifications;
-      }, 500);
-
-      setTimeout(() => {
-        currentPlayer = currentGame.gameOrder["1"];
-      }, 1000);
+    setTimeout(() => {
+      currentPlayer = currentGame.gameOrder["1"];
+    }, 1000);
   };
   skipLogin();
 }, 1500);
@@ -718,9 +714,7 @@ window.gamesArray = gamesArray;
 window.currentGame = currentGame;
 window.updateUserScreen = updateUserScreen;
 
-
 ///////// NA POZNIEJ - FUNKCJA DO DODAWANIA NA ZYWO DANYCH Z DB
-
 
 /*
 // Utwórz funkcję, która będzie aktualizować widok gier na podstawie danych z bazy
