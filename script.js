@@ -815,3 +815,8 @@ const checkIfstandalone = function () {
 // setInterval(() => {
 //   checkIfstandalone();
 // }, 3000);
+
+document.addEventListener('touchmove', function(event) {
+  // Zapobiegaj domyślnemu przewijaniu dotykowego zdarzenia (overscroll)
+  event.preventDefault();
+}, { passive: false });
