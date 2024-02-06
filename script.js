@@ -48,6 +48,7 @@ const pinBox = document.querySelector(".pin-box");
 const pinGameInput = document.querySelector(".pin-game-input");
 
 // CHAIRS
+const allChairs = document.querySelectorAll('.chair');
 const chairTop = document.querySelector(".chair-top");
 const chairRight = document.querySelector(".chair-right");
 const chairBottom = document.querySelector(".chair-bottom");
@@ -94,6 +95,7 @@ const classNumber = {
   1: "two",
   2: "three",
   3: "four",
+  4: "five",
 };
 
 ////////////////
@@ -383,12 +385,24 @@ nextNewGameBTN.addEventListener("click", function () {
   };
 
   // NUBER OF CHAIRS NEEDED
-  if (numberOfPlayers === 2) {
-    chairBottom.style.display = "none";
-    chairTop.style.display = "none";
-  } else if (numberOfPlayers === 3) {
-    chairBottom.style.display = "none";
+
+allChairs.forEach((chair) =>{
+  const chairId = parseInt(chair.classList[1].slice(-1))
+
+  let angle;
+  switch (numberOfPlayers) {
+      case 3:
+          angle = chairId * 120;
+          break;
+      case 4:
+          angle = chairId * 90;
+          break;
+      case 5:
+          angle = chairId * 72;
+          break;
   }
+  chair.style.transform = `rotate(${angle}deg) translateY(-120px)`
+})
 
   goToScreen(finalNewGameScreen);
 });
@@ -415,7 +429,10 @@ const checkIfAllGood = function () {
 function handleChairClick(chair) {
   const chairId = chair.target.getAttribute("data-chair-id");
   choosenChair = chairId;
-  avatarsContainer.style.display = "flex";
+  // avatarsContainer.style.display = "flex";
+  avatarsContainer.classList.remove("no-active");
+  avatarsContainer.classList.add("active");
+  
 }
 
 function handleAvatarClick() {
@@ -427,10 +444,12 @@ function handleAvatarClick() {
     `[data-chair-id="${choosenChair}"]`
   );
   if (selectedChair) {
-    selectedChair.classList.remove("acalas", "umza", "raona", "hess");
+    selectedChair.classList.remove("acalas", "umza", "raona", "hess", "layao");
     selectedChair.classList.add(selectedAvatar);
   }
-  avatarsContainer.style.display = "none";
+  avatarsContainer.classList.remove("active");
+  avatarsContainer.classList.add("no-active");
+
   checkIfAllGood();
 }
 
@@ -704,7 +723,7 @@ setTimeout(() => {
       currentPlayer = currentGame.gameOrder["1"];
     }, 1000);
   };
-  skipLogin();
+  // skipLogin();
 }, 1500);
 
 window.updateCurrentGame = updateCurrentGame;

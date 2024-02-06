@@ -10,6 +10,7 @@
   --umza_brakin: #273a48;
   --raona: #b82c2c;
   --hess: #1f1f1d;
+  --layao: #61663f;
 
   --h1-letters: 40px;
   --h2-letters: 18px;
@@ -239,6 +240,7 @@ h2 {
 
 .table {
   border: 1px white solid;
+  border-radius: 50%;
   width: 150px;
   height: 150px;
   position: relative;
@@ -255,21 +257,7 @@ h2 {
   display: block;
 }
 
-.chair-top {
-  top: -10px; /* Odsunięcie górnego krzesła */
-}
 
-.chair-right {
-  right: -10px; /* Odsunięcie górnego krzesła */
-}
-
-.chair-bottom {
-  bottom: -10px;
-}
-
-.chair-left {
-  left: -10px; /* Odsunięcie górnego krzesła */
-}
 
 .acalas {
   background-color: var(--acalas);
@@ -287,19 +275,28 @@ h2 {
   background-color: var(--hess);
 }
 
+.layao{
+  background-color: var(--layao);
+}
+
 .avatars-container {
+  border: #b82c2c 1px solid;
+  background-color: var(--black);
   position: absolute;
   width: 100vw;
   height: 100vh;
-  display: flex;
-  flex-wrap: wrap;
   z-index: 4;
-  display: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s ease;
 }
 
 .avatar {
-  width: 50vw;
-  height: 50vh;
+  width: 80vw;
+  height: 100px;
+  margin: 10px;
 }
 
 .icon-container {
@@ -313,7 +310,7 @@ h2 {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  margin: 20px; /* Dodanie marginesu 20px */
+  margin: 15px; /* Dodanie marginesu 20px */
   cursor: pointer;
   transition: ease 0.5s;
   position: absolute;
@@ -333,6 +330,10 @@ h2 {
 
 .icon.four {
   transform: translateY(240px);
+}
+
+.icon.five {
+  transform: translateY(320px);
 }
 
 .icon-up {
