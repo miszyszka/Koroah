@@ -213,7 +213,7 @@ const Visibility = function (item, action) {
 };
 
 function makeWarning(message) {
-  messageContainer.style.display= 'flex'
+  messageContainer.style.display = "flex";
 
   setTimeout(() => {
     messageContainer.innerHTML = `<h3>${message}</h3>`;
@@ -797,3 +797,16 @@ if (player === currentPlayer.player) {
 }
 
 */
+
+const checkIfstandalone = function () {
+  console.log('checking');
+  if (window.navigator.standalone) {
+    makeWarning("standalone");
+  } else {
+    makeWarning("not standalone");
+  }
+};
+
+setInterval(() => {
+  checkIfstandalone();
+}, 3000);
