@@ -206,8 +206,13 @@ const Visibility = function (item, action) {
     item.classList.remove("btn-invisible");
     item.classList.add("btn-visible");
   }
+  if (action === "visible-high") {
+    item.classList.remove("btn-invisible");
+    item.classList.add("btn-visible-high");
+  }
   if (action === "invisible") {
     item.classList.remove("btn-visible");
+    item.classList.remove("btn-visible-high");
     item.classList.add("btn-invisible");
   }
 };
@@ -346,7 +351,7 @@ const checkIfFirsScreenGood = function (input) {
     numberOfPlayersSelected == true &&
     !matchingGame
   ) {
-    Visibility(nextNewGameBTN, "visible");
+    Visibility(nextNewGameBTN, "visible-high");
   } else {
     Visibility(nextNewGameBTN, "invisible");
   }
@@ -495,7 +500,7 @@ joinGameInput.addEventListener("input", function () {
   const matchingGame = updateCurrentGame(enteredGameName);
 
   if (matchingGame) {
-    Visibility(nextJoinGameBTN, "visible");
+    Visibility(nextJoinGameBTN, "visible-high");
   } else {
     Visibility(nextJoinGameBTN, "invisible");
   }
@@ -513,7 +518,7 @@ pinGameInput.addEventListener("input", function () {
   enteredPin = this.value;
 
   if (enteredPin.length > 3) {
-    Visibility(finalJoinGameBTN, "visible");
+    Visibility(finalJoinGameBTN, "visible-high");
   } else {
     Visibility(finalJoinGameBTN, "invisible");
   }
@@ -807,6 +812,6 @@ const checkIfstandalone = function () {
   }
 };
 
-setInterval(() => {
-  checkIfstandalone();
-}, 3000);
+// setInterval(() => {
+//   checkIfstandalone();
+// }, 3000);

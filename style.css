@@ -90,6 +90,10 @@ h2 {
   transform: translateY(0px);
 }
 
+.btn-visible-high {
+  transform: translateY(-220px);
+}
+
 .btn-invisible {
   transform: translateY(300px);
 }
@@ -131,6 +135,7 @@ h2 {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  transform: translateY(-100px);
 }
 
 .menu-bar {
@@ -174,6 +179,7 @@ h2 {
 
 .go-back,
 .go-home {
+  z-index: 2;
   position: absolute;
   cursor: pointer;
   margin-left: 40px;
