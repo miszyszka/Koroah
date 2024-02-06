@@ -104,17 +104,32 @@ const classNumber = {
 ///////////////
 
 const updateCurrentGame = function (gameName) {
-  console.log("=== RUNNING FUNCTION updateCurrentGame() ===");
+  console.log("=== RUNNING FUNCTION updateCurrentGame ===");
   const foundGame = gamesArray.find((game) => game.name === gameName);
+
+  // usunięcie 0 z liczb dziesiętnych
+  for (let i = 0; i < currentGame.prices.length; i++) {
+    const value = parseFloat(currentGame.prices[i])
+    console.log(value);
+    currentGame.prices[i] = value
+  }
 
   if (foundGame) {
     currentGame = foundGame;
     allNots = currentGame.notifications;
+    updatePrices();
     return foundGame;
   } else {
     console.log("updateCurrentGame FAILED");
   }
   console.log("=== ENDING update === CURENT GAME IS:");
+
+  for (let i = 0; i < currentGame.prices.length; i++) {
+    console.log(currentGame.prices);
+    console.log(i);
+  }
+
+
   console.log(currentGame);
 };
 
@@ -476,9 +491,12 @@ finalNewGameBTN.addEventListener("click", function () {
   let rearangedGameOrder = {};
   Object.keys(gameOrder).forEach((key, index) => {
     rearangedGameOrder[index] = gameOrder[key];
+    rearangedGameOrder[index].danina = 2;
+    rearangedGameOrder[index].resources = [5, 5, 5, 5];
   });
 
   currentGame.gameOrder = rearangedGameOrder;
+  currentGame.prices = [2, 2, 2, 2];
 
   push(gamesDB, currentGame);
   goToScreen(finalJoinGameScreen);
@@ -550,26 +568,91 @@ finalJoinGameBTN.addEventListener("click", function () {
 // GAME
 //////////////////////
 //////////////////////
+function sortBars() {
+  const barsContainer = document.querySelector('.danina-container');
+  const barContainers = Array.from(barsContainer.querySelectorAll('.bar-container'));
+
+  // Sortowanie kontenerów na podstawie wartości h2
+  barContainers.sort((a, b) => {
+      const valueA = parseFloat(a.querySelector('.danina-bar-value').textContent);
+      const valueB = parseFloat(b.querySelector('.danina-bar-value').textContent);
+      return valueB - valueA; // Sortowanie malejąco
+  });
+
+  // Przeniesienie posortowanych kontenerów na początek kontenera .bars-container
+  barContainers.forEach(barContainer => barsContainer.appendChild(barContainer));
+}
+
+const updatePrices = function () {
+  const priceBarValues = document.querySelectorAll(".price-bar-value");
+  const daninaBarValues = document.querySelectorAll(".danina-bar-value");
+
+  priceBarValues.forEach((price) => {
+    const resourceId = parseInt(price.classList[1].slice(-1));
+    const element = document.querySelector(`.price-${resourceId}`);
+    const bar = document.querySelector(`.measure-${resourceId}`);
+    const currentPrice = currentGame.prices[resourceId - 1];
+    const max = Math.max(...currentGame.prices);
+    let multiplier = function (max) {
+      if (max < 10) {
+        return 20;
+      } else if (max >= 10 && max < 15) {
+        return 12;
+      } else if (max >= 15 && max < 25) {
+        return 7;
+      } else if (max >= 25) {
+        return 5;
+      }
+    };
+    multiplier = multiplier(max);
+    bar.style.height = currentPrice * multiplier + "px";
+    element.innerHTML = currentPrice;
+  });
+
+
+  daninaBarValues.forEach((danina) => {
+    const daninaId = parseFloat(danina.classList[1].slice(-1));
+    const element = document.querySelector(`.danina-${daninaId}`);
+    const bar = document.querySelector(`.danina-measure-${daninaId}`);
+    const currentDanina = currentGame.gameOrder[daninaId].danina
+    bar.style.height = currentDanina * 8 + "px";
+    element.innerHTML = `${currentGame.gameOrder[daninaId].danina}`;
+  });
+  setTimeout(()=>{
+    sortBars();
+  }, 500)
+
+};
 
 const startGame = function () {
-  console.log(currentGame.gameOrder.length);
   for (let i = 0; i < currentGame.gameOrder.length; i++) {
     const foundPlayer = currentGame.gameOrder[i];
     const className = `${foundPlayer.player} ${classNumber[i]}`;
-
     const myHtml = `
-    <div class="bar-container">
-    <div class="measure zelazo"></div>
+    <div class="bar-container bar-${className}">
+    <div class="measure danina-measure-${i} ${className}"></div>
     <div class="small-circle ${className}">
     </div>
-    <h2 class="bar-value global-zelazo">3</h2>
+    <h2 class="danina-bar-value danina-${i}"></h2>
   </div>`;
     const barContainerDiv = document.createElement("div");
     barContainerDiv.innerHTML = myHtml;
-
-    daninaContainer.appendChild(barContainerDiv);
+    daninaContainer.appendChild(barContainerDiv.firstElementChild);
   }
+
+  updatePrices();
 };
+
+addCrystal.addEventListener("click", function () {
+  const crystalValue = parseFloat(crystalInput.value);
+
+  currentGame.prices = [2, 2, crystalValue.toFixed(1), 2]; // dodaj array do currenGame
+
+  updateDB();
+
+  const name = currentGame.name;
+  updateCurrentGame(name);
+});
 
 ///////////////////////////
 ///////////////////////////
@@ -674,10 +757,12 @@ allDecks.forEach((deck) => {
 let lastNotification;
 
 const updateUserScreen = function () {
-  const newestNotification = highestKey(allNots);
-  if (newestNotification !== lastNotification) {
-    makeNotification(newestNotification);
-    console.log(newestNotification);
+  if (allNots) {
+    const newestNotification = highestKey(allNots);
+    if (newestNotification !== lastNotification) {
+      makeNotification(newestNotification);
+      console.log(newestNotification);
+    }
   }
 };
 
@@ -744,67 +829,8 @@ onValue(gamesDB, (snapshot) => {
   }
 });
 
-/////////// SKIP LOGIN
-setTimeout(() => {
-  const skipLogin = function () {
-    goToScreen(gameScreen);
-    currentGame = gamesArray[11];
-
-    setTimeout(() => {
-      allNots = currentGame.notifications;
-      startGame();
-    }, 500);
-
-    setTimeout(() => {
-      currentPlayer = currentGame.gameOrder["1"];
-    }, 1000);
-  };
-  skipLogin();
-}, 1500);
-
-window.updateCurrentGame = updateCurrentGame;
-window.updateDB = updateDB;
-window.allNots = allNots;
-window.gamesArray = gamesArray;
-window.currentGame = currentGame;
-window.updateUserScreen = updateUserScreen;
-
-///////// NA POZNIEJ - FUNKCJA DO DODAWANIA NA ZYWO DANYCH Z DB
-
-/*
-// Utwórz funkcję, która będzie aktualizować widok gier na podstawie danych z bazy
-function updateGamesView(gamesArray) {
-  // Wybierz kontener, w którym będą wyświetlane gry
-  const gamesContainer = document.querySelector(".games-container");
-
-  // Wyczyść aktualny widok gier
-  gamesContainer.innerHTML = "";
-
-  // Iteruj przez gry i dodawaj divy do kontenera
-  gamesArray.forEach((game) => {
-    const gameDiv = document.createElement("div");
-    gameDiv.textContent = game.name;
-    gamesContainer.appendChild(gameDiv);
-  });
-}
-*/
-
-/*
-if (player === currentPlayer.player) {
-  const pinRef = ref(
-    database,
-    `games/${currentGame.id}/gameOrder/${chairId}/resources/`
-  );
-
-  update(pinRef, {
-    crystal: crystalValue,
-  });
-}
-
-*/
-
 const checkIfstandalone = function () {
-  console.log('checking');
+  console.log("checking");
   if (window.navigator.standalone) {
     makeWarning("standalone");
   } else {
@@ -816,7 +842,29 @@ const checkIfstandalone = function () {
 //   checkIfstandalone();
 // }, 3000);
 
-document.addEventListener('touchmove', function(event) {
-  // Zapobiegaj domyślnemu przewijaniu dotykowego zdarzenia (overscroll)
-  event.preventDefault();
-}, { passive: false });
+document.addEventListener(
+  "touchmove",
+  function (event) {
+    // Zapobiegaj domyślnemu przewijaniu dotykowego zdarzenia (overscroll)
+    event.preventDefault();
+  },
+  { passive: false }
+);
+
+/////////// SKIP LOGIN
+setTimeout(() => {
+  const skipLogin = function () {
+    goToScreen(gameScreen);
+    currentGame = gamesArray[0];
+
+    setTimeout(() => {
+      allNots = currentGame.notifications;
+      startGame();
+    }, 100);
+
+    setTimeout(() => {
+      currentPlayer = currentGame.gameOrder["1"];
+    }, 1000);
+  };
+  skipLogin();
+}, 1500);

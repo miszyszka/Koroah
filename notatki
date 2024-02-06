@@ -1,0 +1,34 @@
+
+///////// NA POZNIEJ - FUNKCJA DO DODAWANIA NA ZYWO DANYCH Z DB
+
+/*
+// Utwórz funkcję, która będzie aktualizować widok gier na podstawie danych z bazy
+function updateGamesView(gamesArray) {
+  // Wybierz kontener, w którym będą wyświetlane gry
+  const gamesContainer = document.querySelector(".games-container");
+
+  // Wyczyść aktualny widok gier
+  gamesContainer.innerHTML = "";
+
+  // Iteruj przez gry i dodawaj divy do kontenera
+  gamesArray.forEach((game) => {
+    const gameDiv = document.createElement("div");
+    gameDiv.textContent = game.name;
+    gamesContainer.appendChild(gameDiv);
+  });
+}
+*/
+
+/*
+if (player === currentPlayer.player) {
+  const pinRef = ref(
+    database,
+    `games/${currentGame.id}/gameOrder/${chairId}/resources/`
+  );
+
+  update(pinRef, {
+    crystal: crystalValue,
+  });
+}
+
+*/

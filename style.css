@@ -10,7 +10,7 @@
   --acalas: #aca687;
   --umza_brakin: #273a48;
   --raona: #b82c2c;
-  --hess: #1f1f1d;
+  --hess: #353531;
   --layao: #61663f;
 
   --ciecz: #324f8f;
@@ -416,12 +416,18 @@ h2 {
   flex-direction: row;
   /* margin-top: 50vh; */
   transform: translateY(0px);
-  border-radius: 20px 20px 0 0;
+
   transition: 0.23 ease;
   /* transform: translateY(calc(20 * 3)); */
 }
 
+.deck h2{
+  color: var(--main-colour);
+  margin-top: 10px;
+}
+
 .deck-prices {
+  border-radius: 40px 40px 0 0;
   margin-top: 50vh;
   height: 50vh;
 }
@@ -429,6 +435,7 @@ h2 {
 .deck-user {
   height: 100vh;
   transform: translateY(0);
+  border-radius: 0px 0px 0 0;
 }
 
 .deck-active {
@@ -515,13 +522,15 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: end;
+  transition: 1s ease;
 }
 
 .measure {
   height: calc(100% - 85px);
   /*20px margin measure, 30px-logo +25bar-value +10px margin =  */
   margin: 10px;
-  width: 3px;
+  width: 2px;
   border-radius: 20px;
 }
 
@@ -535,7 +544,7 @@ h2 {
 }
 
 .separator {
-  height: calc(100% - 170px);
+  height: calc(100% - 200px);
   width: 1px;
   margin-bottom: 130px;
   background-color: var(--main-colour);
