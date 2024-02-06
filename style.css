@@ -2,9 +2,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 
 :root {
-  --black: rgb(25, 25, 25);
-  --orange: rgb(204, 143, 13);
-  --main-colour: #b1b9bd;
+  --black: #121212;
+  --orange: #f28526;
+  --main-colour: #939598;
+  --dark-grey: #414042;
 
   --acalas: #aca687;
   --umza_brakin: #273a48;
@@ -38,11 +39,9 @@ body {
   overflow: hidden;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  height: 100vh;
   background-color: white;
   color: var(--main-colour);
-  overflow: hidden;
-  /* user-select: none; */
 }
 
 h1 {
@@ -60,6 +59,7 @@ h2 {
   height: 100vh;
   z-index: -1;
   position: absolute;
+  overflow: hidden;
 }
 
 .message-container {
@@ -73,6 +73,7 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
+  display: none;
 }
 
 .active {
@@ -110,6 +111,7 @@ h2 {
   flex-direction: column;
   position: absolute;
   transition: ease 0.3s;
+  overflow-y: hidden;
 }
 
 .top-bar {
@@ -149,6 +151,7 @@ h2 {
   color: var(--main-colour);
   cursor: pointer;
   transition: ease 0.3s;
+  user-select: none;
 }
 
 .btn:hover {
@@ -163,6 +166,10 @@ h2 {
 
 .selected {
   filter: var(--drop-shadow-active);
+}
+
+.selected svg path {
+  fill: var(--orange);
 }
 
 .go-back,
@@ -409,7 +416,7 @@ h2 {
 }
 
 .deck-prices {
-    margin-top: 50vh;
+  margin-top: 50vh;
   height: 50vh;
 }
 
@@ -421,7 +428,6 @@ h2 {
 .deck-active {
   transform: translateY(0%);
   transition: 0.4s ease;
-  display: flex;
 }
 .deck-inactive {
   transform: translateY(100%);
@@ -443,6 +449,11 @@ h2 {
   margin: 10px;
 }
 
+.game-menu-btn svg {
+  width: 30px;
+  height: 30px;
+}
+
 @media (min-width: 500px) {
   .game-top-bar,
   .deck,
@@ -454,22 +465,20 @@ h2 {
   }
 }
 
-
-
 .ciecz {
-  background-color: var(--ciecz)
+  background-color: var(--ciecz);
 }
 
 .krysztal {
-  background-color: var(--krysztal)
+  background-color: var(--krysztal);
 }
 
 .skala {
-  background-color: var(--skala)
+  background-color: var(--skala);
 }
 
 .zelazo {
-  background-color: var(--zelazo)
+  background-color: var(--zelazo);
 }
 
 .small-circle {
@@ -495,22 +504,22 @@ h2 {
   flex-direction: row;
 }
 
-.bar-container{
+.bar-container {
   height: 100%;
   display: flex;
   flex-direction: column;
- align-items: center;
+  align-items: center;
 }
 
-.measure{
-  height: calc(100% - 85px); 
+.measure {
+  height: calc(100% - 85px);
   /*20px margin measure, 30px-logo +25bar-value +10px margin =  */
   margin: 10px;
   width: 3px;
   border-radius: 20px;
 }
 
-.bar-value{
+.bar-value {
   margin: 5px;
   width: 25px;
   height: 25px;
@@ -519,9 +528,9 @@ h2 {
   justify-content: center;
 }
 
-.separator{
+.separator {
   height: calc(100% - 170px);
   width: 1px;
   margin-bottom: 130px;
-  background-color: var(--main-colour)
+  background-color: var(--main-colour);
 }

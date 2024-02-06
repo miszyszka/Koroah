@@ -213,8 +213,12 @@ const Visibility = function (item, action) {
 };
 
 function makeWarning(message) {
-  messageContainer.innerHTML = `<h3>${message}</h3>`;
-  messageContainer.style.transform = "translateY(0px) ";
+  messageContainer.style.display= 'flex'
+
+  setTimeout(() => {
+    messageContainer.innerHTML = `<h3>${message}</h3>`;
+    messageContainer.style.transform = "translateY(0px) ";
+  }, 30);
   setTimeout(() => {
     messageContainer.style.transform = "translateY(200px)";
   }, 3000);
