@@ -12,6 +12,11 @@
   --hess: #1f1f1d;
   --layao: #61663f;
 
+  --ciecz: #324f8f;
+  --krysztal: #7b1c43;
+  --skala: #939598;
+  --zelazo: #414042;
+
   --h1-letters: 40px;
   --h2-letters: 18px;
   --h3-leeters: 12px;
@@ -47,8 +52,6 @@ h1 {
 
 h2 {
   font-size: var(--h2-letters);
-  margin: 5px;
-  margin-top: 30px;
 }
 
 .BG {
@@ -167,7 +170,7 @@ h2 {
   position: absolute;
   cursor: pointer;
   margin-left: 40px;
-  margin-top:40px
+  margin-top: 40px;
 }
 
 .go-back img,
@@ -187,6 +190,10 @@ h2 {
 
 .new-game-BTN {
   transform: translateY(-30px);
+}
+
+.label {
+  margin: 15px;
 }
 
 .circle-container {
@@ -257,8 +264,6 @@ h2 {
   display: block;
 }
 
-
-
 .acalas {
   background-color: var(--acalas);
 }
@@ -275,7 +280,7 @@ h2 {
   background-color: var(--hess);
 }
 
-.layao{
+.layao {
   background-color: var(--layao);
 }
 
@@ -370,7 +375,7 @@ h2 {
 .testBTN {
   position: absolute;
   margin-left: 140px;
-  margin-top: 40px
+  margin-top: 40px;
 }
 
 .notification-container {
@@ -378,7 +383,7 @@ h2 {
   width: calc(100vw - 60px);
   height: 50vh;
   overflow: hidden;
-  border: #273a48 1PX SOLID;
+  border: #273a48 1px SOLID;
 }
 
 .notification {
@@ -387,41 +392,36 @@ h2 {
   transition: 0.5s ease;
 }
 
-
 .deck {
-  background-color: var(--hess);
+  background-color: var(--black);
   position: absolute;
   z-index: 0;
-  height: 50vh;
   width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  margin-top: 50vh;
+  flex-direction: row;
+  /* margin-top: 50vh; */
   transform: translateY(0px);
   border-radius: 20px 20px 0 0;
-  transition: 0.4 ease;
-  transform: translateY(calc(20*3));
+  transition: 0.23 ease;
+  /* transform: translateY(calc(20 * 3)); */
 }
 
 .deck-prices {
-  background-color: #b82c2c;
-}
-
-.deck-hierarchy {
-  background-color: #273a48;
+    margin-top: 50vh;
+  height: 50vh;
 }
 
 .deck-user {
-  margin-top: 30vh;
-  height: 70vh;
-  background-color: #aca687;
+  height: 100vh;
+  transform: translateY(0);
 }
 
 .deck-active {
   transform: translateY(0%);
   transition: 0.4s ease;
+  display: flex;
 }
 .deck-inactive {
   transform: translateY(100%);
@@ -449,7 +449,79 @@ h2 {
   .game-menu-bar {
     width: 500px;
   }
-  .notification-container{
+  .notification-container {
     width: 440px;
   }
+}
+
+
+
+.ciecz {
+  background-color: var(--ciecz)
+}
+
+.krysztal {
+  background-color: var(--krysztal)
+}
+
+.skala {
+  background-color: var(--skala)
+}
+
+.zelazo {
+  background-color: var(--zelazo)
+}
+
+.small-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.small-circle img {
+  width: 18px;
+  height: 18px;
+}
+
+.bars-container {
+  height: calc(100% - 200px);
+  width: 100%;
+  margin: 20px 30px 180px 30px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
+
+.bar-container{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+ align-items: center;
+}
+
+.measure{
+  height: calc(100% - 85px); 
+  /*20px margin measure, 30px-logo +25bar-value +10px margin =  */
+  margin: 10px;
+  width: 3px;
+  border-radius: 20px;
+}
+
+.bar-value{
+  margin: 5px;
+  width: 25px;
+  height: 25px;
+  color: var(--main-colour);
+  display: flex;
+  justify-content: center;
+}
+
+.separator{
+  height: calc(100% - 170px);
+  width: 1px;
+  margin-bottom: 130px;
+  background-color: var(--main-colour)
 }

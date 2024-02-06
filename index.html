@@ -33,11 +33,11 @@
         </div>
       </div>
       <div class="main-content">
-        <h2>NAZWA GRY</h2>
+        <h2 class="label">NAZWA GRY</h2>
         <input class="input name-game-input" type="text" />
-        <h2>ilość graczy</h2>
+        <h2 class="label">ilość graczy</h2>
         <div class="circle-container">
-          <div class="btn btn-small cricle">2</div>
+          <!-- <div class="btn btn-small cricle">2</div> -->
           <div class="btn btn-small cricle">3</div>
           <div class="btn btn-small cricle">4</div>
           <div class="btn btn-small cricle">5</div>
@@ -85,7 +85,7 @@
         </div>
       </div>
       <div class="main-content">
-        <h2>NAZWA GRY</h2>
+        <h2 class="label">NAZWA GRY</h2>
         <input class="input join-game-input" type="text" />
       </div>
       <div class="menu-bar">
@@ -128,26 +128,68 @@
     <!-- PLAYER PAGE -->
     <div class="screen game-screen no-active">
       <div class="game-top-bar">
-        <div class="btn testBTN btn-small"> TEST</div>
+        <div class="btn testBTN btn-small">TEST</div>
         <div class="btn btn-small go-home">
           <img src="svg/house-solid.svg" alt="" />
         </div>
       </div>
-      <div class="notification-container"></div>
+
+      <div class="notification-container">
+        <h1>NOTIFICATIONS</h1>
+      </div>
+
       <div class="deck deck-prices prices deck-active">
+       
+        <div class="bars-container price-container">
+          <div class="bar-container">
+            <div class="measure ciecz"></div>
+            <div class="small-circle ciecz">
+              <img src="svg/ciecz.svg" alt="" />
+            </div>
+            <h2 class="bar-value global-ciecz">3</h2>
+          </div>
+          <div class="bar-container">
+            <div class="measure krysztal"></div>
+            <div class="small-circle krysztal">
+              <img src="svg/krysztal.svg" alt="" />
+            </div>
+            <h2 class="bar-value global-krysztal">3</h2>
+          </div>
+          <div class="bar-container">
+            <div class="measure skala"></div>
+            <div class="small-circle skala">
+              <img src="svg/skala.svg" alt="" />
+            </div>
+            <h2 class="bar-value global-skala">3</h2>
+          </div>
+          <div class="bar-container">
+            <div class="measure zelazo"></div>
+            <div class="small-circle zelazo">
+              <img src="svg/zelazo.svg" alt="" />
+            </div>
+            <h2 class="bar-value global-zelazo">3</h2>
+          </div>
+        </div>
+        <!-- SEPARATOR -->
+        <div class="separator"></div>
+
+
+
+        <div class="bars-container danina-container">
+        </div>
+      </div>
+
+      <!-- <div class="deck deck-prices prices deck-active">
         <h2>Ile chcesz mieć kryształu</h2>
         <input class="crystal-input" type="text">
         <div class="btn add-crystal">ADD</div>
-      </div>
-      <div class="deck deck-hierarchy hierarchy deck-inactive ">
-        <h2>Kim grasz?</h2>
-      </div>
+      </div> -->
+
       <div class="deck deck-user user deck-inactive">
         <h2>Kim grasz?</h2>
       </div>
       <div class="game-menu-bar">
         <div class="btn game-menu-btn prices selected">1</div>
-        <div class="btn game-menu-btn hierarchy">1</div>
         <div class="btn game-menu-btn user">1</div>
       </div>
     </div>

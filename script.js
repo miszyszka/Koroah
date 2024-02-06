@@ -48,7 +48,7 @@ const pinBox = document.querySelector(".pin-box");
 const pinGameInput = document.querySelector(".pin-game-input");
 
 // CHAIRS
-const allChairs = document.querySelectorAll('.chair');
+const allChairs = document.querySelectorAll(".chair");
 const chairTop = document.querySelector(".chair-top");
 const chairRight = document.querySelector(".chair-right");
 const chairBottom = document.querySelector(".chair-bottom");
@@ -63,8 +63,9 @@ const addCrystal = document.querySelector(".add-crystal");
 // DECKS
 const allDecks = document.querySelectorAll(".deck");
 const deckPrices = document.querySelector(".deck-prices");
-const deckHierarchy = document.querySelector(".deck-hierarchy");
 const deckUser = document.querySelector(".deck-user");
+
+const daninaContainer = document.querySelector(".danina-container");
 
 // OTHER
 const notificationContainer = document.querySelector(".notification-container");
@@ -247,6 +248,7 @@ const logIn = function () {
       currentPlayer = currentGame.gameOrder.find(
         (game) => game.player === IconName
       );
+      console.log(currentPlayer);
 
       if (rollDown === true) {
         showPinBox("visible");
@@ -386,23 +388,23 @@ nextNewGameBTN.addEventListener("click", function () {
 
   // NUBER OF CHAIRS NEEDED
 
-allChairs.forEach((chair) =>{
-  const chairId = parseInt(chair.classList[1].slice(-1))
+  allChairs.forEach((chair) => {
+    const chairId = parseInt(chair.classList[1].slice(-1));
 
-  let angle;
-  switch (numberOfPlayers) {
+    let angle;
+    switch (numberOfPlayers) {
       case 3:
-          angle = chairId * 120;
-          break;
+        angle = chairId * 120;
+        break;
       case 4:
-          angle = chairId * 90;
-          break;
+        angle = chairId * 90;
+        break;
       case 5:
-          angle = chairId * 72;
-          break;
-  }
-  chair.style.transform = `rotate(${angle}deg) translateY(-120px)`
-})
+        angle = chairId * 72;
+        break;
+    }
+    chair.style.transform = `rotate(${angle}deg) translateY(-120px)`;
+  });
 
   goToScreen(finalNewGameScreen);
 });
@@ -432,7 +434,6 @@ function handleChairClick(chair) {
   // avatarsContainer.style.display = "flex";
   avatarsContainer.classList.remove("no-active");
   avatarsContainer.classList.add("active");
-  
 }
 
 function handleAvatarClick() {
@@ -522,6 +523,11 @@ finalJoinGameBTN.addEventListener("click", function () {
     }
   } else {
     createPIN(enteredPin);
+    goToScreen(gameScreen);
+    setTimeout(() => {
+      startGame();
+    }, 500);
+    clearFields("retain currentGame");
   }
 });
 
@@ -535,6 +541,26 @@ finalJoinGameBTN.addEventListener("click", function () {
 // GAME
 //////////////////////
 //////////////////////
+
+const startGame = function () {
+  console.log(currentGame.gameOrder.length);
+  for (let i = 0; i < currentGame.gameOrder.length; i++) {
+    const foundPlayer = currentGame.gameOrder[i];
+    const className = `${foundPlayer.player} ${classNumber[i]}`;
+
+    const myHtml = `
+    <div class="bar-container">
+    <div class="measure zelazo"></div>
+    <div class="small-circle ${className}">
+    </div>
+    <h2 class="bar-value global-zelazo">3</h2>
+  </div>`;
+    const barContainerDiv = document.createElement("div");
+    barContainerDiv.innerHTML = myHtml;
+
+    daninaContainer.appendChild(barContainerDiv);
+  }
+};
 
 ///////////////////////////
 ///////////////////////////
@@ -646,47 +672,47 @@ const updateUserScreen = function () {
   }
 };
 
-addCrystal.addEventListener("click", function () {
-  const crystalValue = crystalInput.value;
-  console.log("ADDING CRYSTALS");
+// addCrystal.addEventListener("click", function () {
+//   const crystalValue = crystalInput.value;
+//   console.log("ADDING CRYSTALS");
 
-  Object.keys(currentGame.gameOrder).forEach((chairId) => {
-    const player = currentGame.gameOrder[chairId].player;
+//   Object.keys(currentGame.gameOrder).forEach((chairId) => {
+//     const player = currentGame.gameOrder[chairId].player;
 
-    if (player === currentPlayer.player) {
-      const desiredChair = `${chairId}`;
-      currentGame.gameOrder[desiredChair].crystal = crystalValue;
-    }
-  });
+//     if (player === currentPlayer.player) {
+//       const desiredChair = `${chairId}`;
+//       currentGame.gameOrder[desiredChair].crystal = crystalValue;
+//     }
+//   });
 
-  // Assuming allNots is an object
-  let newNotId = 0;
-  if (allNots) {
-    newNotId = Object.keys(allNots).length;
-  } else {
-    newNotId = 0;
-  }
+//   // Assuming allNots is an object
+//   let newNotId = 0;
+//   if (allNots) {
+//     newNotId = Object.keys(allNots).length;
+//   } else {
+//     newNotId = 0;
+//   }
 
-  const notification = {
-    id: newNotId + 1, // Assuming IDs start from 1
-    player: currentPlayer.player,
-    value: crystalValue,
-    action: "added",
-    resource: "crystal",
-  };
+//   const notification = {
+//     id: newNotId + 1, // Assuming IDs start from 1
+//     player: currentPlayer.player,
+//     value: crystalValue,
+//     action: "added",
+//     resource: "crystal",
+//   };
 
-  if (!allNots) {
-    allNots = {}; // Na wypadek pierwszego notification w grze
-  }
-  allNots[newNotId + 1] = notification; // dodaj notyfikacje do array
+//   if (!allNots) {
+//     allNots = {}; // Na wypadek pierwszego notification w grze
+//   }
+//   allNots[newNotId + 1] = notification; // dodaj notyfikacje do array
 
-  currentGame.notifications = allNots; // dodaj array do currenGame
+//   currentGame.notifications = allNots; // dodaj array do currenGame
 
-  updateDB();
+//   updateDB();
 
-  const name = currentGame.name;
-  updateCurrentGame(name);
-});
+//   const name = currentGame.name;
+//   updateCurrentGame(name);
+// });
 
 /////////// NASŁUCHIWANIE
 onValue(gamesDB, (snapshot) => {
@@ -717,6 +743,7 @@ setTimeout(() => {
 
     setTimeout(() => {
       allNots = currentGame.notifications;
+      startGame();
     }, 500);
 
     setTimeout(() => {
