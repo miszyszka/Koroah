@@ -759,7 +759,7 @@ setTimeout(() => {
       currentPlayer = currentGame.gameOrder["1"];
     }, 1000);
   };
-  // skipLogin();
+  skipLogin();
 }, 1500);
 
 window.updateCurrentGame = updateCurrentGame;
