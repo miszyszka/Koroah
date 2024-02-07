@@ -59,6 +59,7 @@ const gameMenuBTNs = document.querySelectorAll(".game-menu-btn");
 const testBTN = document.querySelector(".testBTN");
 const crystalInput = document.querySelector(".crystal-input");
 const addCrystal = document.querySelector(".add-crystal");
+const changeCrystal = document.querySelector(".change-crystal");
 
 // DECKS
 const allDecks = document.querySelectorAll(".deck");
@@ -104,31 +105,32 @@ const classNumber = {
 ///////////////
 
 const updateCurrentGame = function (gameName) {
+  // reading game from DB and making currentGamme & currentPlayer really current
+
   console.log("=== RUNNING FUNCTION updateCurrentGame ===");
   const foundGame = gamesArray.find((game) => game.name === gameName);
+  const foundPlayer = foundGame.gameOrder.find(
+    (player) => player.player === currentPlayer.player
+  );
 
   // usunięcie 0 z liczb dziesiętnych
   for (let i = 0; i < currentGame.prices.length; i++) {
-    const value = parseFloat(currentGame.prices[i])
+    const value = parseFloat(currentGame.prices[i]);
     console.log(value);
-    currentGame.prices[i] = value
+    currentGame.prices[i] = value;
   }
 
   if (foundGame) {
     currentGame = foundGame;
+    currentPlayer = foundPlayer;
     allNots = currentGame.notifications;
-    updatePrices();
+    updatePrices('from = updateCurrentGame()');
     return foundGame;
   } else {
     console.log("updateCurrentGame FAILED");
   }
+
   console.log("=== ENDING update === CURENT GAME IS:");
-
-  for (let i = 0; i < currentGame.prices.length; i++) {
-    console.log(currentGame.prices);
-    console.log(i);
-  }
-
 
   console.log(currentGame);
 };
@@ -144,6 +146,23 @@ const updateDB = function () {
   const game = currentGame;
   const userRef = ref(database, `games/${game.id}`);
   update(userRef, game);
+};
+
+const updateCurrentPlayerToDB = function () {
+  Object.keys(currentGame.gameOrder).forEach((chairId) => {
+    const player = currentGame.gameOrder[chairId].player;
+
+    if (player === currentPlayer.player) {
+      const pinRef = ref(
+        database,
+        `games/${currentGame.id}/gameOrder/${chairId}`
+      );
+
+      update(pinRef, {
+        ...currentPlayer, // Rozpakowanie obiektu currentPlayer
+      });
+    }
+  });
 };
 
 const showPinBox = function (arg) {
@@ -568,28 +587,103 @@ finalJoinGameBTN.addEventListener("click", function () {
 // GAME
 //////////////////////
 //////////////////////
+
 function sortBars() {
-  const barsContainer = document.querySelector('.danina-container');
-  const barContainers = Array.from(barsContainer.querySelectorAll('.bar-container'));
+  const barsContainer = document.querySelector(".danina-container");
+  const barContainers = Array.from(
+    barsContainer.querySelectorAll(".bar-container")
+  );
 
   // Sortowanie kontenerów na podstawie wartości h2
   barContainers.sort((a, b) => {
-      const valueA = parseFloat(a.querySelector('.danina-bar-value').textContent);
-      const valueB = parseFloat(b.querySelector('.danina-bar-value').textContent);
-      return valueB - valueA; // Sortowanie malejąco
+    const valueA = parseFloat(a.querySelector(".danina-bar-value").textContent);
+    const valueB = parseFloat(b.querySelector(".danina-bar-value").textContent);
+    return valueB - valueA; // Sortowanie malejąco
   });
 
   // Przeniesienie posortowanych kontenerów na początek kontenera .bars-container
-  barContainers.forEach(barContainer => barsContainer.appendChild(barContainer));
+  barContainers.forEach((barContainer) =>
+    barsContainer.appendChild(barContainer)
+  );
 }
 
-const updatePrices = function () {
+const updatePrices = function (origin) {
+
+
+  console.log(origin);
+  /////// CURRENT USER VALUES
+  function removeOldDots() {
+    const allPluses = document.querySelectorAll('.plus')
+    const allBoxes = document.querySelectorAll('.resource-box')
+
+    allPluses.forEach((plus)=>{
+      plus.style.opacity= '0'
+    })
+    allBoxes.forEach((box)=>{
+      box.style.opacity= '1'
+    })
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach(dot => {
+      dot.parentNode.removeChild(dot);
+    });
+  }
+  
+  // Wywołanie funkcji
+  removeOldDots();
+
+
+  const tokenCoinsValue = document.querySelector(".token-coins-value");
+  const tokenMoveValue = document.querySelector(".token-move-value");
+
+  const userResourcesUpdate = function () {
+    for (const resource in currentPlayer.resources) {
+      const id = parseInt(resource) + 1
+      let amount = currentPlayer.resources[resource];
+      const element = document.querySelector(
+        `.resource-value-${id}`
+      );
+      element.innerHTML = amount;
+
+      if (amount > 40){
+        amount = 40
+      }
+
+
+
+
+      for (let i = 0; i < amount; i++){
+        console.log('filling');
+        const dot = document.createElement("div");
+        dot.className = 'dot'
+        const box = document.querySelector(`.box-${id}`);
+        box.appendChild(dot)
+
+        if (amount <= 10) {
+          box.style.transform= 'translateX(-10px)'
+        } else if (amount > 10 && amount <= 20) {
+          box.style.transform= 'translateX(-4px)'
+        } else if (amount > 20 && amount <= 30) {
+          box.style.transform= 'translateX(0px)'
+        } else if (amount > 30) {
+          box.style.transform= 'translateX(4px)'
+        }
+        const plus = document.querySelector(`.plus-${id}`);
+        if (amount >= 40){
+          plus.style.opacity= '1'
+          box.style.opacity= '0.2'
+        }
+      }
+    }
+  };
+  userResourcesUpdate();
+
+  /////// GLOBAL VALUES
   const priceBarValues = document.querySelectorAll(".price-bar-value");
   const daninaBarValues = document.querySelectorAll(".danina-bar-value");
 
   priceBarValues.forEach((price) => {
     const resourceId = parseInt(price.classList[1].slice(-1));
-    const element = document.querySelector(`.price-${resourceId}`);
+    const element = document.querySelectorAll(`.price-${resourceId}`);
     const bar = document.querySelector(`.measure-${resourceId}`);
     const currentPrice = currentGame.prices[resourceId - 1];
     const max = Math.max(...currentGame.prices);
@@ -606,22 +700,22 @@ const updatePrices = function () {
     };
     multiplier = multiplier(max);
     bar.style.height = currentPrice * multiplier + "px";
-    element.innerHTML = currentPrice;
+    element.forEach((el) => {
+      el.innerHTML = currentPrice;
+    });
   });
-
 
   daninaBarValues.forEach((danina) => {
     const daninaId = parseFloat(danina.classList[1].slice(-1));
     const element = document.querySelector(`.danina-${daninaId}`);
     const bar = document.querySelector(`.danina-measure-${daninaId}`);
-    const currentDanina = currentGame.gameOrder[daninaId].danina
+    const currentDanina = currentGame.gameOrder[daninaId].danina;
     bar.style.height = currentDanina * 8 + "px";
     element.innerHTML = `${currentGame.gameOrder[daninaId].danina}`;
   });
-  setTimeout(()=>{
+  setTimeout(() => {
     sortBars();
-  }, 500)
-
+  }, 500);
 };
 
 const startGame = function () {
@@ -640,8 +734,15 @@ const startGame = function () {
     daninaContainer.appendChild(barContainerDiv.firstElementChild);
   }
 
-  updatePrices();
+  updatePrices('from startGame()');
 };
+
+changeCrystal.addEventListener("click", function () {
+  const crystalValue = parseFloat(crystalInput.value);
+  currentPlayer.resources[2] = crystalValue;
+  updateCurrentPlayerToDB();
+  updateDB();
+});
 
 addCrystal.addEventListener("click", function () {
   const crystalValue = parseFloat(crystalInput.value);
@@ -662,6 +763,7 @@ addCrystal.addEventListener("click", function () {
 testBTN.addEventListener("click", function () {
   console.log(currentGame);
   console.log(currentGame.notifications);
+  console.log(currentPlayer);
   console.log(allNots);
   console.log(Object.keys(allNots).length);
 });
@@ -697,28 +799,6 @@ function highestKey(obj) {
   return objectWithMaxKey;
 }
 
-const moveOldNotifications = function () {
-  const notificationDIVs = document.querySelectorAll(".notification");
-  notificationDIVs.forEach((not) => {
-    const oldClassList = not.classList[1].match(/\d+$/);
-    let matchedNumber = parseInt(oldClassList);
-    if (matchedNumber === 1) {
-      not.style.transform = "translateY(20px)";
-      not.classList.remove("position1");
-      not.classList.add("position2");
-    } else {
-      const transformedValue = `translateY(calc(${matchedNumber} * 20px))`;
-      const transformedOpacity = `calc(1 - ${matchedNumber * 0.15})`;
-      not.style.transform = transformedValue;
-      not.style.opacity = transformedOpacity;
-
-      not.classList.remove(`position${matchedNumber}`);
-      matchedNumber++;
-      not.classList.add(`position${matchedNumber}`);
-    }
-  });
-};
-
 const makeNotification = function (i) {
   const message = `Player ${i.player} ${i.action} ${i.value} ${i.resource}`;
   console.log(message);
@@ -735,6 +815,27 @@ const makeNotification = function (i) {
     notificationContainer.appendChild(notificationDiv);
   }
 
+  const moveOldNotifications = function () {
+    const notificationDIVs = document.querySelectorAll(".notification");
+    notificationDIVs.forEach((not) => {
+      const oldClassList = not.classList[1].match(/\d+$/);
+      let matchedNumber = parseInt(oldClassList);
+      if (matchedNumber === 1) {
+        not.style.transform = "translateY(20px)";
+        not.classList.remove("position1");
+        not.classList.add("position2");
+      } else {
+        const transformedValue = `translateY(calc(${matchedNumber} * 20px))`;
+        const transformedOpacity = `calc(1 - ${matchedNumber * 0.15})`;
+        not.style.transform = transformedValue;
+        not.style.opacity = transformedOpacity;
+
+        not.classList.remove(`position${matchedNumber}`);
+        matchedNumber++;
+        not.classList.add(`position${matchedNumber}`);
+      }
+    });
+  };
   moveOldNotifications();
 
   notificationDiv.classList.add("notification");
@@ -858,13 +959,14 @@ setTimeout(() => {
     currentGame = gamesArray[0];
 
     setTimeout(() => {
-      allNots = currentGame.notifications;
-      startGame();
-    }, 100);
-
-    setTimeout(() => {
       currentPlayer = currentGame.gameOrder["1"];
-    }, 1000);
+
+      setTimeout(() => {
+        allNots = currentGame.notifications;
+        startGame();
+      }, 200);
+
+    }, 400);
   };
   skipLogin();
 }, 1500);
