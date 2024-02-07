@@ -86,7 +86,7 @@ let allNots = {};
 let currentGame = {}; // Object to store information about the created game
 let gameOrder = {}; // Object to store information about the selected avatar for each chair-id
 let currentPlayer;
-let characterPin;
+// let characterPin;
 let enteredPin;
 
 let numberOfPlayersSelected = false;
@@ -108,10 +108,14 @@ const updateCurrentGame = function (gameName) {
   // reading game from DB and making currentGamme & currentPlayer really current
 
   console.log("=== RUNNING FUNCTION updateCurrentGame ===");
+  console.log(gamesArray);
   const foundGame = gamesArray.find((game) => game.name === gameName);
-  const foundPlayer = foundGame.gameOrder.find(
-    (player) => player.player === currentPlayer.player
-  );
+  if (foundGame && currentPlayer) {
+    const foundPlayer = foundGame.gameOrder.find(
+      (player) => player.player === currentPlayer.player
+    );
+    currentPlayer = foundPlayer;
+  }
 
   // usunięcie 0 z liczb dziesiętnych
   for (let i = 0; i < currentGame.prices.length; i++) {
@@ -122,7 +126,7 @@ const updateCurrentGame = function (gameName) {
 
   if (foundGame) {
     currentGame = foundGame;
-    currentPlayer = foundPlayer;
+
     allNots = currentGame.notifications;
     updatePrices("from = updateCurrentGame()");
     return foundGame;
@@ -236,19 +240,23 @@ const clearFields = function (arg) {
 };
 
 const Visibility = function (item, action) {
-  if (action === "visible") {
-    item.classList.remove("btn-invisible");
-    item.classList.add("btn-visible");
-  }
-  if (action === "visible-high") {
-    item.classList.remove("btn-invisible");
-    item.classList.add("btn-visible-high");
-  }
-  if (action === "invisible") {
-    item.classList.remove("btn-visible");
-    item.classList.remove("btn-visible-high");
-    item.classList.add("btn-invisible");
-  }
+  item.style.display = "flex";
+  setTimeout(() => {
+    if (action === "visible") {
+      item.classList.remove("btn-invisible");
+      item.classList.add("btn-visible");
+    }
+    if (action === "visible-high") {
+      item.classList.remove("btn-invisible");
+      item.classList.add("btn-visible-high");
+    }
+    if (action === "invisible") {
+      item.classList.remove("btn-visible");
+      item.classList.remove("btn-visible-high");
+      item.classList.add("btn-invisible");
+      item.style.display = "none";
+    }
+  }, 10);
 };
 
 function makeWarning(message) {
@@ -637,11 +645,13 @@ const updatePrices = function (origin) {
       const id = parseInt(resource) + 1;
       let amount = currentPlayer.resources[resource];
       const element = document.querySelector(`.resource-value-${id}`);
-      const calculatedElement = document.querySelector(`.calculated-value-${id}`);
-      const position = id - 1
-      const calculatedValue = amount * (currentGame.prices[position])
-      calculatedElement.innerHTML = `${calculatedValue}`
-      element.innerHTML = `${amount}`
+      const calculatedElement = document.querySelector(
+        `.calculated-value-${id}`
+      );
+      const position = id - 1;
+      const calculatedValue = amount * currentGame.prices[position];
+      calculatedElement.innerHTML = `${calculatedValue}`;
+      element.innerHTML = `${amount}`;
 
       if (amount > 40) {
         amount = 40;
@@ -692,7 +702,7 @@ const updatePrices = function (origin) {
       } else if (max >= 25 && max < 35) {
         return 4;
       } else {
-        return 2
+        return 2;
       }
     };
     multiplier = multiplier(max);
@@ -774,7 +784,7 @@ gameMenuBTNs.forEach((button) => {
       (deck) => deck.classList[2] === this.classList[2]
     );
     allDecks.forEach((d) => {
-      d.style.display= 'flex'
+      d.style.display = "flex";
     });
     setTimeout(() => {
       allDecks.forEach((d) => {
@@ -783,11 +793,9 @@ gameMenuBTNs.forEach((button) => {
       });
       choosenDeck.classList.remove("deck-inactive");
       choosenDeck.classList.add("deck-active");
-      const inactiveDeck = document.querySelector('.deck-inactive');
-      inactiveDeck.style.display= 'none'
-      
+      const inactiveDeck = document.querySelector(".deck-inactive");
+      inactiveDeck.style.display = "none";
     }, 10);
-
   });
 });
 
@@ -973,5 +981,5 @@ setTimeout(() => {
       }, 200);
     }, 400);
   };
-  skipLogin();
+  // skipLogin();
 }, 1500);
