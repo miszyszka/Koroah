@@ -36,11 +36,11 @@
 
 body {
   font-family: "Bebas Neue", sans-serif;
-  overflow: hidden;
+  /* overflow: hidden; */
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: white;
+  background-color: var(--black);
   color: var(--main-colour);
 }
 
@@ -53,13 +53,18 @@ h2 {
   font-size: var(--h2-letters);
 }
 
+h3 {
+  font-size: var(--h3-letters);
+}
+
+
 .BG {
   background-color: var(--black);
   width: 100vw;
   height: 100vh;
   z-index: -1;
   position: absolute;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .message-container {
@@ -115,7 +120,7 @@ h2 {
   flex-direction: column;
   position: absolute;
   transition: ease 0.3s;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 
 .top-bar {
@@ -396,7 +401,7 @@ h2 {
   width: calc(100vw - 60px);
   height: 50vh;
   overflow: hidden;
-  border: #273a48 1px SOLID;
+  /* border: #273a48 1px SOLID; */
 }
 
 .notification {
@@ -441,25 +446,28 @@ h2 {
 .deck-active {
   transform: translateY(0%);
   transition: 0.4s ease;
+  display: block;
 }
 .deck-inactive {
   transform: translateY(100%);
   transition: 0.4s ease;
+  display: none;
 }
 
 .game-menu-bar {
+
   position: absolute;
   bottom: 0;
-  height: 140px;
+  height: 150px;
   width: 100vw;
   display: flex;
   justify-content: space-evenly;
 }
 
 .game-menu-btn {
-  width: 80px;
-  height: 80px;
-  margin: 10px;
+  width: 100px;
+  height: 100px;
+  margin: 20px 30px;
 }
 
 .game-menu-btn svg {
@@ -497,10 +505,9 @@ h2 {
   height: 18px;
 }
 
-.bars-container {
-  /* border: white 1px solid;  */
+.bars-container { 
   height: 100%;
-  width: 100%;
+  width: 100vw;
   display: flex;
   justify-content: space-evenly;
   flex-direction: row;
@@ -510,10 +517,12 @@ h2 {
 .danina-container {
   margin: 20px 30px 180px 30px;
   height: calc(100% - 200px);
+  width: 35vw;
 }
 
 .bar-container {
-  /* border: white 1px solid; */
+
+  width: 50px;
   position: relative;
   height: 100%;
   display: flex;
@@ -521,6 +530,22 @@ h2 {
   align-items: center;
   justify-content: end;
   transition: 1s ease;
+}
+
+.value-container {
+  padding-top: 15px;
+  /* border: white 1px solid; */
+  width: 50px;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  transition: 1s ease;
+}
+
+.value-container h2{
+  margin: -3px 3px 0px 0px;
 }
 
 .measure {
@@ -540,6 +565,7 @@ h2 {
 }
 
 .separator {
+  position: absolute;
   height: calc(100% - 200px);
   width: 1px;
   margin-bottom: 130px;
@@ -563,20 +589,23 @@ h2 {
 .du-container {
   width: 100%;
   height: 20vh;
-  color: var(--main-colour);
-  border: #aca687 1px solid;
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .du-label-container {
   width: 40%;
+  color: var(--main-colour);
+}
+
+.du-label-container h1 {
+  margin-left: 20px;
 }
 
 .main-sources {
   width: 60%;
   height: 100%;
-  border: #ff0000 1px solid;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -585,18 +614,25 @@ h2 {
 
 .du-title {
   margin: 0px;
-  height: 12vh;
+  height: 10vh;
 }
 .du-buildings {
-  height: 25vh;
+  height: 20vh;
 }
 
 .du-prices {
-  height: 10vh;
+  height: 8vh;
+}
+
+.du-resources{
+  height: 170px;
+}
+
+.du-value{
+  height: 4vh;
 }
 
 .token-container {
-  border: wheat 1px solid;
   width: 100px;
   height: 50px;
   display: flex;
@@ -607,12 +643,22 @@ h2 {
 .token-container h1 {
   font-size: var(--h2-letters);
   margin: 5px;
+  color: var(--main-colour);
 }
 .token svg {
   width: 30px;
   height: 30px;
 }
 .token svg path {
+  fill: var(--orange);
+}
+
+.token-small svg{
+  width: 15px;
+  height: 15px;
+}
+
+.token-small svg path {
   fill: var(--orange);
 }
 
@@ -623,8 +669,13 @@ h2 {
 }
 
 .du-prices.du-container {
-  border: white 1px solid;
   margin: 0;
+}
+
+.bar-label h2 {
+  text-align: right;
+  margin-right: -40px;
+  width: 60px;
 }
 
 .resources-box {
@@ -652,11 +703,15 @@ h2 {
   font-size: 20px;
   width: 30px;
   height: 30px;
-  top: 10px;
-  right: -8px;
+  bottom: 135px;
+  right: -2px;
   z-index: 5;
   filter: drop-shadow(-2px 2px 5px #000000);
   opacity: 0;
+}
+
+.calculated-bar-value{
+  font-size: 14px;
 }
 
 .ciecz .dot {
@@ -674,6 +729,12 @@ h2 {
 .zelazo .dot {
   background-color: var(--zelazo);
 }
+
+
+.exchange-screen{
+display: none;
+}
+
 
 @media (min-width: 500px) {
   .du-all-containers,

@@ -124,7 +124,7 @@ const updateCurrentGame = function (gameName) {
     currentGame = foundGame;
     currentPlayer = foundPlayer;
     allNots = currentGame.notifications;
-    updatePrices('from = updateCurrentGame()');
+    updatePrices("from = updateCurrentGame()");
     return foundGame;
   } else {
     console.log("updateCurrentGame FAILED");
@@ -608,69 +608,64 @@ function sortBars() {
 }
 
 const updatePrices = function (origin) {
-
-
   console.log(origin);
   /////// CURRENT USER VALUES
   function removeOldDots() {
-    const allPluses = document.querySelectorAll('.plus')
-    const allBoxes = document.querySelectorAll('.resource-box')
+    const allPluses = document.querySelectorAll(".plus");
+    const allBoxes = document.querySelectorAll(".resource-box");
 
-    allPluses.forEach((plus)=>{
-      plus.style.opacity= '0'
-    })
-    allBoxes.forEach((box)=>{
-      box.style.opacity= '1'
-    })
-    const dots = document.querySelectorAll('.dot');
-    dots.forEach(dot => {
+    allPluses.forEach((plus) => {
+      plus.style.opacity = "0";
+    });
+    allBoxes.forEach((box) => {
+      box.style.opacity = "1";
+    });
+    const dots = document.querySelectorAll(".dot");
+    dots.forEach((dot) => {
       dot.parentNode.removeChild(dot);
     });
   }
-  
+
   // Wywołanie funkcji
   removeOldDots();
-
 
   const tokenCoinsValue = document.querySelector(".token-coins-value");
   const tokenMoveValue = document.querySelector(".token-move-value");
 
   const userResourcesUpdate = function () {
     for (const resource in currentPlayer.resources) {
-      const id = parseInt(resource) + 1
+      const id = parseInt(resource) + 1;
       let amount = currentPlayer.resources[resource];
-      const element = document.querySelector(
-        `.resource-value-${id}`
-      );
-      element.innerHTML = amount;
+      const element = document.querySelector(`.resource-value-${id}`);
+      const calculatedElement = document.querySelector(`.calculated-value-${id}`);
+      const position = id - 1
+      const calculatedValue = amount * (currentGame.prices[position])
+      calculatedElement.innerHTML = `${calculatedValue}`
+      element.innerHTML = `${amount}`
 
-      if (amount > 40){
-        amount = 40
+      if (amount > 40) {
+        amount = 40;
       }
 
-
-
-
-      for (let i = 0; i < amount; i++){
-        console.log('filling');
+      for (let i = 0; i < amount; i++) {
         const dot = document.createElement("div");
-        dot.className = 'dot'
+        dot.className = "dot";
         const box = document.querySelector(`.box-${id}`);
-        box.appendChild(dot)
+        box.appendChild(dot);
 
         if (amount <= 10) {
-          box.style.transform= 'translateX(-10px)'
+          box.style.transform = "translateX(-10px)";
         } else if (amount > 10 && amount <= 20) {
-          box.style.transform= 'translateX(-4px)'
+          box.style.transform = "translateX(-5px)";
         } else if (amount > 20 && amount <= 30) {
-          box.style.transform= 'translateX(0px)'
+          box.style.transform = "translateX(0px)";
         } else if (amount > 30) {
-          box.style.transform= 'translateX(4px)'
+          box.style.transform = "translateX(5px)";
         }
         const plus = document.querySelector(`.plus-${id}`);
-        if (amount >= 40){
-          plus.style.opacity= '1'
-          box.style.opacity= '0.2'
+        if (amount >= 40) {
+          plus.style.opacity = "1";
+          box.style.opacity = "0.2";
         }
       }
     }
@@ -694,8 +689,10 @@ const updatePrices = function (origin) {
         return 12;
       } else if (max >= 15 && max < 25) {
         return 7;
-      } else if (max >= 25) {
-        return 5;
+      } else if (max >= 25 && max < 35) {
+        return 4;
+      } else {
+        return 2
       }
     };
     multiplier = multiplier(max);
@@ -734,7 +731,7 @@ const startGame = function () {
     daninaContainer.appendChild(barContainerDiv.firstElementChild);
   }
 
-  updatePrices('from startGame()');
+  updatePrices("from startGame()");
 };
 
 changeCrystal.addEventListener("click", function () {
@@ -777,11 +774,20 @@ gameMenuBTNs.forEach((button) => {
       (deck) => deck.classList[2] === this.classList[2]
     );
     allDecks.forEach((d) => {
-      d.classList.remove("deck-active");
-      d.classList.add("deck-inactive");
+      d.style.display= 'flex'
     });
-    choosenDeck.classList.remove("deck-inactive");
-    choosenDeck.classList.add("deck-active");
+    setTimeout(() => {
+      allDecks.forEach((d) => {
+        d.classList.remove("deck-active");
+        d.classList.add("deck-inactive");
+      });
+      choosenDeck.classList.remove("deck-inactive");
+      choosenDeck.classList.add("deck-active");
+      const inactiveDeck = document.querySelector('.deck-inactive');
+      inactiveDeck.style.display= 'none'
+      
+    }, 10);
+
   });
 });
 
@@ -943,14 +949,14 @@ const checkIfstandalone = function () {
 //   checkIfstandalone();
 // }, 3000);
 
-document.addEventListener(
-  "touchmove",
-  function (event) {
-    // Zapobiegaj domyślnemu przewijaniu dotykowego zdarzenia (overscroll)
-    event.preventDefault();
-  },
-  { passive: false }
-);
+// document.addEventListener(
+//   "touchmove",
+//   function (event) {
+//     // Zapobiegaj domyślnemu przewijaniu dotykowego zdarzenia (overscroll)
+//     event.preventDefault();
+//   },
+//   { passive: false }
+// );
 
 /////////// SKIP LOGIN
 setTimeout(() => {
@@ -965,7 +971,6 @@ setTimeout(() => {
         allNots = currentGame.notifications;
         startGame();
       }, 200);
-
     }, 400);
   };
   skipLogin();
