@@ -23,6 +23,8 @@
   --h3-leeters: 12px;
   --drop-shadow-item: drop-shadow(15px 15px 10px #000000)
     drop-shadow(-8px -8px 6px #ffffff10);
+  --super-small-drop-shadow-item: drop-shadow(9px 9px 5px #000000)
+    drop-shadow(-4px -4px 4px #ffffff10);
   --drop-shadow-hover: drop-shadow(19px 17px 12px #000000)
     drop-shadow(-12px -12px 8px #ffffff10);
   --drop-shadow-active: drop-shadow(4px 4px 4px #000000)
@@ -57,7 +59,6 @@ h3 {
   font-size: var(--h3-letters);
 }
 
-
 .BG {
   background-color: var(--black);
   width: 100vw;
@@ -68,39 +69,33 @@ h3 {
 }
 
 .message-container {
+  transform: translateY(-200px);
+  border: #7b1c43 1px solid;
   position: absolute;
   width: 100vw;
   height: 100px;
-  bottom: 10vh;
   transition: ease 1s;
-  transform: translateY(200px);
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  display: none;
+  /* display: none; */
 }
 
 .active {
   transform: translateX(0%);
-  display: flex;
 }
 
 .no-active {
   transform: translateX(100%);
-  display: none;
 }
 
 .btn-visible {
   transform: translateY(0px);
 }
 
-.btn-visible-high {
-  transform: translateY(0px);
-}
-
 .btn-invisible {
-  transform: translateY(300px);
+  transform: translateY(100vh);
 }
 
 .el-visible {
@@ -120,7 +115,12 @@ h3 {
   flex-direction: column;
   position: absolute;
   transition: ease 0.3s;
+  display: none;
   /* overflow-y: hidden; */
+}
+
+.main-screen {
+  display: flex;
 }
 
 .top-bar {
@@ -140,6 +140,10 @@ h3 {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+.next-join-game-screen .main-content {
+  height: 150px;
 }
 
 .menu-bar {
@@ -203,6 +207,12 @@ h3 {
 .btn-small {
   width: 60px;
   height: 60px;
+}
+
+.btn-super-small {
+  width: 50px;
+  height: 50px;
+  filter: var(--super-small-drop-shadow-item);
 }
 
 .new-game-BTN {
@@ -440,17 +450,17 @@ h3 {
 .deck-active {
   transform: translateY(0%);
   transition: 0.4s ease;
-  display: block;
+  display: flex;
 }
+
 .deck-inactive {
   transform: translateY(100%);
   transition: 0.4s ease;
-  display: none;
 }
 
 .game-menu-bar {
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   height: 150px;
   width: 100vw;
   display: flex;
@@ -498,7 +508,7 @@ h3 {
   height: 18px;
 }
 
-.bars-container { 
+.bars-container {
   height: 100%;
   width: 100vw;
   display: flex;
@@ -514,7 +524,6 @@ h3 {
 }
 
 .bar-container {
-
   width: 50px;
   position: relative;
   height: 100%;
@@ -526,10 +535,7 @@ h3 {
 }
 
 .value-container {
-  padding-top: 15px;
-  /* border: white 1px solid; */
   width: 50px;
-  height: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -537,7 +543,7 @@ h3 {
   transition: 1s ease;
 }
 
-.value-container h2{
+.value-container h2 {
   margin: -3px 3px 0px 0px;
 }
 
@@ -579,9 +585,9 @@ h3 {
   display: flex;
   flex-direction: column;
 }
+
 .du-container {
   width: 100%;
-  height: 20vh;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -617,12 +623,23 @@ h3 {
   height: 8vh;
 }
 
-.du-resources{
+.du-resources {
   height: 170px;
 }
 
-.du-value{
-  height: 4vh;
+.du-value {
+  height: 6vh;
+}
+
+.du-value .bar-label {
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.du-foot {
+  height: 8vh;
 }
 
 .token-container {
@@ -639,7 +656,6 @@ h3 {
   color: var(--main-colour);
 }
 
-
 .token svg {
   width: 30px;
   height: 30px;
@@ -648,7 +664,7 @@ h3 {
   fill: var(--orange);
 }
 
-.token-small svg{
+.token-small svg {
   width: 15px;
   height: 15px;
 }
@@ -663,7 +679,6 @@ h3 {
   background-color: var(--main-colour);
 }
 
-
 .du-prices.du-container {
   margin: 0;
 }
@@ -672,6 +687,7 @@ h3 {
   text-align: right;
   margin-right: -40px;
   width: 60px;
+  margin-top: 0;
 }
 
 .resources-box {
@@ -706,7 +722,7 @@ h3 {
   opacity: 0;
 }
 
-.calculated-bar-value{
+.calculated-bar-value {
   font-size: 14px;
 }
 
@@ -726,11 +742,69 @@ h3 {
   background-color: var(--zelazo);
 }
 
-
-.exchange-screen{
-display: none;
+.SVG-exchange svg path {
+  fill: white;
 }
 
+.SVG-exchange svg {
+  width: 15px;
+  height: 15px;
+  transform: translateY(2px);
+}
+
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* EXCHANGE */
+
+.exchange-screen {
+  display: none;
+}
+
+.e-container {
+  width: 100vw;
+  height: 25vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* border: #939598 1px solid; */
+}
+
+.e-elements {
+  width: 90vw;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  /* border: #4e6c98 1px solid; */
+}
+
+.e-elements .btn{
+  width: 45px;
+  height: 45px;
+  margin: 8px;
+}
+
+.e-value{
+  border: var(--main-colour) 1px solid;
+  border-radius: 6px;
+  width: 100px;
+  height: 80px;
+  margin: 10px;
+}
+
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* MEDIA */
 
 @media (min-width: 500px) {
   .du-all-containers,

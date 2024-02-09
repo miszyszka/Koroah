@@ -34,6 +34,8 @@ const nextJoinGameScreen = document.querySelector(".next-join-game-screen");
 const finalJoinGameScreen = document.querySelector(".final-join-game-screen");
 
 const gameScreen = document.querySelector(".game-screen");
+const exchangeScreen = document.querySelector('.exchange-screen');
+
 
 // ELEMENTS
 const backBTN = document.querySelectorAll(".go-back");
@@ -60,6 +62,7 @@ const testBTN = document.querySelector(".testBTN");
 const crystalInput = document.querySelector(".crystal-input");
 const addCrystal = document.querySelector(".add-crystal");
 const changeCrystal = document.querySelector(".change-crystal");
+const exchangeBTNs = document.querySelectorAll(".SVG-exchange");
 
 // DECKS
 const allDecks = document.querySelectorAll(".deck");
@@ -110,32 +113,35 @@ const updateCurrentGame = function (gameName) {
   console.log("=== RUNNING FUNCTION updateCurrentGame ===");
   console.log(gamesArray);
   const foundGame = gamesArray.find((game) => game.name === gameName);
-  if (foundGame && currentPlayer) {
+
+  if (currentPlayer) {
     const foundPlayer = foundGame.gameOrder.find(
       (player) => player.player === currentPlayer.player
     );
     currentPlayer = foundPlayer;
+    console.log('CURRENT PLAYER UPDATED');
   }
 
-  // usunięcie 0 z liczb dziesiętnych
-  for (let i = 0; i < currentGame.prices.length; i++) {
-    const value = parseFloat(currentGame.prices[i]);
-    console.log(value);
-    currentGame.prices[i] = value;
-  }
 
   if (foundGame) {
     currentGame = foundGame;
 
     allNots = currentGame.notifications;
     updatePrices("from = updateCurrentGame()");
+
+
+      // usunięcie 0 z liczb dziesiętnych
+  for (let i = 0; i < currentGame.prices.length; i++) {
+    const value = parseFloat(currentGame.prices[i]);
+    console.log(value);
+    currentGame.prices[i] = value;
+  }
     return foundGame;
   } else {
     console.log("updateCurrentGame FAILED");
   }
 
   console.log("=== ENDING update === CURENT GAME IS:");
-
   console.log(currentGame);
 };
 
@@ -240,42 +246,55 @@ const clearFields = function (arg) {
 };
 
 const Visibility = function (item, action) {
-  item.style.display = "flex";
+  if (action === "visible") {
+    item.style.display = "flex";
+  }
+
   setTimeout(() => {
     if (action === "visible") {
       item.classList.remove("btn-invisible");
       item.classList.add("btn-visible");
     }
-    if (action === "visible-high") {
-      item.classList.remove("btn-invisible");
-      item.classList.add("btn-visible-high");
-    }
     if (action === "invisible") {
       item.classList.remove("btn-visible");
-      item.classList.remove("btn-visible-high");
       item.classList.add("btn-invisible");
-      item.style.display = "none";
+      setTimeout(() => {
+        item.style.display = "none";
+      }, 30);
     }
   }, 10);
 };
 
-function makeWarning(message) {
-  messageContainer.style.display = "flex";
-
-  setTimeout(() => {
-    messageContainer.innerHTML = `<h3>${message}</h3>`;
-    messageContainer.style.transform = "translateY(0px) ";
-  }, 30);
-  setTimeout(() => {
-    messageContainer.style.transform = "translateY(200px)";
-  }, 3000);
-  setTimeout(() => {
-    messageContainer.innerHTML = "";
-  }, 4000);
-}
+let isWarning = false;
 
 function clearWarning() {
-  messageContainer.style.transform = "translateY(200px)";
+  messageContainer.style.transform = "translateY(-200px)";
+  isWarning = false;
+  setTimeout(() => {
+    messageContainer.innerHTML = "";
+  }, 50);
+}
+
+function makeWarning(message) {
+  if (isWarning) {
+    console.log('there is an old warning');
+    clearWarning();
+    setTimeout(() => {
+      makeWarning(message);
+    }, 200);
+  }
+
+  setTimeout(() => {
+    messageContainer.style.display = "flex";
+    messageContainer.innerHTML = `<h3>${message}</h3>`;
+    setTimeout(() => {
+      messageContainer.style.transform = "translateY(0px) ";
+    }, 30);
+    setTimeout(() => {
+      clearWarning();
+    }, 3000);
+  }, 100);
+
 }
 
 const logIn = function () {
@@ -329,23 +348,60 @@ const logIn = function () {
 let currentScreen = mainScreen;
 let previousScreens = [];
 
+const makeActive = function (screen, arg) {
+  if (arg === 'active'){
+
+  screen.style.display = "flex";
+  setTimeout(() => {
+    screen.classList.remove("no-active");
+    screen.classList.add("active");
+  }, 100);
+}
+if (arg === 'inactive'){
+  screen.classList.add("no-active");
+  screen.classList.remove("active");
+
+
+
+  setTimeout(() => {
+    screen.style.display = "none";
+  }, 100);
+
+
+}
+};
+
 const goToPreviousScreen = function () {
   if (previousScreens.length > 0) {
     currentScreen.classList.add("no-active");
     currentScreen = previousScreens.pop();
-    currentScreen.classList.remove("no-active");
-    currentScreen.classList.add("active");
+
+    currentScreen.style.display = "flex";
+    setTimeout(() => {
+      currentScreen.classList.remove("no-active");
+      currentScreen.classList.add("active");
+    }, 100);
   }
   clearFields();
 };
 
 const goToScreen = function (screen) {
   previousScreens.push(currentScreen);
+
   currentScreen.classList.remove("active");
   currentScreen.classList.add("no-active");
+  const oldScreen = currentScreen;
   currentScreen = screen;
-  currentScreen.classList.remove("no-active");
-  currentScreen.classList.add("active");
+
+  setTimeout(() => {
+    oldScreen.style.display = "none";
+  }, 100);
+
+  currentScreen.style.display = "flex";
+  setTimeout(() => {
+    currentScreen.classList.remove("no-active");
+    currentScreen.classList.add("active");
+  }, 100);
 };
 
 backBTN.forEach((element) => {
@@ -393,7 +449,7 @@ const checkIfFirsScreenGood = function (input) {
     numberOfPlayersSelected == true &&
     !matchingGame
   ) {
-    Visibility(nextNewGameBTN, "visible-high");
+    Visibility(nextNewGameBTN, "visible");
   } else {
     Visibility(nextNewGameBTN, "invisible");
   }
@@ -542,10 +598,12 @@ finalNewGameBTN.addEventListener("click", function () {
 
 joinGameInput.addEventListener("input", function () {
   const enteredGameName = this.value.trim().toUpperCase();
-  const matchingGame = updateCurrentGame(enteredGameName);
+  matchingGame = gamesArray.find((game) => game.name === enteredGameName);
+  currentGame = matchingGame
 
   if (matchingGame) {
-    Visibility(nextJoinGameBTN, "visible-high");
+    Visibility(nextJoinGameBTN, "visible");
+    updateCurrentGame(matchingGame);
   } else {
     Visibility(nextJoinGameBTN, "invisible");
   }
@@ -563,7 +621,7 @@ pinGameInput.addEventListener("input", function () {
   enteredPin = this.value;
 
   if (enteredPin.length > 3) {
-    Visibility(finalJoinGameBTN, "visible-high");
+    Visibility(finalJoinGameBTN, "visible");
   } else {
     Visibility(finalJoinGameBTN, "invisible");
   }
@@ -726,13 +784,10 @@ const updatePrices = function (origin) {
 };
 
 const startGame = function () {
-const duLabels = document.querySelectorAll('.du-label');
-duLabels.forEach((label)=> {
-  label.innerHTML = currentPlayer.player
-})
-
-
-
+  const duLabels = document.querySelectorAll(".du-label");
+  duLabels.forEach((label) => {
+    label.innerHTML = currentPlayer.player;
+  });
 
   for (let i = 0; i < currentGame.gameOrder.length; i++) {
     const foundPlayer = currentGame.gameOrder[i];
@@ -802,11 +857,23 @@ gameMenuBTNs.forEach((button) => {
       choosenDeck.classList.remove("deck-inactive");
       choosenDeck.classList.add("deck-active");
       const inactiveDeck = document.querySelector(".deck-inactive");
-      inactiveDeck.style.display = "none";
-    }, 10);
+      setTimeout(() => {
+        inactiveDeck.style.display = "none";
+      }, 100);
+    }, 100);
   });
 });
 
+exchangeBTNs.forEach((button) => {
+  button.addEventListener("click", function () {
+    makeActive(exchangeScreen, 'active');
+  });
+});
+
+const eCloseBTN = document.querySelector(".e-close")
+eCloseBTN.addEventListener('click', function(){
+  makeActive(exchangeScreen, 'inactive')
+})
 //////////////////////
 // SMALL FUNCTIONS
 function highestKey(obj) {
