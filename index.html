@@ -23,8 +23,8 @@
     <div class="screen main-screen active">
       <div class="top-bar"></div>
       <div class="main-content">
-      <div class="btn btn-big new-game-BTN">Nowa gra</div>
-      <div class="btn btn-big join-game-BTN">Dołącz</div>
+        <div class="btn btn-big new-game-BTN">Nowa gra</div>
+        <div class="btn btn-big join-game-BTN">Dołącz</div>
       </div>
     </div>
 
@@ -47,7 +47,12 @@
         </div>
       </div>
       <div class="menu-bar">
-        <div class="btn btn-big next-new-game-BTN btn-invisible" style="display: none">Dalej</div>
+        <div
+          class="btn btn-big next-new-game-BTN btn-invisible"
+          style="display: none"
+        >
+          Dalej
+        </div>
       </div>
     </div>
 
@@ -69,7 +74,12 @@
         </div>
       </div>
       <div class="menu-bar">
-        <div class="btn btn-big final-new-game-BTN btn-invisible" style="display: none">STWÓRZ</div>
+        <div
+          class="btn btn-big final-new-game-BTN btn-invisible"
+          style="display: none"
+        >
+          STWÓRZ
+        </div>
       </div>
       <div class="avatars-container no-active">
         <div class="avatar acalas" id="avatar-acalas"></div>
@@ -92,7 +102,12 @@
         <input class="input join-game-input" type="text" />
       </div>
       <div class="menu-bar">
-        <div class="btn btn-big next-join-game-BTN btn-invisible" style="display: none">join</div>
+        <div
+          class="btn btn-big next-join-game-BTN btn-invisible"
+          style="display: none"
+        >
+          join
+        </div>
       </div>
     </div>
 
@@ -131,17 +146,17 @@
     <!-- PLAYER PAGE -->
     <div class="screen game-screen no-active">
       <div class="game-top-bar">
+        <div class="du-label-container">
+          <h1 class="du-label">NAME</h1>
+        </div>
         <div class="btn testBTN btn-small">TEST</div>
-        <!-- <div class="btn btn-small go-home">
-          <img src="svg/house-solid.svg" alt="" />
-        </div> -->
       </div>
 
       <div class="notification-container">
         <h2>wartość kryształu</h2>
         <input class="crystal-input" type="text" />
-        <div class="btn change-crystal">change</div>
-        <div class="btn add-crystal">ADD</div>
+        <div class="btn btn-big change-crystal">change</div>
+        <div class="btn btn-big add-crystal">ADD</div>
         <h1>NOTIFICATIONS 2</h1>
       </div>
 
@@ -192,34 +207,12 @@
         <div class="du-all-containers">
           <div class="du-title du-container">
             <div class="du-label-container">
-              <h1>NAME</h1>
+              <h1 class="du-label">NAME</h1>
             </div>
             <div class="main-sources">
               <div class="token-container">
                 <h1 class="token-coins-value">4</h1>
                 <div class="token user-coins-tokens">
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M6 11C3.23858 11 1 8.76142 1 6C1 3.23858 3.23858 1 6 1C7.38071 1 8.63071 1.55964 9.53553 2.46447L10.2426 1.75736C9.15685 0.671573 7.65685 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12C9.31371 12 12 9.31371 12 6H11C11 8.76142 8.76142 11 6 11Z"
-                      fill="#D9D9D9"
-                    />
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M6 8C7.10457 8 8 7.10457 8 6C8 4.89543 7.10457 4 6 4C4.89543 4 4 4.89543 4 6C4 7.10457 4.89543 8 6 8ZM6 7C6.55228 7 7 6.55228 7 6C7 5.44772 6.55228 5 6 5C5.44772 5 5 5.44772 5 6C5 6.55228 5.44772 7 6 7Z"
-                      fill="#D9D9D9"
-                    />
-                    <path
-                      d="M6 9C7.65685 9 9 7.65685 9 6C9 4.34315 7.65685 3 6 3C4.34315 3 3 4.34315 3 6H2C2 3.79086 3.79086 2 6 2C8.20914 2 10 3.79086 10 6C10 8.20914 8.20914 10 6 10C4.89543 10 3.89543 9.55228 3.17157 8.82843L3.87868 8.12132C4.42157 8.66421 5.17157 9 6 9Z"
-                      fill="#D9D9D9"
-                    />
-                  </svg>
                 </div>
               </div>
               <div class="token-separator"></div>
@@ -242,6 +235,8 @@
                   </svg>
                 </div>
               </div>
+
+
             </div>
           </div>
           <div class="du-buildings du-container"></div>
@@ -312,125 +307,23 @@
               <div class="value-container">
                 <h2 class="calculated-bar-value calculated-value-1">1</h2>
 
-                <div class="token-small user-coins-tokens">
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M6 11C3.23858 11 1 8.76142 1 6C1 3.23858 3.23858 1 6 1C7.38071 1 8.63071 1.55964 9.53553 2.46447L10.2426 1.75736C9.15685 0.671573 7.65685 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12C9.31371 12 12 9.31371 12 6H11C11 8.76142 8.76142 11 6 11Z"
-                      fill="#D9D9D9"
-                    />
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M6 8C7.10457 8 8 7.10457 8 6C8 4.89543 7.10457 4 6 4C4.89543 4 4 4.89543 4 6C4 7.10457 4.89543 8 6 8ZM6 7C6.55228 7 7 6.55228 7 6C7 5.44772 6.55228 5 6 5C5.44772 5 5 5.44772 5 6C5 6.55228 5.44772 7 6 7Z"
-                      fill="#D9D9D9"
-                    />
-                    <path
-                      d="M6 9C7.65685 9 9 7.65685 9 6C9 4.34315 7.65685 3 6 3C4.34315 3 3 4.34315 3 6H2C2 3.79086 3.79086 2 6 2C8.20914 2 10 3.79086 10 6C10 8.20914 8.20914 10 6 10C4.89543 10 3.89543 9.55228 3.17157 8.82843L3.87868 8.12132C4.42157 8.66421 5.17157 9 6 9Z"
-                      fill="#D9D9D9"
-                    />
-                  </svg>
-                </div>
-
-                
+                <div class="token-small user-coins-tokens"></div>
               </div>
               <div class="value-container">
                 <h2 class="calculated-bar-value calculated-value-2">3</h2>
 
-                <div class="token-small user-coins-tokens">
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M6 11C3.23858 11 1 8.76142 1 6C1 3.23858 3.23858 1 6 1C7.38071 1 8.63071 1.55964 9.53553 2.46447L10.2426 1.75736C9.15685 0.671573 7.65685 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12C9.31371 12 12 9.31371 12 6H11C11 8.76142 8.76142 11 6 11Z"
-                      fill="#D9D9D9"
-                    />
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M6 8C7.10457 8 8 7.10457 8 6C8 4.89543 7.10457 4 6 4C4.89543 4 4 4.89543 4 6C4 7.10457 4.89543 8 6 8ZM6 7C6.55228 7 7 6.55228 7 6C7 5.44772 6.55228 5 6 5C5.44772 5 5 5.44772 5 6C5 6.55228 5.44772 7 6 7Z"
-                      fill="#D9D9D9"
-                    />
-                    <path
-                      d="M6 9C7.65685 9 9 7.65685 9 6C9 4.34315 7.65685 3 6 3C4.34315 3 3 4.34315 3 6H2C2 3.79086 3.79086 2 6 2C8.20914 2 10 3.79086 10 6C10 8.20914 8.20914 10 6 10C4.89543 10 3.89543 9.55228 3.17157 8.82843L3.87868 8.12132C4.42157 8.66421 5.17157 9 6 9Z"
-                      fill="#D9D9D9"
-                    />
-                  </svg>
-                </div>
-
-                
+                <div class="token-small user-coins-tokens"></div>
               </div>
               <div class="value-container">
                 <h2 class="calculated-bar-value calculated-value-3">3</h2>
 
-                <div class="token-small user-coins-tokens">
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M6 11C3.23858 11 1 8.76142 1 6C1 3.23858 3.23858 1 6 1C7.38071 1 8.63071 1.55964 9.53553 2.46447L10.2426 1.75736C9.15685 0.671573 7.65685 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12C9.31371 12 12 9.31371 12 6H11C11 8.76142 8.76142 11 6 11Z"
-                      fill="#D9D9D9"
-                    />
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M6 8C7.10457 8 8 7.10457 8 6C8 4.89543 7.10457 4 6 4C4.89543 4 4 4.89543 4 6C4 7.10457 4.89543 8 6 8ZM6 7C6.55228 7 7 6.55228 7 6C7 5.44772 6.55228 5 6 5C5.44772 5 5 5.44772 5 6C5 6.55228 5.44772 7 6 7Z"
-                      fill="#D9D9D9"
-                    />
-                    <path
-                      d="M6 9C7.65685 9 9 7.65685 9 6C9 4.34315 7.65685 3 6 3C4.34315 3 3 4.34315 3 6H2C2 3.79086 3.79086 2 6 2C8.20914 2 10 3.79086 10 6C10 8.20914 8.20914 10 6 10C4.89543 10 3.89543 9.55228 3.17157 8.82843L3.87868 8.12132C4.42157 8.66421 5.17157 9 6 9Z"
-                      fill="#D9D9D9"
-                    />
-                  </svg>
-                </div>
-
-                
+                <div class="token-small user-coins-tokens"></div>
               </div>
               <div class="value-container">
                 <h2 class="calculated-bar-value calculated-value-4">3</h2>
 
-                <div class="token-small user-coins-tokens">
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M6 11C3.23858 11 1 8.76142 1 6C1 3.23858 3.23858 1 6 1C7.38071 1 8.63071 1.55964 9.53553 2.46447L10.2426 1.75736C9.15685 0.671573 7.65685 0 6 0C2.68629 0 0 2.68629 0 6C0 9.31371 2.68629 12 6 12C9.31371 12 12 9.31371 12 6H11C11 8.76142 8.76142 11 6 11Z"
-                      fill="#D9D9D9"
-                    />
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M6 8C7.10457 8 8 7.10457 8 6C8 4.89543 7.10457 4 6 4C4.89543 4 4 4.89543 4 6C4 7.10457 4.89543 8 6 8ZM6 7C6.55228 7 7 6.55228 7 6C7 5.44772 6.55228 5 6 5C5.44772 5 5 5.44772 5 6C5 6.55228 5.44772 7 6 7Z"
-                      fill="#D9D9D9"
-                    />
-                    <path
-                      d="M6 9C7.65685 9 9 7.65685 9 6C9 4.34315 7.65685 3 6 3C4.34315 3 3 4.34315 3 6H2C2 3.79086 3.79086 2 6 2C8.20914 2 10 3.79086 10 6C10 8.20914 8.20914 10 6 10C4.89543 10 3.89543 9.55228 3.17157 8.82843L3.87868 8.12132C4.42157 8.66421 5.17157 9 6 9Z"
-                      fill="#D9D9D9"
-                    />
-                  </svg>
-                </div>
-
-                
+                <div class="token-small user-coins-tokens"></div>
               </div>
-
-
             </div>
           </div>
           <div class="du-foot du-container"></div>
@@ -472,9 +365,21 @@
       </div>
     </div>
 
-<div class="exchange-screen screen"></div>
+    <div class="exchange-screen screen"></div>
 
 
+    <!-- SKYTPTY DO UZUPEŁNIANIAN LOGO -->
+    <script>
+      fetch("htmls/coin-token.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens =
+            document.querySelectorAll(".user-coins-tokens");
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
 
     <script src="script.js" type="module"></script>
   </body>

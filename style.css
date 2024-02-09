@@ -389,18 +389,13 @@ h3 {
   align-items: center;
 }
 
-.testBTN {
-  position: absolute;
-  margin-left: 140px;
-  margin-top: 40px;
-}
-
 .notification-container {
   position: relative;
   width: calc(100vw - 60px);
+  transform: translateY(50%);
   height: 50vh;
   overflow: hidden;
-  /* border: #273a48 1px SOLID; */
+  border: #273a48 1px SOLID;
 }
 
 .notification {
@@ -454,7 +449,6 @@ h3 {
 }
 
 .game-menu-bar {
-
   position: absolute;
   bottom: 0;
   height: 150px;
@@ -633,7 +627,7 @@ h3 {
 
 .token-container {
   width: 100px;
-  height: 50px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -641,9 +635,11 @@ h3 {
 
 .token-container h1 {
   font-size: var(--h2-letters);
-  margin: 5px;
+  margin: 10px;
   color: var(--main-colour);
 }
+
+
 .token svg {
   width: 30px;
   height: 30px;
@@ -666,6 +662,7 @@ h3 {
   width: 1px;
   background-color: var(--main-colour);
 }
+
 
 .du-prices.du-container {
   margin: 0;

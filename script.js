@@ -726,6 +726,14 @@ const updatePrices = function (origin) {
 };
 
 const startGame = function () {
+const duLabels = document.querySelectorAll('.du-label');
+duLabels.forEach((label)=> {
+  label.innerHTML = currentPlayer.player
+})
+
+
+
+
   for (let i = 0; i < currentGame.gameOrder.length; i++) {
     const foundPlayer = currentGame.gameOrder[i];
     const className = `${foundPlayer.player} ${classNumber[i]}`;
@@ -981,5 +989,5 @@ setTimeout(() => {
       }, 200);
     }, 400);
   };
-  // skipLogin();
+  skipLogin();
 }, 1500);
