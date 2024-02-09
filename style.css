@@ -372,6 +372,7 @@ h3 {
   transform: translateY(0px) !important;
 }
 
+
 .pin-box {
   position: absolute;
   display: flex;
@@ -775,6 +776,7 @@ h3 {
 }
 
 .e-elements {
+  position: relative;
   width: 90vw;
   height: 100px;
   display: flex;
@@ -784,18 +786,30 @@ h3 {
   /* border: #4e6c98 1px solid; */
 }
 
-.e-elements .btn{
+.e-source-btn{
+  position: absolute;
   width: 45px;
   height: 45px;
   margin: 8px;
 }
 
-.e-value{
+
+.e-sell-input {
+  outline: none;
   border: var(--main-colour) 1px solid;
   border-radius: 6px;
-  width: 100px;
+  width: 200px;
   height: 80px;
   margin: 10px;
+  background-color: var(--black);
+  color: var(--main-colour);
+  text-align: center;
+  font-size: var(--h1-letters);
+  font-family: "Bebas Neue", sans-serif;
+}
+
+.e-sell-input::placeholder {
+  font-size: 15px;
 }
 
 /* --------------------- */

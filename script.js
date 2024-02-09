@@ -34,8 +34,7 @@ const nextJoinGameScreen = document.querySelector(".next-join-game-screen");
 const finalJoinGameScreen = document.querySelector(".final-join-game-screen");
 
 const gameScreen = document.querySelector(".game-screen");
-const exchangeScreen = document.querySelector('.exchange-screen');
-
+const exchangeScreen = document.querySelector(".exchange-screen");
 
 // ELEMENTS
 const backBTN = document.querySelectorAll(".go-back");
@@ -119,9 +118,8 @@ const updateCurrentGame = function (gameName) {
       (player) => player.player === currentPlayer.player
     );
     currentPlayer = foundPlayer;
-    console.log('CURRENT PLAYER UPDATED');
+    console.log("CURRENT PLAYER UPDATED");
   }
-
 
   if (foundGame) {
     currentGame = foundGame;
@@ -129,13 +127,12 @@ const updateCurrentGame = function (gameName) {
     allNots = currentGame.notifications;
     updatePrices("from = updateCurrentGame()");
 
-
-      // usunięcie 0 z liczb dziesiętnych
-  for (let i = 0; i < currentGame.prices.length; i++) {
-    const value = parseFloat(currentGame.prices[i]);
-    console.log(value);
-    currentGame.prices[i] = value;
-  }
+    // usunięcie 0 z liczb dziesiętnych
+    for (let i = 0; i < currentGame.prices.length; i++) {
+      const value = parseFloat(currentGame.prices[i]);
+      console.log(value);
+      currentGame.prices[i] = value;
+    }
     return foundGame;
   } else {
     console.log("updateCurrentGame FAILED");
@@ -277,7 +274,7 @@ function clearWarning() {
 
 function makeWarning(message) {
   if (isWarning) {
-    console.log('there is an old warning');
+    console.log("there is an old warning");
     clearWarning();
     setTimeout(() => {
       makeWarning(message);
@@ -294,7 +291,6 @@ function makeWarning(message) {
       clearWarning();
     }, 3000);
   }, 100);
-
 }
 
 const logIn = function () {
@@ -349,26 +345,21 @@ let currentScreen = mainScreen;
 let previousScreens = [];
 
 const makeActive = function (screen, arg) {
-  if (arg === 'active'){
+  if (arg === "active") {
+    screen.style.display = "flex";
+    setTimeout(() => {
+      screen.classList.remove("no-active");
+      screen.classList.add("active");
+    }, 100);
+  }
+  if (arg === "inactive") {
+    screen.classList.add("no-active");
+    screen.classList.remove("active");
 
-  screen.style.display = "flex";
-  setTimeout(() => {
-    screen.classList.remove("no-active");
-    screen.classList.add("active");
-  }, 100);
-}
-if (arg === 'inactive'){
-  screen.classList.add("no-active");
-  screen.classList.remove("active");
-
-
-
-  setTimeout(() => {
-    screen.style.display = "none";
-  }, 100);
-
-
-}
+    setTimeout(() => {
+      screen.style.display = "none";
+    }, 100);
+  }
 };
 
 const goToPreviousScreen = function () {
@@ -599,7 +590,7 @@ finalNewGameBTN.addEventListener("click", function () {
 joinGameInput.addEventListener("input", function () {
   const enteredGameName = this.value.trim().toUpperCase();
   matchingGame = gamesArray.find((game) => game.name === enteredGameName);
-  currentGame = matchingGame
+  currentGame = matchingGame;
 
   if (matchingGame) {
     Visibility(nextJoinGameBTN, "visible");
@@ -866,14 +857,47 @@ gameMenuBTNs.forEach((button) => {
 
 exchangeBTNs.forEach((button) => {
   button.addEventListener("click", function () {
-    makeActive(exchangeScreen, 'active');
+    makeActive(exchangeScreen, "active");
   });
 });
 
-const eCloseBTN = document.querySelector(".e-close")
-eCloseBTN.addEventListener('click', function(){
-  makeActive(exchangeScreen, 'inactive')
-})
+const eCloseBTN = document.querySelector(".e-close");
+eCloseBTN.addEventListener("click", function () {
+  makeActive(exchangeScreen, "inactive");
+});
+
+////////////////
+// EXCHANGING
+///////////////
+
+let sellSource;
+let buySource;
+
+const eSourceBTNs = document.querySelectorAll(".e-source-btn");
+
+let rollOutside = false;
+
+eSourceBTNs.forEach((icon) => {
+  icon.addEventListener("click", function () {
+    if (rollOutside === false) {
+      eSourceBTNs.forEach((i) => {
+        const iconId = parseInt(i.classList[2].slice(-1));
+        const translateValue = 60 * iconId - 90;
+
+        i.style.transform = `translateX(${translateValue}px)`;
+        i.style.zIndex = "1";
+      });
+      rollOutside = true;
+    } else {
+      eSourceBTNs.forEach((i) => {
+        i.style.transform = `translateY(0px)`;
+        icon.style.zIndex = "2";
+      });
+      rollOutside = false;
+    }
+  });
+});
+
 //////////////////////
 // SMALL FUNCTIONS
 function highestKey(obj) {
