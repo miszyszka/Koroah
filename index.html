@@ -18,12 +18,18 @@
 
   <body>
     <div class="BG"></div>
+    <div class="loading-screen-EL">
+      <h1>LOADING....</h1>
+    </div>
     <div class="message-container"></div>
     <div class="screen main-screen active">
       <div class="top-bar"></div>
-      <div class="main-content">
+      <div class="main-content" style="height: 400px;">
         <div class="btn btn-big new-game-BTN">Nowa gra</div>
         <div class="btn btn-big join-game-BTN">Dołącz</div>
+        <div class="btn btn-small join-game-BTN1" style="margin-top: 20px;">1</div>
+        <div class="btn btn-small join-game-BTN2">2</div>
+        <div class="btn btn-small join-game-BTN3">3</div>
       </div>
     </div>
 
@@ -442,7 +448,10 @@
       <!-- MENU -->
 
       <div class="game-menu-bar not-your-turn">
-        <div class="btn game-menu-btn prices selected" id="game-menu-btn-prices">
+        <div
+          class="btn game-menu-btn prices selected"
+          id="game-menu-btn-prices"
+        >
           <svg
             width="23"
             height="30"
@@ -489,9 +498,10 @@
       </div>
 
       <div class="game-menu-bar your-turn">
-        <div class="btn game-menu-btn turn selected" id="game-menu-btn-turn">
-
-        </div>
+        <div
+          class="btn game-menu-btn turn selected"
+          id="game-menu-btn-turn"
+        ></div>
         <div class="btn game-menu-btn exchange">
           <svg
             xmlns="http://www.w3.org/2000/svg"

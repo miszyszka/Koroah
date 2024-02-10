@@ -95,7 +95,6 @@ let gameOrder = {}; // Object to store information about the selected avatar for
 let currentPlayer;
 // let characterPin;
 let enteredPin;
-let alreadyNotYourTurn = false;
 
 let numberOfPlayersSelected = false;
 let inputForNewGame;
@@ -652,19 +651,34 @@ pinGameInput.addEventListener("input", function () {
   }
 });
 
-finalJoinGameBTN.addEventListener("click", function () {
-  if (currentPlayer.pin) {
-    if (checkPIN(enteredPin, currentPlayer.pin)) {
-      goToScreen(gameScreen);
-      clearFields("retain currentGame");
-    }
-  } else {
-    createPIN(enteredPin);
+const reallyStart = function () {
+  const loadingScreen = function () {
+    const loadingScreenEL = document.querySelector(".loading-screen-EL");
+
+    loadingScreenEL.style.display = "flex";
+    setTimeout(() => {
+      loadingScreenEL.style.display = "none";
+    }, 1500);
+  };
+  loadingScreen();
+
+  setTimeout(() => {
     goToScreen(gameScreen);
     setTimeout(() => {
       startGame();
     }, 500);
     clearFields("retain currentGame");
+  }, 500);
+};
+
+finalJoinGameBTN.addEventListener("click", function () {
+  if (currentPlayer.pin) {
+    if (checkPIN(enteredPin, currentPlayer.pin)) {
+      reallyStart();
+    }
+  } else {
+    createPIN(enteredPin);
+    reallyStart();
   }
 });
 
@@ -808,9 +822,32 @@ const updatePrices = function (origin) {
 };
 
 const startGame = function () {
+  console.log("starting GAME");
+
+  const resetTurnDeck = function () {
+    if (currentPlayer.turn === false) {
+      gameMenuBtnPrices.click();
+      yourTurnMenu.style.transform = "translateX(-100%)";
+      deckTurn.style.transform = "translateX(-100%)";
+      setTimeout(() => {
+        yourTurnMenu.style.display = "none";
+        deckTurn.style.display = "none";
+      }, 1000);
+
+      // PASSIVE MENU
+      notYourTurnMenu.style.display = "flex";
+      setTimeout(() => {
+        notYourTurnMenu.style.transform = "translateX(0%)";
+      }, 1000);
+    }
+  };
+
+  resetTurnDeck();
+
   const duLabels = document.querySelectorAll(".du-label");
   duLabels.forEach((label) => {
     label.innerHTML = currentPlayer.player;
+    console.log(label);
   });
 
   for (let i = 0; i < currentGame.gameOrder.length; i++) {
@@ -827,8 +864,8 @@ const startGame = function () {
     barContainerDiv.innerHTML = myHtml;
     daninaContainer.appendChild(barContainerDiv.firstElementChild);
   }
-
   updatePrices("from startGame()");
+  updateUserScreen();
 };
 
 changeCrystal.addEventListener("click", function () {
@@ -855,9 +892,10 @@ addCrystal.addEventListener("click", function () {
 ///////////////////////////
 
 testBTN.addEventListener("click", function () {
-  passTurn();
+  // passTurn();
   console.log(currentGame);
   console.log(currentPlayer);
+  updateUserScreen();
 });
 
 gameMenuBTNs.forEach((button) => {
@@ -1074,15 +1112,13 @@ let lastNotification;
 const updateUserScreen = function () {
   if (allNots) {
     const newestNotification = highestKey(allNots);
-    if (newestNotification !== lastNotification) {
+    if (newestNotification && newestNotification !== lastNotification) {
       makeNotification(newestNotification);
     }
   }
   // CHECK IF IT'S MY TURN
   if (currentPlayer.turn === true) {
-
     // ACTIVE MENU
-
     yourTurnMenu.style.transform = "translateX(100%)";
     yourTurnMenu.style.display = "flex";
     deckTurn.style.transform = "translateX(100%)";
@@ -1090,7 +1126,6 @@ const updateUserScreen = function () {
     setTimeout(() => {
       yourTurnMenu.style.transform = "translateX(0%)";
       deckTurn.style.transform = "translateX(0%)";
-      // gameMenuBtnTurn.click()
     }, 1000);
 
     // PASSIVE MENU
@@ -1099,27 +1134,6 @@ const updateUserScreen = function () {
       notYourTurnMenu.style.display = "none";
       notYourTurnMenu.style.transform = "translateX(100%)";
     }, 1000);
-    alreadyNotYourTurn = false
-  } else if (currentPlayer.turn === false && alreadyNotYourTurn === false) {
-    // Pierwsza tura jako nieaktywny gracz
-
-    // ACTIVE MENU
-    gameMenuBtnPrices.click()
-    yourTurnMenu.style.transform = "translateX(-100%)";
-    deckTurn.style.transform = "translateX(-100%)";
-    setTimeout(() => {
-      yourTurnMenu.style.display = "none";
-      deckTurn.style.display = "none";
- 
-    }, 1000);
-
-    // PASSIVE MENU
-    notYourTurnMenu.style.display = "flex";
-    setTimeout(() => {
-      notYourTurnMenu.style.transform = "translateX(0%)";
-    }, 1000);
-
-    alreadyNotYourTurn = true;
   }
 };
 
@@ -1142,6 +1156,22 @@ const passTurn = function () {
   });
 
   currentGame.gameOrder[nextPlayerId].turn = true;
+
+  // Pierwsza tura jako nieaktywny gracz
+  // ACTIVE MENU
+  gameMenuBtnPrices.click();
+  yourTurnMenu.style.transform = "translateX(-100%)";
+  deckTurn.style.transform = "translateX(-100%)";
+  setTimeout(() => {
+    yourTurnMenu.style.display = "none";
+    deckTurn.style.display = "none";
+  }, 1000);
+
+  // PASSIVE MENU
+  notYourTurnMenu.style.display = "flex";
+  setTimeout(() => {
+    notYourTurnMenu.style.transform = "translateX(0%)";
+  }, 1000);
 
   updateDB();
 
@@ -1243,19 +1273,36 @@ const checkIfstandalone = function () {
 // );
 
 /////////// SKIP LOGIN
-setTimeout(() => {
-  const skipLogin = function () {
-    goToScreen(gameScreen);
-    currentGame = gamesArray[0];
+const skipLogin = function (arg) {
+  goToScreen(gameScreen);
+  currentGame = gamesArray[0];
+
+  setTimeout(() => {
+    currentPlayer = currentGame.gameOrder[arg];
 
     setTimeout(() => {
-      currentPlayer = currentGame.gameOrder["0"];
+      allNots = currentGame.notifications;
+      startGame();
+    }, 200);
+  }, 400);
+};
 
-      setTimeout(() => {
-        allNots = currentGame.notifications;
-        startGame();
-      }, 200);
-    }, 400);
-  };
+setTimeout(() => {
   // skipLogin();
 }, 1500);
+
+const joinGameBTN1 = document.querySelector(".join-game-BTN1");
+const joinGameBTN2 = document.querySelector(".join-game-BTN2");
+const joinGameBTN3 = document.querySelector(".join-game-BTN3");
+
+joinGameBTN1.addEventListener("click", function () {
+  skipLogin(0);
+});
+
+joinGameBTN2.addEventListener("click", function () {
+  skipLogin(1);
+});
+
+joinGameBTN3.addEventListener("click", function () {
+  skipLogin(2);
+});

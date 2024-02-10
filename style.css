@@ -68,9 +68,18 @@ h3 {
   /* overflow: hidden; */
 }
 
+.loading-screen-EL{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
+  z-index: 10000;
+}
+
 .message-container {
   transform: translateY(-200px);
-  border: #7b1c43 1px solid;
   position: absolute;
   width: 100vw;
   height: 100px;
@@ -379,7 +388,7 @@ h3 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: 1s ease;
+  transition: 0.4s ease;
   width: 100%;
   height: 100%;
 }
@@ -438,7 +447,6 @@ h3 {
 
 .notification {
   position: absolute;
-  border: #b82c2c 1px solid;
   transition: 0.5s ease;
 }
 
@@ -469,6 +477,7 @@ h3 {
   background-color: var(--orange);
   height: 100vh;
   transition: 1s ease;
+  z-index: 2;
 }
 
 .deck-prices {
@@ -507,6 +516,7 @@ h3 {
   display: flex;
   justify-content: space-evenly;
   transition: 1s ease;
+  z-index: 3;
 }
 
 .game-menu-btn {
@@ -518,6 +528,7 @@ h3 {
 .testBTN{
   z-index: 20;
   position: absolute;
+  top:100px;
 }
 
 .game-menu-btn svg {
