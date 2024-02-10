@@ -18,7 +18,7 @@
   --skala: #939598;
   --zelazo: #414042;
 
-  --h1-letters: 40px;
+  --h1-letters: 30px;
   --h2-letters: 18px;
   --h3-leeters: 12px;
   --drop-shadow-item: drop-shadow(15px 15px 10px #000000)
@@ -384,6 +384,33 @@ h3 {
   height: 100%;
 }
 
+
+/* -------------- */
+/* -------------- */
+/* -------------- */
+/* -------------- */
+/* -------------- */
+
+
+
+
+/* MAIN DATA */
+.ciecz {
+  background-color: var(--ciecz);
+}
+
+.krysztal {
+  background-color: var(--krysztal);
+}
+
+.skala {
+  background-color: var(--skala);
+}
+
+.zelazo {
+  background-color: var(--zelazo);
+}
+
 /* PLAYER SCREEN */
 .game-screen {
   background-color: #b1b9bd;
@@ -415,6 +442,11 @@ h3 {
   transition: 0.5s ease;
 }
 
+
+
+
+/* DECKS */
+
 .deck {
   background-color: var(--black);
   position: absolute;
@@ -425,7 +457,7 @@ h3 {
   justify-content: center;
   flex-direction: row;
   transform: translateY(0px);
-  transition: 0.23 ease;
+  transition: 0.23s ease;
 }
 
 .deck h2 {
@@ -435,7 +467,8 @@ h3 {
 
 .deck-turn{
   background-color: var(--orange);
-  height: 80vh;
+  height: 100vh;
+  transition: 1s ease;
 }
 
 .deck-prices {
@@ -462,10 +495,13 @@ h3 {
   transition: 0.4s ease;
 }
 
+
+/* MENU */
+
 .game-menu-bar {
   position: absolute;
   bottom: 0px;
-  height: 150px;
+  height: 100px;
   width: 100vw;
   padding: 0px 10px;
   display: flex;
@@ -473,40 +509,29 @@ h3 {
   transition: 1s ease;
 }
 
-.game-menu-bar.your-turn{
-  background-color: var(--orange);
-}
-
 .game-menu-btn {
-  width: 80px;
-  height: 80px;
-  margin: 20px 30px;
+  width: 60px;
+  height: 60px;
+  margin-top: 20px;
 }
 
 .testBTN{
   z-index: 20;
+  position: absolute;
 }
 
 .game-menu-btn svg {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
 }
 
-.ciecz {
-  background-color: var(--ciecz);
-}
-
-.krysztal {
-  background-color: var(--krysztal);
-}
-
-.skala {
-  background-color: var(--skala);
-}
-
-.zelazo {
-  background-color: var(--zelazo);
-}
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* PRICES DECK */
 
 .small-circle {
   width: 30px;
@@ -532,8 +557,8 @@ h3 {
 
 .price-container,
 .danina-container {
-  margin: 20px 30px 180px 30px;
-  height: calc(100% - 200px);
+  margin: 20px 30px 120px 30px;
+  height: calc(50vh - 140px);
   width: 35vw;
 }
 
@@ -636,7 +661,7 @@ h3 {
 }
 
 .du-prices {
-  height: 8vh;
+  height: 70px;
 }
 
 .du-resources {
@@ -697,6 +722,11 @@ h3 {
 
 .du-prices.du-container {
   margin: 0;
+}
+
+.bar-label{
+  width: 10px;
+  transform: translateX(-20px);
 }
 
 .bar-label h2 {
@@ -775,7 +805,7 @@ h3 {
 }
 
 .e-container.e-top-bar{
-  height: 10vh;
+  height: 20vh;
 }
 
 .e-exchange-sell,
@@ -785,29 +815,33 @@ h3 {
 
 .e-separator-container{
   flex-direction: row;
+  height: 10vh;
 }
 
 .e-separator{
   background-color: var(--main-colour);
   height: 2px;
-  width: 150px;
-  margin: 20px;
+  width: 30vw;
+  margin: 0px 10px;
 }
 
 .e-elements {
   position: relative;
   color: var(--main-colour);
   width: 90vw;
-  height: 80px;
+  height: 70px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  border: #4e6c9819 1px solid
+  /* border: #4e6c9819 1px solid */
 }
 
+.e-info{
+  height: 30px;
+}
 .e-label-container{
-  margin-top: 40px;
+  margin-top: 5vw;
   height: 40px;
 }
 
@@ -824,7 +858,7 @@ h3 {
   border: var(--main-colour) 1px solid;
   border-radius: 6px;
   width: 200px;
-  height: 80px;
+  height: 100%;
   margin: 10px;
   background-color: var(--black);
   color: var(--main-colour);
@@ -836,6 +870,7 @@ h3 {
 .e-sell-input::placeholder {
   font-size: 15px;
 }
+
 
 .exchange-direction svg{
   width: 20px;

@@ -34,10 +34,12 @@ const nextJoinGameScreen = document.querySelector(".next-join-game-screen");
 const finalJoinGameScreen = document.querySelector(".final-join-game-screen");
 
 const gameScreen = document.querySelector(".game-screen");
-const exchangeScreen = document.querySelector(".exchange-screen");
 
 // ELEMENTS
 const yourTurnMenu = document.querySelector(".your-turn");
+const notYourTurnMenu = document.querySelector(".not-your-turn");
+const gameMenuBtnPrices = document.getElementById("game-menu-btn-prices");
+const gameMenuBtnTurn = document.getElementById("game-menu-btn-turn");
 
 const backBTN = document.querySelectorAll(".go-back");
 const homeBTN = document.querySelectorAll(".go-home");
@@ -69,6 +71,7 @@ const exchangeBTNs = document.querySelectorAll(".SVG-exchange");
 const allDecks = document.querySelectorAll(".deck");
 const deckPrices = document.querySelector(".deck-prices");
 const deckUser = document.querySelector(".deck-user");
+const deckTurn = document.querySelector(".deck-turn");
 
 const daninaContainer = document.querySelector(".danina-container");
 
@@ -92,6 +95,7 @@ let gameOrder = {}; // Object to store information about the selected avatar for
 let currentPlayer;
 // let characterPin;
 let enteredPin;
+let alreadyNotYourTurn = false;
 
 let numberOfPlayersSelected = false;
 let inputForNewGame;
@@ -695,7 +699,6 @@ function sortBars() {
 }
 
 const updatePrices = function (origin) {
-  console.log(origin);
   /////// CURRENT USER VALUES
   function removeOldDots() {
     const allPluses = document.querySelectorAll(".plus");
@@ -852,9 +855,9 @@ addCrystal.addEventListener("click", function () {
 ///////////////////////////
 
 testBTN.addEventListener("click", function () {
+  passTurn();
   console.log(currentGame);
   console.log(currentPlayer);
-  passTurn();
 });
 
 gameMenuBTNs.forEach((button) => {
@@ -1013,7 +1016,6 @@ function highestKey(obj) {
 
 const makeNotification = function (i) {
   const message = `Player ${i.player} ${i.action} ${i.value} ${i.resource}`;
-  console.log(message);
   const notificationDiv = document.createElement("div");
   notificationDiv.textContent = message;
 
@@ -1074,20 +1076,50 @@ const updateUserScreen = function () {
     const newestNotification = highestKey(allNots);
     if (newestNotification !== lastNotification) {
       makeNotification(newestNotification);
-      console.log(newestNotification);
     }
   }
   // CHECK IF IT'S MY TURN
   if (currentPlayer.turn === true) {
-    console.log("yes");
+
+    // ACTIVE MENU
+
     yourTurnMenu.style.transform = "translateX(100%)";
-    yourTurnMenu.style.display = "none";
+    yourTurnMenu.style.display = "flex";
+    deckTurn.style.transform = "translateX(100%)";
+    deckTurn.style.display = "flex";
     setTimeout(() => {
-      yourTurnMenu.style.display = "flex";
-      setTimeout(() => {
-        yourTurnMenu.style.transform = "translateX(0%)";
-      }, 100);
+      yourTurnMenu.style.transform = "translateX(0%)";
+      deckTurn.style.transform = "translateX(0%)";
+      // gameMenuBtnTurn.click()
     }, 1000);
+
+    // PASSIVE MENU
+    notYourTurnMenu.style.transform = "translateX(-100%)";
+    setTimeout(() => {
+      notYourTurnMenu.style.display = "none";
+      notYourTurnMenu.style.transform = "translateX(100%)";
+    }, 1000);
+    alreadyNotYourTurn = false
+  } else if (currentPlayer.turn === false && alreadyNotYourTurn === false) {
+    // Pierwsza tura jako nieaktywny gracz
+
+    // ACTIVE MENU
+    gameMenuBtnPrices.click()
+    yourTurnMenu.style.transform = "translateX(-100%)";
+    deckTurn.style.transform = "translateX(-100%)";
+    setTimeout(() => {
+      yourTurnMenu.style.display = "none";
+      deckTurn.style.display = "none";
+ 
+    }, 1000);
+
+    // PASSIVE MENU
+    notYourTurnMenu.style.display = "flex";
+    setTimeout(() => {
+      notYourTurnMenu.style.transform = "translateX(0%)";
+    }, 1000);
+
+    alreadyNotYourTurn = true;
   }
 };
 
@@ -1095,16 +1127,12 @@ const updateUserScreen = function () {
 // PASSING TURN
 
 const passTurn = function () {
-  // DELETE MY TURN
-  // currentPlayer.turn = true
-
-  let nextPlayerId = '';
+  let nextPlayerId = "";
   Object.keys(currentGame.gameOrder).forEach((chairId) => {
     const playerOnTurn = currentGame.gameOrder[chairId].turn;
     if (playerOnTurn === true) {
       currentGame.gameOrder[chairId].turn = false;
       const numberOfPlayers = Object.keys(currentGame.gameOrder).length;
-      console.log("number of Players", numberOfPlayers);
       if (parseInt(chairId) === numberOfPlayers - 1) {
         nextPlayerId = 0;
       } else {
@@ -1115,12 +1143,12 @@ const passTurn = function () {
 
   currentGame.gameOrder[nextPlayerId].turn = true;
 
-updateDB()
+  updateDB();
 
-  yourTurnMenu.style.transform = "translateX(-100%)";
-  setTimeout(() => {
-    yourTurnMenu.style.display = "none";
-  }, 1000);
+  // yourTurnMenu.style.transform = "translateX(-100%)";
+  // setTimeout(() => {
+  //   yourTurnMenu.style.display = "none";
+  // }, 1000);
   // FIND NEW PLAYER TO HAVE A TURN
 };
 
@@ -1229,5 +1257,5 @@ setTimeout(() => {
       }, 200);
     }, 400);
   };
-  skipLogin();
+  // skipLogin();
 }, 1500);
