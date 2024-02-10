@@ -924,8 +924,8 @@ gameMenuBTNs.forEach((button) => {
         inactiveDecks.forEach((d) => {
           d.style.display = "none";
         });
-      }, 400);
-    }, 200);
+      }, 50);
+    }, 10);
   });
 });
 
