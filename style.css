@@ -476,12 +476,12 @@ h3 {
 .deck-turn{
   background-color: var(--orange);
   height: 100vh;
-  transition: 1s ease;
-  z-index: 2;
+  z-index: 0;
+  transform: translateY(0);
 }
 
 .deck-prices {
-  border-radius: 40px 40px 0 0;
+  border-radius: 40px 40px 0px 0px;
   margin-top: 50vh;
   height: 50vh;
 }

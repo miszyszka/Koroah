@@ -906,6 +906,9 @@ gameMenuBTNs.forEach((button) => {
     const choosenDeck = allDecksArray.find(
       (deck) => deck.classList[2] === this.classList[2]
     );
+
+    console.log(choosenDeck);
+
     allDecks.forEach((d) => {
       d.style.display = "flex";
     });
@@ -921,8 +924,8 @@ gameMenuBTNs.forEach((button) => {
         inactiveDecks.forEach((d) => {
           d.style.display = "none";
         });
-      }, 100);
-    }, 100);
+      }, 400);
+    }, 200);
   });
 });
 
@@ -1123,9 +1126,12 @@ const updateUserScreen = function () {
     yourTurnMenu.style.display = "flex";
     deckTurn.style.transform = "translateX(100%)";
     deckTurn.style.display = "flex";
+    deckPrices.style.transform= "translateX(-100%)";
     setTimeout(() => {
       yourTurnMenu.style.transform = "translateX(0%)";
       deckTurn.style.transform = "translateX(0%)";
+      deckPrices.style.display = "none";
+      deckPrices.style.transform= "translateX(100%)";
     }, 1000);
 
     // PASSIVE MENU
@@ -1134,6 +1140,9 @@ const updateUserScreen = function () {
       notYourTurnMenu.style.display = "none";
       notYourTurnMenu.style.transform = "translateX(100%)";
     }, 1000);
+    setTimeout(() => {
+      gameMenuBtnTurn.click()
+    }, 2000);
   }
 };
 
@@ -1142,6 +1151,8 @@ const updateUserScreen = function () {
 
 const passTurn = function () {
   let nextPlayerId = "";
+
+  // ZMIANA GRACZA
   Object.keys(currentGame.gameOrder).forEach((chairId) => {
     const playerOnTurn = currentGame.gameOrder[chairId].turn;
     if (playerOnTurn === true) {
@@ -1154,7 +1165,6 @@ const passTurn = function () {
       }
     }
   });
-
   currentGame.gameOrder[nextPlayerId].turn = true;
 
   // Pierwsza tura jako nieaktywny gracz
@@ -1162,7 +1172,10 @@ const passTurn = function () {
   gameMenuBtnPrices.click();
   yourTurnMenu.style.transform = "translateX(-100%)";
   deckTurn.style.transform = "translateX(-100%)";
+  deckPrices.style.display = "flex";
   setTimeout(() => {
+
+    deckPrices.style.transform= "translateX(0%)";
     yourTurnMenu.style.display = "none";
     deckTurn.style.display = "none";
   }, 1000);
@@ -1174,12 +1187,6 @@ const passTurn = function () {
   }, 1000);
 
   updateDB();
-
-  // yourTurnMenu.style.transform = "translateX(-100%)";
-  // setTimeout(() => {
-  //   yourTurnMenu.style.display = "none";
-  // }, 1000);
-  // FIND NEW PLAYER TO HAVE A TURN
 };
 
 const passTurnBTN = document.querySelector(".pass-turn-btn");
