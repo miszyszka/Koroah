@@ -424,16 +424,18 @@ h3 {
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  /* margin-top: 50vh; */
   transform: translateY(0px);
-
   transition: 0.23 ease;
-  /* transform: translateY(calc(20 * 3)); */
 }
 
 .deck h2 {
   color: var(--main-colour);
   margin-top: 10px;
+}
+
+.deck-turn{
+  background-color: var(--orange);
+  height: 80vh;
 }
 
 .deck-prices {
@@ -442,7 +444,8 @@ h3 {
   height: 50vh;
 }
 
-.deck-user {
+.deck-user,
+.deck-exchange {
   height: 100vh;
   transform: translateY(0);
   border-radius: 0px 0px 0 0;
@@ -461,17 +464,27 @@ h3 {
 
 .game-menu-bar {
   position: absolute;
-  bottom: 10px;
+  bottom: 0px;
   height: 150px;
   width: 100vw;
+  padding: 0px 10px;
   display: flex;
   justify-content: space-evenly;
+  transition: 1s ease;
+}
+
+.game-menu-bar.your-turn{
+  background-color: var(--orange);
 }
 
 .game-menu-btn {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   margin: 20px 30px;
+}
+
+.testBTN{
+  z-index: 20;
 }
 
 .game-menu-btn svg {
@@ -580,11 +593,13 @@ h3 {
 /* --------------------- */
 /* DU */
 
-.du-all-containers {
+.du-all-containers,
+.e-all-containers{
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .du-container {
@@ -743,16 +758,6 @@ h3 {
   background-color: var(--zelazo);
 }
 
-.SVG-exchange svg path {
-  fill: white;
-}
-
-.SVG-exchange svg {
-  width: 15px;
-  height: 15px;
-  transform: translateY(2px);
-}
-
 /* --------------------- */
 /* --------------------- */
 /* --------------------- */
@@ -761,29 +766,49 @@ h3 {
 /* --------------------- */
 /* EXCHANGE */
 
-.exchange-screen {
-  display: none;
-}
-
 .e-container {
   width: 100vw;
-  height: 25vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* border: #939598 1px solid; */
+}
+
+.e-container.e-top-bar{
+  height: 10vh;
+}
+
+.e-exchange-sell,
+.e-exchange-buy{
+  height: 35vh;
+}
+
+.e-separator-container{
+  flex-direction: row;
+}
+
+.e-separator{
+  background-color: var(--main-colour);
+  height: 2px;
+  width: 150px;
+  margin: 20px;
 }
 
 .e-elements {
   position: relative;
+  color: var(--main-colour);
   width: 90vw;
-  height: 100px;
+  height: 80px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  /* border: #4e6c98 1px solid; */
+  border: #4e6c9819 1px solid
+}
+
+.e-label-container{
+  margin-top: 40px;
+  height: 40px;
 }
 
 .e-source-btn{
@@ -793,8 +818,8 @@ h3 {
   margin: 8px;
 }
 
-
-.e-sell-input {
+.e-sell-input,
+.e-buy-input {
   outline: none;
   border: var(--main-colour) 1px solid;
   border-radius: 6px;
@@ -812,6 +837,13 @@ h3 {
   font-size: 15px;
 }
 
+.exchange-direction svg{
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
+
 /* --------------------- */
 /* --------------------- */
 /* --------------------- */
@@ -822,6 +854,8 @@ h3 {
 
 @media (min-width: 500px) {
   .du-all-containers,
+  .du-label-container,
+  .e-all-containers,
   .game-top-bar,
   .deck,
   .game-menu-bar {

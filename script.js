@@ -37,6 +37,8 @@ const gameScreen = document.querySelector(".game-screen");
 const exchangeScreen = document.querySelector(".exchange-screen");
 
 // ELEMENTS
+const yourTurnMenu = document.querySelector(".your-turn");
+
 const backBTN = document.querySelectorAll(".go-back");
 const homeBTN = document.querySelectorAll(".go-home");
 
@@ -105,6 +107,28 @@ const classNumber = {
 ////////////////
 // CODE
 ///////////////
+function formatInputValue(inputValue) {
+  // Usuń wszystkie znaki, które nie są cyframi ani przecinkiem
+  inputValue = inputValue.toString().replace(/[^0-9.]/g, "");
+
+  // Sprawdź czy są więcej niż jedno miejsce po przecinku
+  const dotIndex = inputValue.indexOf(".");
+  if (dotIndex !== -1 && inputValue.substring(dotIndex + 1).length > 1) {
+    // Jeśli tak, ogranicz do jednego miejsca po przecinku
+    inputValue = inputValue.substring(0, dotIndex + 2);
+  }
+
+  // Usuń zero na początku (jeśli istnieje więcej niż jedna cyfra)
+  if (
+    inputValue.length > 1 &&
+    inputValue.charAt(0) === "0" &&
+    inputValue.charAt(1) !== "."
+  ) {
+    inputValue = inputValue.substring(1);
+  }
+
+  return inputValue;
+}
 
 const updateCurrentGame = function (gameName) {
   // reading game from DB and making currentGamme & currentPlayer really current
@@ -130,7 +154,6 @@ const updateCurrentGame = function (gameName) {
     // usunięcie 0 z liczb dziesiętnych
     for (let i = 0; i < currentGame.prices.length; i++) {
       const value = parseFloat(currentGame.prices[i]);
-      console.log(value);
       currentGame.prices[i] = value;
     }
     return foundGame;
@@ -344,23 +367,24 @@ const logIn = function () {
 let currentScreen = mainScreen;
 let previousScreens = [];
 
-const makeActive = function (screen, arg) {
-  if (arg === "active") {
-    screen.style.display = "flex";
-    setTimeout(() => {
-      screen.classList.remove("no-active");
-      screen.classList.add("active");
-    }, 100);
-  }
-  if (arg === "inactive") {
-    screen.classList.add("no-active");
-    screen.classList.remove("active");
+//Na razie niepotrzebna funkcja
+// const makeActive = function (screen, arg) {
+//   if (arg === "active") {
+//     screen.style.display = "flex";
+//     setTimeout(() => {
+//       screen.classList.remove("no-active");
+//       screen.classList.add("active");
+//     }, 100);
+//   }
+//   if (arg === "inactive") {
+//     screen.classList.add("no-active");
+//     screen.classList.remove("active");
 
-    setTimeout(() => {
-      screen.style.display = "none";
-    }, 100);
-  }
-};
+//     setTimeout(() => {
+//       screen.style.display = "none";
+//     }, 100);
+//   }
+// };
 
 const goToPreviousScreen = function () {
   if (previousScreens.length > 0) {
@@ -567,6 +591,12 @@ finalNewGameBTN.addEventListener("click", function () {
     rearangedGameOrder[index] = gameOrder[key];
     rearangedGameOrder[index].danina = 2;
     rearangedGameOrder[index].resources = [5, 5, 5, 5];
+    rearangedGameOrder[index].feeLevel = 0.8;
+    if (index === 0) {
+      rearangedGameOrder[index].turn = true;
+    } else {
+      rearangedGameOrder[index].turn = false;
+    }
   });
 
   currentGame.gameOrder = rearangedGameOrder;
@@ -823,10 +853,8 @@ addCrystal.addEventListener("click", function () {
 
 testBTN.addEventListener("click", function () {
   console.log(currentGame);
-  console.log(currentGame.notifications);
   console.log(currentPlayer);
-  console.log(allNots);
-  console.log(Object.keys(allNots).length);
+  passTurn();
 });
 
 gameMenuBTNs.forEach((button) => {
@@ -847,23 +875,14 @@ gameMenuBTNs.forEach((button) => {
       });
       choosenDeck.classList.remove("deck-inactive");
       choosenDeck.classList.add("deck-active");
-      const inactiveDeck = document.querySelector(".deck-inactive");
+      const inactiveDecks = document.querySelectorAll(".deck-inactive");
       setTimeout(() => {
-        inactiveDeck.style.display = "none";
+        inactiveDecks.forEach((d) => {
+          d.style.display = "none";
+        });
       }, 100);
     }, 100);
   });
-});
-
-exchangeBTNs.forEach((button) => {
-  button.addEventListener("click", function () {
-    makeActive(exchangeScreen, "active");
-  });
-});
-
-const eCloseBTN = document.querySelector(".e-close");
-eCloseBTN.addEventListener("click", function () {
-  makeActive(exchangeScreen, "inactive");
 });
 
 ////////////////
@@ -874,29 +893,109 @@ let sellSource;
 let buySource;
 
 const eSourceBTNs = document.querySelectorAll(".e-source-btn");
+const eSourceBTNsSell = document.querySelectorAll(".e-source-btn-sell");
+const eSourceBTNsBuy = document.querySelectorAll(".e-source-btn-buy");
+const eSellInput = document.querySelector(".e-sell-input");
+const eBuyInput = document.querySelector(".e-buy-input");
 
-let rollOutside = false;
+// Wstępne rozwinięcie wszystkich source BTN's
+eSourceBTNs.forEach((i) => {
+  const iconId = parseInt(i.classList[2].slice(-1));
+  const translateValue = 60 * iconId - 90;
+  i.style.transform = `translateX(${translateValue}px)`;
+  i.style.zIndex = "1";
+});
+
+let rollOutsideSell = true;
+let rollOutsideBuy = true;
 
 eSourceBTNs.forEach((icon) => {
   icon.addEventListener("click", function () {
-    if (rollOutside === false) {
-      eSourceBTNs.forEach((i) => {
-        const iconId = parseInt(i.classList[2].slice(-1));
-        const translateValue = 60 * iconId - 90;
-
-        i.style.transform = `translateX(${translateValue}px)`;
-        i.style.zIndex = "1";
-      });
-      rollOutside = true;
-    } else {
-      eSourceBTNs.forEach((i) => {
-        i.style.transform = `translateY(0px)`;
-        icon.style.zIndex = "2";
-      });
-      rollOutside = false;
+    if (icon.classList[4] === "e-source-btn-buy") {
+      if (rollOutsideBuy === false) {
+        eSourceBTNsBuy.forEach((i) => {
+          const iconId = parseInt(i.classList[2].slice(-1));
+          const translateValue = 60 * iconId - 90;
+          i.style.transform = `translateX(${translateValue}px)`;
+          i.style.zIndex = "1";
+          buySource = "";
+        });
+        rollOutsideBuy = true;
+      } else {
+        eSourceBTNsBuy.forEach((i) => {
+          i.style.transform = `translateY(0px)`;
+          icon.style.zIndex = "2";
+          buySource = icon;
+          makeConversion(eBuyInput.value, "from-buy");
+        });
+        rollOutsideBuy = false;
+      }
+    } else if (icon.classList[4] === "e-source-btn-sell") {
+      if (rollOutsideSell === false) {
+        eSourceBTNsSell.forEach((i) => {
+          const iconId = parseInt(i.classList[2].slice(-1));
+          const translateValue = 60 * iconId - 90;
+          i.style.transform = `translateX(${translateValue}px)`;
+          i.style.zIndex = "1";
+          sellSource = "";
+        });
+        rollOutsideSell = true;
+      } else {
+        eSourceBTNsSell.forEach((i) => {
+          i.style.transform = `translateY(0px)`;
+          icon.style.zIndex = "2";
+          sellSource = icon;
+          makeConversion(eSellInput.value, "from-sell");
+        });
+        rollOutsideSell = false;
+      }
     }
   });
 });
+
+const exchangeDirectionBTN = document.querySelector(".exchange-direction");
+
+const makeConversion = function (input, direction) {
+  if (buySource && sellSource) {
+    const choosenSellSource = parseInt(sellSource.classList[2].slice(-1));
+    const choosenBuySource = parseInt(buySource.classList[2].slice(-1));
+
+    if (direction === "from-sell") {
+      // sellValue (wartość sprzedawanego surowca w monetach)
+      const sellValue =
+        input * currentGame.prices[choosenSellSource] * currentPlayer.feeLevel;
+      let sellSource = currentPlayer.resources[choosenSellSource];
+      let buySource = currentPlayer.resources[choosenBuySource];
+
+      let currentOffer = sellValue / currentGame.prices[choosenBuySource];
+      eBuyInput.value = formatInputValue(currentOffer);
+    } else {
+      const buyValue =
+        input * currentGame.prices[choosenBuySource] * currentPlayer.feeLevel;
+      let currentOffer = buyValue / currentGame.prices[choosenSellSource];
+      eSellInput.value = formatInputValue(currentOffer);
+    }
+  }
+};
+
+eSellInput.addEventListener("input", function (event) {
+  let inputValue = event.target.value;
+  inputValue = formatInputValue(inputValue);
+  event.target.value = inputValue;
+  makeConversion(inputValue, "from-sell");
+});
+
+eBuyInput.addEventListener("input", function (event) {
+  let inputValue = event.target.value;
+  inputValue = formatInputValue(inputValue);
+  event.target.value = inputValue;
+  makeConversion(inputValue, "from-buy");
+});
+
+// exchangeDirectionBTN.addEventListener('click', function(event){
+//   let inputValue = eSellInput
+//   makeConversion(inputValue, 'from-sell')
+// })
 
 //////////////////////
 // SMALL FUNCTIONS
@@ -978,7 +1077,57 @@ const updateUserScreen = function () {
       console.log(newestNotification);
     }
   }
+  // CHECK IF IT'S MY TURN
+  if (currentPlayer.turn === true) {
+    console.log("yes");
+    yourTurnMenu.style.transform = "translateX(100%)";
+    yourTurnMenu.style.display = "none";
+    setTimeout(() => {
+      yourTurnMenu.style.display = "flex";
+      setTimeout(() => {
+        yourTurnMenu.style.transform = "translateX(0%)";
+      }, 100);
+    }, 1000);
+  }
 };
+
+//////////////////////
+// PASSING TURN
+
+const passTurn = function () {
+  // DELETE MY TURN
+  // currentPlayer.turn = true
+
+  let nextPlayerId = '';
+  Object.keys(currentGame.gameOrder).forEach((chairId) => {
+    const playerOnTurn = currentGame.gameOrder[chairId].turn;
+    if (playerOnTurn === true) {
+      currentGame.gameOrder[chairId].turn = false;
+      const numberOfPlayers = Object.keys(currentGame.gameOrder).length;
+      console.log("number of Players", numberOfPlayers);
+      if (parseInt(chairId) === numberOfPlayers - 1) {
+        nextPlayerId = 0;
+      } else {
+        nextPlayerId = parseInt(chairId) + 1;
+      }
+    }
+  });
+
+  currentGame.gameOrder[nextPlayerId].turn = true;
+
+updateDB()
+
+  yourTurnMenu.style.transform = "translateX(-100%)";
+  setTimeout(() => {
+    yourTurnMenu.style.display = "none";
+  }, 1000);
+  // FIND NEW PLAYER TO HAVE A TURN
+};
+
+const passTurnBTN = document.querySelector(".pass-turn-btn");
+passTurnBTN.addEventListener("click", function () {
+  passTurn();
+});
 
 // addCrystal.addEventListener("click", function () {
 //   const crystalValue = crystalInput.value;
@@ -1072,7 +1221,7 @@ setTimeout(() => {
     currentGame = gamesArray[0];
 
     setTimeout(() => {
-      currentPlayer = currentGame.gameOrder["1"];
+      currentPlayer = currentGame.gameOrder["0"];
 
       setTimeout(() => {
         allNots = currentGame.notifications;
