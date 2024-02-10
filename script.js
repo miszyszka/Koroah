@@ -1313,3 +1313,27 @@ joinGameBTN2.addEventListener("click", function () {
 joinGameBTN3.addEventListener("click", function () {
   skipLogin(2);
 });
+
+
+
+
+
+async function zapobiegajWygaszaniuEkranu() {
+  try {
+
+      const wakeLock = await navigator.wakeLock.request('screen');
+
+
+      wakeLock.addEventListener('change', () => {
+          if (wakeLock.active) {
+              console.log('Blokada ekranu została aktywowana.');
+          } else {
+              console.log('Blokada ekranu została dezaktywowana.');
+          }
+      });
+  } catch (error) {
+      console.error('Wystąpił błąd podczas uzyskiwania dostępu do API blokady ekranu:', error);
+  }
+}
+
+zapobiegajWygaszaniuEkranu();
