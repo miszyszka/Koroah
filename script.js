@@ -1339,36 +1339,36 @@ async function zapobiegajWygaszaniuEkranu() {
 zapobiegajWygaszaniuEkranu();
 
 
-function domReady(fn) {
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    setTimeout(fn, 1);
-  } else {
-    document.addEventListener('DOMContentLoaded', fn);
-  }
-}
+// function domReady(fn) {
+//   if (document.readyState === 'complete' || document.readyState === 'interactive') {
+//     setTimeout(fn, 1);
+//   } else {
+//     document.addEventListener('DOMContentLoaded', fn);
+//   }
+// }
 
-let config = {
-  fps: 10,
-  qrbox: {width: 100, height: 100},
-  rememberLastUsedCamera: true,
-  preferredCamera: "environment",
-  // Only support camera scan type.
-  supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
-};
+// let config = {
+//   fps: 10,
+//   qrbox: {width: 100, height: 100},
+//   rememberLastUsedCamera: true,
+//   preferredCamera: "environment",
+//   // Only support camera scan type.
+//   supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+// };
 
-domReady(function() {
-  let myQr = document.querySelector('.my-qr-reader');
-  let lastResult, countResults = 0;
+// domReady(function() {
+//   let myQr = document.querySelector('.my-qr-reader');
+//   let lastResult, countResults = 0;
 
-  function onScanSuccess(decodeText, decodeResult) {
-    if (decodeText !== lastResult) {
-      ++countResults;
-      lastResult = decodeText;
+//   function onScanSuccess(decodeText, decodeResult) {
+//     if (decodeText !== lastResult) {
+//       ++countResults;
+//       lastResult = decodeText;
 
-      alert('Your QR is ' + decodeText);
-    }
-  }
+//       alert('Your QR is ' + decodeText);
+//     }
+//   }
 
-  var htmlScanner = new Html5QrcodeScanner('my-qr-reader', config);
-  htmlScanner.render(onScanSuccess);
-});
+//   var htmlScanner = new Html5QrcodeScanner('my-qr-reader', config);
+//   htmlScanner.render(onScanSuccess);
+// });

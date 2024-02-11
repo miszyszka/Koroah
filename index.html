@@ -24,13 +24,15 @@
     <div class="message-container"></div>
     <div class="screen main-screen active">
       <div class="top-bar"></div>
-      <div class="main-content" style="height: 400px;">
+      <div class="main-content" style="height: 400px">
         <div class="btn btn-big new-game-BTN">Nowa gra</div>
         <div class="btn btn-big join-game-BTN">Dołącz</div>
-        <div class="btn btn-small join-game-BTN1" style="margin-top: 20px;">1</div>
+        <div class="btn btn-small join-game-BTN1" style="margin-top: 20px">
+          1
+        </div>
         <div class="btn btn-small join-game-BTN2">2</div>
         <div class="btn btn-small join-game-BTN3">3</div>
-        <div id="my-qr-reader" style="width: 300px;"></div>
+        <!-- <div id="my-qr-reader" style="width: 300px;"></div> -->
       </div>
     </div>
 
@@ -146,6 +148,9 @@
 
     <!-- PLAYER PAGE -->
     <div class="screen game-screen no-active">
+      <div class="game-screen-bg">
+        <img src="img/raona.png" alt="raona">
+      </div>
       <div class="game-top-bar">
         <div class="du-label-container">
           <h1 class="du-label">NAME</h1>
@@ -444,6 +449,12 @@
           <div class="du-foot du-container"></div>
         </div>
       </div>
+
+
+
+
+            <!--  -->
+      <!--  -->
       <!--  -->
       <!--  -->
       <!-- MENU -->
@@ -546,7 +557,7 @@
           });
         });
     </script>
-<script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="script.js" type="module"></script>
   </body>
 </html>

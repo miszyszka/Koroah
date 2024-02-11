@@ -426,8 +426,17 @@ h3 {
   color: #1f1f1d;
 }
 
+.game-screen-bg{
+  display: flex;
+  justify-items: center;
+}
+
+.game-screen-bg img{
+  height: 100vh;
+
+}
+
 .game-top-bar {
-  border: #4c5d65 5px solid;
   position: absolute;
   top: 0;
   height: 100px;
@@ -528,7 +537,8 @@ h3 {
 .testBTN{
   z-index: 20;
   position: absolute;
-  top:100px;
+  top: 100px;
+  opacity: 0.1;
 }
 
 .game-menu-btn svg {
