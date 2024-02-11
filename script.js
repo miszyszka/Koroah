@@ -14,6 +14,10 @@ import {
 const bodyElement = document.body;
 
 // ALL BTNS
+const keyboard = document.querySelector('.keyboard');
+
+const keys = document.querySelectorAll('.key');
+
 // MAIN
 const newGameBTN = document.querySelector(".new-game-BTN");
 const joinGameBTN = document.querySelector(".join-game-BTN");
@@ -37,7 +41,7 @@ const gameScreen = document.querySelector(".game-screen");
 
 // ELEMENTS
 const gameScreenBG = document.querySelector('.game-screen-bg');
-const gameScreenContent= document.querySelector('.game-screen-contentent');
+const gameScreenContent= document.querySelector('.game-screen-content');
 
 
 const yourTurnMenu = document.querySelector(".your-turn");
@@ -207,11 +211,46 @@ const showPinBox = function (arg) {
   pinBox.classList.remove(`el-${arg}`);
   pinBox.classList.add(`el-${arg}`);
 
+  keyboard.classList.remove(`el-in${arg}`);
+  keyboard.classList.remove(`el-${arg}`);
+  keyboard.classList.add(`el-${arg}`);
+
+
   if (currentPlayer.pin) {
     pinLabel.innerHTML = "PODAJ PIN";
   } else {
     pinLabel.innerHTML = "STWÓRZ PIN";
   }
+
+  keys.forEach((key)=>{
+    key.addEventListener('click', function(event){
+
+      const newValue = pinGameInput.value + event.target.classList[2]
+      if (!pinGameInput){
+      pinGameInput.value = key.value
+      } else{
+        pinGameInput.value = newValue.toString()
+      }
+
+      enteredPin = pinGameInput.value
+
+      if (pinGameInput.value.length > 3) {
+        Visibility(finalJoinGameBTN, "visible");
+        keyboard.classList.remove(`el-in${arg}`);
+        keyboard.classList.remove(`el-${arg}`);
+        keyboard.classList.add(`el-in${arg}`);
+      } else {
+        Visibility(finalJoinGameBTN, "invisible");
+        keyboard.classList.remove(`el-in${arg}`);
+        keyboard.classList.remove(`el-${arg}`);
+        keyboard.classList.add(`el-${arg}`);
+      }
+
+
+    })
+  })
+
+
 };
 
 const checkPIN = function (pin, oryginalPin) {
@@ -914,8 +953,22 @@ gameMenuBTNs.forEach((button) => {
     console.log(choosenDeck.classList[2]);
     if (choosenDeck.classList[2] === "prices"){
       gameScreenContent.style.display= "flex"
+      setTimeout(() => {
+          gameScreenContent.style.transform= "translateY(0%)"
+          gameScreenContent.style.opacity= "1"
+      }, 100);
+
+
     } else{
-      gameScreenContent.style.display= "none"
+      gameScreenContent.style.transform= "translateY(150%)"
+      setTimeout(() => {
+          gameScreenContent.style.display= "none"
+          gameScreenContent.style.opacity= "0"
+      }, 100);
+
+
+
+
     }
 
     allDecks.forEach((d) => {

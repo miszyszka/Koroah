@@ -38,7 +38,7 @@
 
 body {
   font-family: "Bebas Neue", sans-serif;
-  /* overflow: hidden; */
+  overflow-X: hidden;
   align-items: center;
   justify-content: center;
   height: 100vh;
@@ -153,6 +153,9 @@ h3 {
 
 .next-join-game-screen .main-content {
   height: 150px;
+}
+.final-join-game-screen .main-content {
+  height: 35vh;
 }
 
 .menu-bar {
@@ -344,7 +347,7 @@ h3 {
   /* border: #aca687 solid 1px; */
   position: relative;
   height: 400px;
-  width: 100px;
+  width: 90px;
 }
 
 .icon {
@@ -393,6 +396,25 @@ h3 {
   height: 100%;
 }
 
+.keyboard{
+  position: absolute;
+  top:25vh;
+  width: 90vw;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  transition: 0.5s ease;
+}
+
+.key{
+  width: 80px;
+  height: 80px;
+  margin: 15px;
+  border-radius: 50%;
+  border: var(--main-colour) 1px solid;
+filter: none;
+}
 
 /* -------------- */
 /* -------------- */
@@ -424,6 +446,11 @@ h3 {
 .game-screen {
   background-color: var(--black);
   color: #1f1f1d;
+}
+
+.game-screen-content{
+  transition: ease 0.4s;
+  width: 100vw;
 }
 
 .game-screen-bg{
