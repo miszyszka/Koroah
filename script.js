@@ -37,6 +37,8 @@ const gameScreen = document.querySelector(".game-screen");
 
 // ELEMENTS
 const gameScreenBG = document.querySelector('.game-screen-bg');
+const gameScreenContent= document.querySelector('.game-screen-contentent');
+
 
 const yourTurnMenu = document.querySelector(".your-turn");
 const notYourTurnMenu = document.querySelector(".not-your-turn");
@@ -911,9 +913,9 @@ gameMenuBTNs.forEach((button) => {
 
     console.log(choosenDeck.classList[2]);
     if (choosenDeck.classList[2] === "prices"){
-      gameScreenBG.style.display= "flex"
+      gameScreenContent.style.display= "flex"
     } else{
-      gameScreenBG.style.display= "none"
+      gameScreenContent.style.display= "none"
     }
 
     allDecks.forEach((d) => {
