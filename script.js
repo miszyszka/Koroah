@@ -36,6 +36,8 @@ const finalJoinGameScreen = document.querySelector(".final-join-game-screen");
 const gameScreen = document.querySelector(".game-screen");
 
 // ELEMENTS
+const gameScreenBG = document.querySelector('.game-screen-bg');
+
 const yourTurnMenu = document.querySelector(".your-turn");
 const notYourTurnMenu = document.querySelector(".not-your-turn");
 const gameMenuBtnPrices = document.getElementById("game-menu-btn-prices");
@@ -907,7 +909,12 @@ gameMenuBTNs.forEach((button) => {
       (deck) => deck.classList[2] === this.classList[2]
     );
 
-    console.log(choosenDeck);
+    console.log(choosenDeck.classList[2]);
+    if (choosenDeck.classList[2] === "prices"){
+      gameScreenBG.style.display= "flex"
+    } else{
+      gameScreenBG.style.display= "none"
+    }
 
     allDecks.forEach((d) => {
       d.style.display = "flex";

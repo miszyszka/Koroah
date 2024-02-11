@@ -422,18 +422,19 @@ h3 {
 
 /* PLAYER SCREEN */
 .game-screen {
-  background-color: #b1b9bd;
+  background-color: var(--black);
   color: #1f1f1d;
 }
 
 .game-screen-bg{
+  position: absolute;
   display: flex;
-  justify-items: center;
+  justify-items: center
 }
 
 .game-screen-bg img{
-  height: 100vh;
-
+  height: 150vw;
+width: 100vw;
 }
 
 .game-top-bar {
