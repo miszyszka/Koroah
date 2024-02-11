@@ -158,6 +158,10 @@ h3 {
   height: 35vh;
 }
 
+.final-join-game-screen .top-bar {
+  height: calc(3vh * 3);
+}
+
 .menu-bar {
   height: 140px;
   width: 300px;
@@ -399,8 +403,8 @@ h3 {
 .keyboard{
   position: absolute;
   top:25vh;
-  width: 90vw;
-  height: 400px;
+  width: 400px;
+  height: 50vh;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -410,7 +414,7 @@ h3 {
 .key{
   width: 80px;
   height: 80px;
-  margin: 15px;
+  margin: 1vh 15px;
   border-radius: 50%;
   border: var(--main-colour) 1px solid;
 filter: none;
@@ -920,6 +924,9 @@ width: 100vw;
   font-size: 15px;
 }
 
+.exchange-direction{
+  display: none
+}
 
 .exchange-direction svg{
   width: 20px;

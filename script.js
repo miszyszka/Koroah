@@ -14,9 +14,9 @@ import {
 const bodyElement = document.body;
 
 // ALL BTNS
-const keyboard = document.querySelector('.keyboard');
+const keyboard = document.querySelector(".keyboard");
 
-const keys = document.querySelectorAll('.key');
+const keys = document.querySelectorAll(".key");
 
 // MAIN
 const newGameBTN = document.querySelector(".new-game-BTN");
@@ -40,9 +40,8 @@ const finalJoinGameScreen = document.querySelector(".final-join-game-screen");
 const gameScreen = document.querySelector(".game-screen");
 
 // ELEMENTS
-const gameScreenBG = document.querySelector('.game-screen-bg');
-const gameScreenContent= document.querySelector('.game-screen-content');
-
+const gameScreenBG = document.querySelector(".game-screen-bg");
+const gameScreenContent = document.querySelector(".game-screen-content");
 
 const yourTurnMenu = document.querySelector(".your-turn");
 const notYourTurnMenu = document.querySelector(".not-your-turn");
@@ -118,7 +117,7 @@ const classNumber = {
 ////////////////
 // CODE
 ///////////////
-function formatInputValue(inputValue) {
+function formatInputValue(inputValue, arg) {
   // Usuń wszystkie znaki, które nie są cyframi ani przecinkiem
   inputValue = inputValue.toString().replace(/[^0-9.]/g, "");
 
@@ -137,8 +136,11 @@ function formatInputValue(inputValue) {
   ) {
     inputValue = inputValue.substring(1);
   }
-
-  return inputValue;
+  if (arg === "number") {
+    return parseFloat(inputValue);
+  } else {
+    return inputValue;
+  }
 }
 
 const updateCurrentGame = function (gameName) {
@@ -193,6 +195,15 @@ const updateCurrentPlayerToDB = function () {
   Object.keys(currentGame.gameOrder).forEach((chairId) => {
     const player = currentGame.gameOrder[chairId].player;
 
+    for (const resource in currentPlayer.resources) {
+      console.log(currentPlayer.resources[resource]);
+      currentPlayer.resources[resource] = formatInputValue(
+        currentPlayer.resources[resource],
+        "number"
+      );
+      console.log(currentPlayer.resources[resource]);
+    }
+
     if (player === currentPlayer.player) {
       const pinRef = ref(
         database,
@@ -215,42 +226,31 @@ const showPinBox = function (arg) {
   keyboard.classList.remove(`el-${arg}`);
   keyboard.classList.add(`el-${arg}`);
 
-
   if (currentPlayer.pin) {
     pinLabel.innerHTML = "PODAJ PIN";
   } else {
     pinLabel.innerHTML = "STWÓRZ PIN";
   }
 
-  keys.forEach((key)=>{
-    key.addEventListener('click', function(event){
-
-      const newValue = pinGameInput.value + event.target.classList[2]
-      if (!pinGameInput){
-      pinGameInput.value = key.value
-      } else{
-        pinGameInput.value = newValue.toString()
+  keys.forEach((key) => {
+    key.addEventListener("click", function (event) {
+      const newValue = pinGameInput.value + event.target.classList[2];
+      if (!pinGameInput) {
+        pinGameInput.value = key.value;
+      } else {
+        pinGameInput.value = newValue.toString();
       }
 
-      enteredPin = pinGameInput.value
-
+      console.log(pinGameInput.value);
       if (pinGameInput.value.length > 3) {
         Visibility(finalJoinGameBTN, "visible");
-        keyboard.classList.remove(`el-in${arg}`);
-        keyboard.classList.remove(`el-${arg}`);
-        keyboard.classList.add(`el-in${arg}`);
+        Visibility(keyboard, "invisible");
       } else {
         Visibility(finalJoinGameBTN, "invisible");
-        keyboard.classList.remove(`el-in${arg}`);
-        keyboard.classList.remove(`el-${arg}`);
-        keyboard.classList.add(`el-${arg}`);
+        Visibility(keyboard, "visible");
       }
-
-
-    })
-  })
-
-
+    });
+  });
 };
 
 const checkPIN = function (pin, oryginalPin) {
@@ -951,24 +951,18 @@ gameMenuBTNs.forEach((button) => {
     );
 
     console.log(choosenDeck.classList[2]);
-    if (choosenDeck.classList[2] === "prices"){
-      gameScreenContent.style.display= "flex"
+    if (choosenDeck.classList[2] === "prices") {
+      gameScreenContent.style.display = "flex";
       setTimeout(() => {
-          gameScreenContent.style.transform= "translateY(0%)"
-          gameScreenContent.style.opacity= "1"
+        gameScreenContent.style.transform = "translateY(0%)";
+        gameScreenContent.style.opacity = "1";
       }, 100);
-
-
-    } else{
-      gameScreenContent.style.transform= "translateY(150%)"
+    } else {
+      gameScreenContent.style.transform = "translateY(150%)";
       setTimeout(() => {
-          gameScreenContent.style.display= "none"
-          gameScreenContent.style.opacity= "0"
+        gameScreenContent.style.display = "none";
+        gameScreenContent.style.opacity = "0";
       }, 100);
-
-
-
-
     }
 
     allDecks.forEach((d) => {
@@ -1015,53 +1009,40 @@ eSourceBTNs.forEach((i) => {
 let rollOutsideSell = true;
 let rollOutsideBuy = true;
 
-eSourceBTNs.forEach((icon) => {
-  icon.addEventListener("click", function () {
-    if (icon.classList[4] === "e-source-btn-buy") {
-      if (rollOutsideBuy === false) {
-        eSourceBTNsBuy.forEach((i) => {
-          const iconId = parseInt(i.classList[2].slice(-1));
-          const translateValue = 60 * iconId - 90;
-          i.style.transform = `translateX(${translateValue}px)`;
-          i.style.zIndex = "1";
-          buySource = "";
-        });
-        rollOutsideBuy = true;
-      } else {
-        eSourceBTNsBuy.forEach((i) => {
-          i.style.transform = `translateY(0px)`;
-          icon.style.zIndex = "2";
-          buySource = icon;
-          makeConversion(eBuyInput.value, "from-buy");
-        });
-        rollOutsideBuy = false;
-      }
-    } else if (icon.classList[4] === "e-source-btn-sell") {
-      if (rollOutsideSell === false) {
-        eSourceBTNsSell.forEach((i) => {
-          const iconId = parseInt(i.classList[2].slice(-1));
-          const translateValue = 60 * iconId - 90;
-          i.style.transform = `translateX(${translateValue}px)`;
-          i.style.zIndex = "1";
-          sellSource = "";
-        });
-        rollOutsideSell = true;
-      } else {
-        eSourceBTNsSell.forEach((i) => {
-          i.style.transform = `translateY(0px)`;
-          icon.style.zIndex = "2";
-          sellSource = icon;
-          makeConversion(eSellInput.value, "from-sell");
-        });
-        rollOutsideSell = false;
-      }
-    }
-  });
-});
-
 const exchangeDirectionBTN = document.querySelector(".exchange-direction");
 
+exchangeDirectionBTN.addEventListener("click", function () {
+  
+  const sellSourceId = parseInt(sellSource.classList[2].slice(-1));
+  const buySourceId = parseInt(buySource.classList[2].slice(-1));
+  const sellValue = formatInputValue(eSellInput.value, "number");
+  const buyValue = formatInputValue(eBuyInput.value, "number");
+  console.log(sellValue, buyValue);
+  console.log(buySourceId);
+
+  console.log(sellValue, buyValue);
+  currentPlayer.resources[sellSourceId] =
+    currentPlayer.resources[sellSourceId] - eSellInput.value;
+  currentPlayer.resources[buySourceId] =
+    parseFloat(currentPlayer.resources[buySourceId]) +
+    parseFloat(eBuyInput.value);
+  updateCurrentPlayerToDB();
+});
+
 const makeConversion = function (input, direction) {
+  const displayDirectionBTN = function () {
+    if (
+      !rollOutsideBuy &&
+      !rollOutsideSell &&
+      (eSellInput.value !== undefined || eBuyInput.value !== undefined)
+    ) {
+      exchangeDirectionBTN.style.display = "flex";
+    } else {
+      exchangeDirectionBTN.style.display = "none";
+    }
+  };
+  displayDirectionBTN();
+
   if (buySource && sellSource) {
     const choosenSellSource = parseInt(sellSource.classList[2].slice(-1));
     const choosenBuySource = parseInt(buySource.classList[2].slice(-1));
@@ -1074,12 +1055,17 @@ const makeConversion = function (input, direction) {
       let buySource = currentPlayer.resources[choosenBuySource];
 
       let currentOffer = sellValue / currentGame.prices[choosenBuySource];
-      eBuyInput.value = formatInputValue(currentOffer);
+      if (currentOffer) {
+        eBuyInput.value = formatInputValue(currentOffer);
+      }
     } else {
       const buyValue =
         input * currentGame.prices[choosenBuySource] * currentPlayer.feeLevel;
       let currentOffer = buyValue / currentGame.prices[choosenSellSource];
       eSellInput.value = formatInputValue(currentOffer);
+      if (currentOffer) {
+        eSellInput.value = formatInputValue(currentOffer);
+      }
     }
   }
 };
@@ -1096,6 +1082,54 @@ eBuyInput.addEventListener("input", function (event) {
   inputValue = formatInputValue(inputValue);
   event.target.value = inputValue;
   makeConversion(inputValue, "from-buy");
+});
+
+eSourceBTNs.forEach((icon) => {
+  icon.addEventListener("click", function () {
+    // DOWN BAR
+    if (icon.classList[4] === "e-source-btn-buy") {
+      if (rollOutsideBuy === false) {
+        eSourceBTNsBuy.forEach((i) => {
+          const iconId = parseInt(i.classList[2].slice(-1));
+          const translateValue = 60 * iconId - 90;
+          i.style.transform = `translateX(${translateValue}px)`;
+          i.style.zIndex = "1";
+          buySource = "";
+          makeConversion(eBuyInput.value, "from-buy");
+        });
+        rollOutsideBuy = true;
+      } else {
+        eSourceBTNsBuy.forEach((i) => {
+          i.style.transform = `translateY(0px)`;
+          icon.style.zIndex = "2";
+          buySource = icon;
+          makeConversion(eBuyInput.value, "from-buy");
+        });
+        rollOutsideBuy = false;
+      }
+      // UPPER BAR
+    } else if (icon.classList[4] === "e-source-btn-sell") {
+      if (rollOutsideSell === false) {
+        eSourceBTNsSell.forEach((i) => {
+          const iconId = parseInt(i.classList[2].slice(-1));
+          const translateValue = 60 * iconId - 90;
+          i.style.transform = `translateX(${translateValue}px)`;
+          i.style.zIndex = "1";
+          sellSource = "";
+          makeConversion(eSellInput.value, "from-sell");
+        });
+        rollOutsideSell = true;
+      } else {
+        eSourceBTNsSell.forEach((i) => {
+          i.style.transform = `translateY(0px)`;
+          icon.style.zIndex = "2";
+          sellSource = icon;
+          makeConversion(eSellInput.value, "from-sell");
+        });
+        rollOutsideSell = false;
+      }
+    }
+  });
 });
 
 // exchangeDirectionBTN.addEventListener('click', function(event){
@@ -1170,9 +1204,11 @@ allDecks.forEach((deck) => {
 });
 
 //////////////////////
-// MAIN FUNCTIONS
+// UPDATE USER SCREEN
 
 let lastNotification;
+let alreadyActive = false;
+let alreadyPassive = false;
 
 const updateUserScreen = function () {
   if (allNots) {
@@ -1181,19 +1217,23 @@ const updateUserScreen = function () {
       makeNotification(newestNotification);
     }
   }
+
   // CHECK IF IT'S MY TURN
-  if (currentPlayer.turn === true) {
+  if (currentPlayer.turn === true && alreadyActive === false) {
+    alreadyActive = true;
+    alreadyPassive = false;
+
     // ACTIVE MENU
     yourTurnMenu.style.transform = "translateX(100%)";
     yourTurnMenu.style.display = "flex";
     deckTurn.style.transform = "translateX(100%)";
     deckTurn.style.display = "flex";
-    deckPrices.style.transform= "translateX(-100%)";
+    deckPrices.style.transform = "translateX(-100%)";
     setTimeout(() => {
       yourTurnMenu.style.transform = "translateX(0%)";
       deckTurn.style.transform = "translateX(0%)";
       deckPrices.style.display = "none";
-      deckPrices.style.transform= "translateX(100%)";
+      deckPrices.style.transform = "translateX(100%)";
     }, 1000);
 
     // PASSIVE MENU
@@ -1203,8 +1243,28 @@ const updateUserScreen = function () {
       notYourTurnMenu.style.transform = "translateX(100%)";
     }, 1000);
     setTimeout(() => {
-      gameMenuBtnTurn.click()
+      gameMenuBtnTurn.click();
     }, 2000);
+  }
+  // CHECK IF IT"S NOT MY TURN
+  if (currentPlayer.turn === false && alreadyPassive === false) {
+    alreadyPassive = true;
+    alreadyActive = false;
+    gameMenuBtnPrices.click();
+    yourTurnMenu.style.transform = "translateX(-100%)";
+    deckTurn.style.transform = "translateX(-100%)";
+    deckPrices.style.display = "flex";
+    setTimeout(() => {
+      deckPrices.style.transform = "translateX(0%)";
+      yourTurnMenu.style.display = "none";
+      deckTurn.style.display = "none";
+    }, 1000);
+
+    // PASSIVE MENU
+    notYourTurnMenu.style.display = "flex";
+    setTimeout(() => {
+      notYourTurnMenu.style.transform = "translateX(0%)";
+    }, 1000);
   }
 };
 
@@ -1228,25 +1288,6 @@ const passTurn = function () {
     }
   });
   currentGame.gameOrder[nextPlayerId].turn = true;
-
-  // Pierwsza tura jako nieaktywny gracz
-  // ACTIVE MENU
-  gameMenuBtnPrices.click();
-  yourTurnMenu.style.transform = "translateX(-100%)";
-  deckTurn.style.transform = "translateX(-100%)";
-  deckPrices.style.display = "flex";
-  setTimeout(() => {
-
-    deckPrices.style.transform= "translateX(0%)";
-    yourTurnMenu.style.display = "none";
-    deckTurn.style.display = "none";
-  }, 1000);
-
-  // PASSIVE MENU
-  notYourTurnMenu.style.display = "flex";
-  setTimeout(() => {
-    notYourTurnMenu.style.transform = "translateX(0%)";
-  }, 1000);
 
   updateDB();
 };
@@ -1376,31 +1417,29 @@ joinGameBTN3.addEventListener("click", function () {
   skipLogin(2);
 });
 
-
-
-
-
 async function zapobiegajWygaszaniuEkranu() {
   try {
-
-      const wakeLock = await navigator.wakeLock.request('screen');
-
-
-      wakeLock.addEventListener('change', () => {
-          if (wakeLock.active) {
-              console.log('Blokada ekranu została aktywowana.');
-          } else {
-              console.log('Blokada ekranu została dezaktywowana.');
-          }
-      });
+    const wakeLock = await navigator.wakeLock.request("screen");
+    wakeLock.addEventListener("change", () => {
+      if (wakeLock.active) {
+        console.log("Blokada ekranu została aktywowana.");
+      } else {
+        console.log("Blokada ekranu została dezaktywowana.");
+      }
+    });
   } catch (error) {
-      console.error('Wystąpił błąd podczas uzyskiwania dostępu do API blokady ekranu:', error);
+    console.error(
+      "Wystąpił błąd podczas uzyskiwania dostępu do API blokady ekranu:",
+      error
+    );
   }
 }
 
 zapobiegajWygaszaniuEkranu();
 
-
+setInterval(() => {
+  updateUserScreen();
+}, 5000);
 // function domReady(fn) {
 //   if (document.readyState === 'complete' || document.readyState === 'interactive') {
 //     setTimeout(fn, 1);
