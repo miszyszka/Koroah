@@ -1337,3 +1337,29 @@ async function zapobiegajWygaszaniuEkranu() {
 }
 
 zapobiegajWygaszaniuEkranu();
+
+
+function domReady(fn) {
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(fn, 1);
+  } else {
+    document.addEventListener('DOMContentLoaded', fn);
+  }
+}
+
+domReady(function() {
+  let myQr = document.querySelector('.my-qr-reader');
+  let lastResult, countResults = 0;
+
+  function onScanSuccess(decodeText, decodeResult) {
+    if (decodeText !== lastResult) {
+      ++countResults;
+      lastResult = decodeText;
+
+      alert('Your QR is ' + decodeText);
+    }
+  }
+
+  var htmlScanner = new Html5QrcodeScanner('my-qr-reader', { fps: 10, qrbox: 250 });
+  htmlScanner.render(onScanSuccess);
+});
