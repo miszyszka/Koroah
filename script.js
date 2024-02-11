@@ -1347,6 +1347,15 @@ function domReady(fn) {
   }
 }
 
+let config = {
+  fps: 10,
+  qrbox: {width: 100, height: 100},
+  rememberLastUsedCamera: true,
+  preferredCamera: "environment",
+  // Only support camera scan type.
+  supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+};
+
 domReady(function() {
   let myQr = document.querySelector('.my-qr-reader');
   let lastResult, countResults = 0;
@@ -1360,6 +1369,6 @@ domReady(function() {
     }
   }
 
-  var htmlScanner = new Html5QrcodeScanner('my-qr-reader', { fps: 10, qrbox: 250 });
+  var htmlScanner = new Html5QrcodeScanner('my-qr-reader', config);
   htmlScanner.render(onScanSuccess);
 });
