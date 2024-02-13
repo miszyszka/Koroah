@@ -529,7 +529,7 @@ const avatars = document.querySelectorAll(".avatar");
 const chairs = document.querySelectorAll(".chair");
 let matchingGame;
 
-// FIRST SCREEN
+// FIRST SCREEN (create game)
 
 const checkIfFirsScreenGood = function (input) {
   if (
@@ -604,7 +604,7 @@ nextNewGameBTN.addEventListener("click", function () {
   goToScreen(finalNewGameScreen);
 });
 
-// SECOND SCREEN
+// SECOND SCREEN (create game)
 let choosenChair;
 
 function hasDuplicates(obj) {
@@ -708,7 +708,7 @@ nextJoinGameBTN.addEventListener("click", function () {
   logIn();
 });
 
-// SECOND SCREEN
+// SECOND SCREEN (join game)
 
 pinGameInput.addEventListener("input", function () {
   pinGameInput.value = pinGameInput.value.replace(/\D/g, "").substring(0, 4);
@@ -874,7 +874,7 @@ const updatePrices = function (origin) {
     multiplier = multiplier(max);
     bar.style.height = currentPrice * multiplier + "px";
     element.forEach((el) => {
-      el.innerHTML = currentPrice;
+      el.innerHTML = formatInputValue(currentPrice, "number");
     });
   });
 
