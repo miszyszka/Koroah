@@ -160,10 +160,9 @@
 
     <!-- PLAYER PAGE -->
     <div class="screen game-screen no-active">
-
       <div class="game-screen-content">
         <div class="game-screen-bg">
-          <img src="img/raona.png" alt="raona">
+          <img src="img/raona.png" alt="raona" />
         </div>
         <div class="game-top-bar">
           <div class="du-label-container">
@@ -171,7 +170,7 @@
           </div>
           <div class="btn testBTN btn-small">TEST</div>
         </div>
-  
+
         <div class="notification-container">
           <h2>wartość kryształu</h2>
           <input class="crystal-input" type="text" />
@@ -180,7 +179,6 @@
           <h1>NOTIFICATIONS 2</h1>
         </div>
       </div>
-
 
       <!--  -->
       <!--  -->
@@ -235,6 +233,7 @@
         <div class="e-all-containers">
           <div class="e-container e-top-bar"></div>
 
+          <!-- SEL SECTION -->
           <div class="e-container e-exchange-sell">
             <div class="e-elements e-label-container">
               <h1>Sprzedaj</h1>
@@ -275,14 +274,26 @@
               </div>
             </div>
             <div class="e-elements e-values">
-              <input class="e-value e-sell-input" value="0" />
+              <div class="e-value-sale btn-invisible">
+                <div class="btn manipulate btn-super-small sub01">-0.1</div>
+                <div class="btn manipulate btn-small sub1">-1</div>
+                <input class="e-value e-sell-input" value="0" />
+                <div class="btn manipulate btn-small add1">+1</div>
+                <div class="btn manipulate btn-super-small add01">+0.1</div>
+              </div>
             </div>
-            <div class="e-elements e-info"></div>
+            <div class="e-elements e-info">
+              <div class="btn-visible" id="info-1">
+                Wybierz surowiec który chcesz sprzedać
+              </div>
+              <div class="e-info e-info-sell-text"></div>
+            </div>
           </div>
 
+          <!-- SEPARATOR -->
           <div class="e-container e-separator-container">
             <div class="e-separator"></div>
-            <div class="btn btn-small exchange-direction">
+            <div class="exchange-direction">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
                 <!--! Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                 <path
@@ -293,6 +304,7 @@
             <div class="e-separator"></div>
           </div>
 
+          <!-- BUY SECTION -->
           <div class="e-container e-exchange-buy">
             <div class="e-elements e-label-container">
               <h1>KUP</h1>
@@ -333,12 +345,33 @@
               </div>
             </div>
             <div class="e-elements e-values">
-              <input class="e-value e-buy-input" value="0" />
+              <div class="e-value-buy btn-invisible">
+                <div class="btn manipulate btn-super-small sub01">-0.1</div>
+                <div class="btn manipulate btn-small sub1">-1</div>
+                <input class="e-value e-buy-input" value="0" />
+                <div class="btn manipulate btn-small add1">+1</div>
+                <div class="btn manipulate btn-super-small add01">+0.1</div>
+              </div>
             </div>
-            <div class="e-elements e-info"></div>
+            <div class="e-elements e-info">
+              <div class="e-info e-info-buy-text"></div>
+              <div class="btn-visible" id="info-2">
+                Wybierz surowiec który chcesz kupić
+              </div>
+            </div>
+
+            <div class="e-elements">
+              <div class="e-elements btn btn-big make-deal-btn btn-invisible">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <!--! Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                  <path
+                    d="M256 16a240 240 0 1 1 0 480 240 240 0 1 1 0-480zm0 496A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM357.7 197.7c3.1-3.1 3.1-8.2 0-11.3s-8.2-3.1-11.3 0L224 308.7l-58.3-58.3c-3.1-3.1-8.2-3.1-11.3 0s-3.1 8.2 0 11.3l64 64c3.1 3.1 8.2 3.1 11.3 0l128-128z"
+                  />
+                </svg>
+              </div>
+            </div>
           </div>
 
-          <div class="e-container e-exchange-buy"></div>
           <div class="e-container e-foot"></div>
         </div>
       </div>
@@ -466,10 +499,7 @@
         </div>
       </div>
 
-
-
-
-            <!--  -->
+      <!--  -->
       <!--  -->
       <!--  -->
       <!--  -->
@@ -507,7 +537,7 @@
             />
           </svg>
         </div>
-        <div class="btn game-menu-btn user">
+        <div class="btn game-menu-btn user" id="game-menu-btn-user">
           <svg
             width="14"
             height="12"

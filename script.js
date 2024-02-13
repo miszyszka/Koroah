@@ -61,10 +61,6 @@ const pinGameInput = document.querySelector(".pin-game-input");
 
 // CHAIRS
 const allChairs = document.querySelectorAll(".chair");
-const chairTop = document.querySelector(".chair-top");
-const chairRight = document.querySelector(".chair-right");
-const chairBottom = document.querySelector(".chair-bottom");
-const chairLeft = document.querySelector(".chair-left");
 
 // GAME
 const gameMenuBTNs = document.querySelectorAll(".game-menu-btn");
@@ -81,6 +77,11 @@ const deckUser = document.querySelector(".deck-user");
 const deckTurn = document.querySelector(".deck-turn");
 
 const daninaContainer = document.querySelector(".danina-container");
+
+
+//MENU
+
+const gameMenuBtnUser = document.getElementById('game-menu-btn-user');
 
 // OTHER
 const notificationContainer = document.querySelector(".notification-container");
@@ -114,14 +115,42 @@ const classNumber = {
   4: "five",
 };
 
+const sourceBTNS = {
+  0: `
+    <div class="small-circle ciecz">
+      <img src="svg/ciecz.svg" alt="" />
+    </div>`,
+
+  1: `
+  <div class="small-circle krysztal">
+    <img src="svg/krysztal.svg" alt="" />
+
+</div>`,
+  2: `
+<div class="small-circle skala">
+  <img src="svg/skala.svg" alt="" />
+
+</div>`,
+  3: `
+<div class="small-circle zelazo">
+  <img src="svg/zelazo.svg" alt="" />
+</div>
+`,
+};
+
 ////////////////
 // CODE
 ///////////////
 function formatInputValue(inputValue, arg) {
-  // Usuń wszystkie znaki, które nie są cyframi ani przecinkiem
-  inputValue = inputValue.toString().replace(/[^0-9.]/g, "");
+  inputValue = inputValue.toString();
 
-  // Sprawdź czy są więcej niż jedno miejsce po przecinku
+  if (inputValue.charAt(0) === "-" && inputValue.length > 1) {
+    inputValue = "-" + inputValue.substring(1).replace(/[^0-9.]/g, "");
+  } else {
+    // W przeciwnym razie wykonaj operacje jak dotychczas
+    inputValue = inputValue.replace(/[^0-9.]/g, "");
+  }
+
   const dotIndex = inputValue.indexOf(".");
   if (dotIndex !== -1 && inputValue.substring(dotIndex + 1).length > 1) {
     // Jeśli tak, ogranicz do jednego miejsca po przecinku
@@ -196,12 +225,10 @@ const updateCurrentPlayerToDB = function () {
     const player = currentGame.gameOrder[chairId].player;
 
     for (const resource in currentPlayer.resources) {
-      console.log(currentPlayer.resources[resource]);
       currentPlayer.resources[resource] = formatInputValue(
         currentPlayer.resources[resource],
         "number"
       );
-      console.log(currentPlayer.resources[resource]);
     }
 
     if (player === currentPlayer.player) {
@@ -890,7 +917,6 @@ const startGame = function () {
   const duLabels = document.querySelectorAll(".du-label");
   duLabels.forEach((label) => {
     label.innerHTML = currentPlayer.player;
-    console.log(label);
   });
 
   for (let i = 0; i < currentGame.gameOrder.length; i++) {
@@ -950,7 +976,6 @@ gameMenuBTNs.forEach((button) => {
       (deck) => deck.classList[2] === this.classList[2]
     );
 
-    console.log(choosenDeck.classList[2]);
     if (choosenDeck.classList[2] === "prices") {
       gameScreenContent.style.display = "flex";
       setTimeout(() => {
@@ -998,6 +1023,17 @@ const eSourceBTNsBuy = document.querySelectorAll(".e-source-btn-buy");
 const eSellInput = document.querySelector(".e-sell-input");
 const eBuyInput = document.querySelector(".e-buy-input");
 
+// whole e-elements = VALUE
+const eValueSale = document.querySelector(".e-value-sale");
+const eValueBuy = document.querySelector(".e-value-buy");
+
+// informacje
+const info1 = document.getElementById("info-1");
+const info2 = document.getElementById("info-2");
+
+const eInfoSellText = document.querySelector(".e-info-sell-text");
+const eInfoBuyText = document.querySelector(".e-info-buy-text");
+
 // Wstępne rozwinięcie wszystkich source BTN's
 eSourceBTNs.forEach((i) => {
   const iconId = parseInt(i.classList[2].slice(-1));
@@ -1009,44 +1045,40 @@ eSourceBTNs.forEach((i) => {
 let rollOutsideSell = true;
 let rollOutsideBuy = true;
 
-const exchangeDirectionBTN = document.querySelector(".exchange-direction");
+const exchangeDealBTN = document.querySelector(".make-deal-btn");
 
-exchangeDirectionBTN.addEventListener("click", function () {
-  
+exchangeDealBTN.addEventListener("click", function () {
   const sellSourceId = parseInt(sellSource.classList[2].slice(-1));
   const buySourceId = parseInt(buySource.classList[2].slice(-1));
   const sellValue = formatInputValue(eSellInput.value, "number");
   const buyValue = formatInputValue(eBuyInput.value, "number");
-  console.log(sellValue, buyValue);
-  console.log(buySourceId);
 
-  console.log(sellValue, buyValue);
   currentPlayer.resources[sellSourceId] =
     currentPlayer.resources[sellSourceId] - eSellInput.value;
   currentPlayer.resources[buySourceId] =
     parseFloat(currentPlayer.resources[buySourceId]) +
     parseFloat(eBuyInput.value);
-  updateCurrentPlayerToDB();
+    gameMenuBtnUser.click()
+    setTimeout(()=>{
+      updateCurrentPlayerToDB();
+    }, 1000)
+
 });
 
 const makeConversion = function (input, direction) {
-  const displayDirectionBTN = function () {
-    if (
-      !rollOutsideBuy &&
-      !rollOutsideSell &&
-      (eSellInput.value !== undefined || eBuyInput.value !== undefined)
-    ) {
-      exchangeDirectionBTN.style.display = "flex";
-    } else {
-      exchangeDirectionBTN.style.display = "none";
-    }
-  };
-  displayDirectionBTN();
+  console.log("starting makeCoversion.....");
+  let choosenSellSource;
+  let choosenBuySource;
+  if (sellSource) {
+    choosenSellSource = parseInt(sellSource.classList[2].slice(-1));
+  }
+
+  if (buySource) {
+    choosenBuySource = parseInt(buySource.classList[2].slice(-1));
+  }
 
   if (buySource && sellSource) {
-    const choosenSellSource = parseInt(sellSource.classList[2].slice(-1));
-    const choosenBuySource = parseInt(buySource.classList[2].slice(-1));
-
+    // uzupełnianie drugiego input field
     if (direction === "from-sell") {
       // sellValue (wartość sprzedawanego surowca w monetach)
       const sellValue =
@@ -1058,7 +1090,8 @@ const makeConversion = function (input, direction) {
       if (currentOffer) {
         eBuyInput.value = formatInputValue(currentOffer);
       }
-    } else {
+    }
+    if (direction === "from-buy") {
       const buyValue =
         input * currentGame.prices[choosenBuySource] * currentPlayer.feeLevel;
       let currentOffer = buyValue / currentGame.prices[choosenSellSource];
@@ -1068,27 +1101,169 @@ const makeConversion = function (input, direction) {
       }
     }
   }
+
+  let properValue = false;
+  let properValue2 = false;
+
+  const checkIfProperValue = function () {
+    if (formatInputValue(eSellInput.value, "number") >= 1) {
+      properValue = true;
+    } else if (
+      formatInputValue(eSellInput.value, "number") < 5 &&
+      formatInputValue(eSellInput.value, "number") > 0
+    ) {
+      makeWarning("za mała wartość");
+      eSellInput.style.color = "var(--krysztal)";
+      Visibility(exchangeDealBTN, "invisible");
+      return;
+    }
+
+    if (
+      formatInputValue(eSellInput.value, "number") <
+      currentPlayer.resources[choosenSellSource]
+    ) {
+      properValue2 = true;
+    } else if (
+      formatInputValue(eSellInput.value, "number") >
+      currentPlayer.resources[choosenSellSource]
+    ) {
+      makeWarning("niewystarczajca ilość surowców");
+      eSellInput.style.color = "var(--krysztal)";
+      Visibility(exchangeDealBTN, "invisible");
+      return;
+    }
+    if (properValue && properValue2) {
+      eSellInput.style.color = "var(--main-colour)";
+      Visibility(exchangeDealBTN, "visible");
+    }
+  };
+  checkIfProperValue();
+
+
+  const displayDealBTN = function () {
+    console.log('checking if DEAL BTN posiible....');
+    if (
+      !rollOutsideBuy &&
+      !rollOutsideSell &&
+      (eSellInput.value !== undefined || eBuyInput.value !== undefined)
+    ) {
+      Visibility(exchangeDealBTN, "visible");
+    } else {
+      Visibility(exchangeDealBTN, "invisible");
+    }
+  };
+  displayDealBTN();
+};
+
+///////////////
+const inputAction = function (event, origin) {
+  clearWarning();
+  let inputValue = event.target.value;
+  if (!inputValue) {
+    inputValue = 0;
+  }
+  inputValue = formatInputValue(inputValue, "number");
+  event.target.value = inputValue;
+  makeConversion(inputValue, origin);
 };
 
 eSellInput.addEventListener("input", function (event) {
-  let inputValue = event.target.value;
-  inputValue = formatInputValue(inputValue);
-  event.target.value = inputValue;
-  makeConversion(inputValue, "from-sell");
+  const origin = "form-sell";
+  inputAction(event, origin);
 });
 
 eBuyInput.addEventListener("input", function (event) {
-  let inputValue = event.target.value;
-  inputValue = formatInputValue(inputValue);
-  event.target.value = inputValue;
-  makeConversion(inputValue, "from-buy");
+  const origin = "from-buy";
+  inputAction(event, origin);
 });
+
+// ADDING AND SUBSTRACTING 1 and 0.1
+const manipulateBTNs = document.querySelectorAll(".manipulate");
+
+manipulateBTNs.forEach((btn) => {
+  btn.addEventListener("click", function () {
+    const choosenEL = btn.classList[3];
+    let choosenValueInput = btn.parentElement.querySelector(".e-value");
+    let newValue;
+    if (choosenEL === "sub01") {
+      newValue = formatInputValue(choosenValueInput.value, "number") - 0.1;
+    }
+    if (choosenEL === "sub1") {
+      newValue = formatInputValue(choosenValueInput.value, "number") - 1;
+    }
+    if (choosenEL === "add1") {
+      newValue = formatInputValue(choosenValueInput.value, "number") + 1;
+    }
+    if (choosenEL === "add01") {
+      newValue = formatInputValue(choosenValueInput.value, "number") + 0.1;
+    }
+
+    choosenValueInput.value = formatInputValue(newValue, "number");
+    console.log(choosenValueInput.classList[1]);
+    let origin
+    if (choosenValueInput.classList[1]=== 'e-buy-input'){
+      origin = "from-buy"
+    } else {
+      origin = "from-sell"
+    }
+    makeConversion(choosenValueInput.value, origin);
+  });
+});
+
+// Uzupełnianie tekstu
+const updateInfoBar = function (id, bar) {
+  if (bar === "sell") {
+    const resourceId = parseInt(id.classList[2].slice(-1));
+    const userResources = currentPlayer.resources[resourceId];
+
+    eInfoSellText.innerHTML = `<div><h2>Dostępne ${userResources}</h2></div> ${sourceBTNS[resourceId]}`;
+  }
+  if (bar === "buy") {
+    const resourceId = parseInt(id.classList[2].slice(-1));
+    const userResources = currentPlayer.resources[resourceId];
+
+    eInfoBuyText.innerHTML = `<div><h2>Dostępne ${userResources}</h2></div> ${sourceBTNS[resourceId]}`;
+  }
+};
 
 eSourceBTNs.forEach((icon) => {
   icon.addEventListener("click", function () {
+    // UPPER BAR
+    if (icon.classList[4] === "e-source-btn-sell") {
+      if (rollOutsideSell === false) {
+        eSourceBTNsSell.forEach((i) => {
+          // ROZWIJANIE
+          const iconId = parseInt(i.classList[2].slice(-1));
+          const translateValue = 60 * iconId - 90;
+          i.style.transform = `translateX(${translateValue}px)`;
+          i.style.zIndex = "1";
+          sellSource = "";
+        });
+        rollOutsideSell = true;
+        Visibility(eValueSale, "invisible");
+        Visibility(eInfoSellText, "invisible");
+        Visibility(info1, "visible");
+      } else {
+        eSourceBTNsSell.forEach((i) => {
+          // ZWIJANIE
+          i.style.transform = `translateY(0px)`;
+          icon.style.zIndex = "2";
+          sellSource = icon;
+        });
+        rollOutsideSell = false;
+        Visibility(eValueSale, "visible");
+        Visibility(eInfoSellText, "visible");
+        Visibility(info1, "invisible");
+        updateInfoBar(sellSource, "sell");
+        makeConversion(eSellInput.value, "from-sell");
+      }
+
+    }
+
     // DOWN BAR
     if (icon.classList[4] === "e-source-btn-buy") {
       if (rollOutsideBuy === false) {
+        // ROZWIJANIE
         eSourceBTNsBuy.forEach((i) => {
           const iconId = parseInt(i.classList[2].slice(-1));
           const translateValue = 60 * iconId - 90;
@@ -1096,37 +1271,25 @@ eSourceBTNs.forEach((icon) => {
           i.style.zIndex = "1";
           buySource = "";
           makeConversion(eBuyInput.value, "from-buy");
+          Visibility(eValueBuy, "invisible");
+          Visibility(eInfoBuyText, "invisible");
+          Visibility(info2, "visible");
         });
         rollOutsideBuy = true;
       } else {
         eSourceBTNsBuy.forEach((i) => {
+          // ZWIJANIE
           i.style.transform = `translateY(0px)`;
           icon.style.zIndex = "2";
           buySource = icon;
-          makeConversion(eBuyInput.value, "from-buy");
+
+          Visibility(eValueBuy, "visible");
+          Visibility(eInfoBuyText, "visible");
+          Visibility(info2, "invisible");
         });
         rollOutsideBuy = false;
-      }
-      // UPPER BAR
-    } else if (icon.classList[4] === "e-source-btn-sell") {
-      if (rollOutsideSell === false) {
-        eSourceBTNsSell.forEach((i) => {
-          const iconId = parseInt(i.classList[2].slice(-1));
-          const translateValue = 60 * iconId - 90;
-          i.style.transform = `translateX(${translateValue}px)`;
-          i.style.zIndex = "1";
-          sellSource = "";
-          makeConversion(eSellInput.value, "from-sell");
-        });
-        rollOutsideSell = true;
-      } else {
-        eSourceBTNsSell.forEach((i) => {
-          i.style.transform = `translateY(0px)`;
-          icon.style.zIndex = "2";
-          sellSource = icon;
-          makeConversion(eSellInput.value, "from-sell");
-        });
-        rollOutsideSell = false;
+        makeConversion(eBuyInput.value, "from-buy");
+        updateInfoBar(buySource, "buy");
       }
     }
   });

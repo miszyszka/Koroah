@@ -38,7 +38,7 @@
 
 body {
   font-family: "Bebas Neue", sans-serif;
-  overflow-X: hidden;
+  overflow-x: hidden;
   align-items: center;
   justify-content: center;
   height: 100vh;
@@ -68,7 +68,7 @@ h3 {
   /* overflow: hidden; */
 }
 
-.loading-screen-EL{
+.loading-screen-EL {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -388,7 +388,6 @@ h3 {
   transform: translateY(0px) !important;
 }
 
-
 .pin-box {
   position: absolute;
   display: flex;
@@ -400,9 +399,9 @@ h3 {
   height: 100%;
 }
 
-.keyboard{
+.keyboard {
   position: absolute;
-  top:25vh;
+  top: 25vh;
   width: 400px;
   height: 50vh;
   display: flex;
@@ -411,13 +410,13 @@ h3 {
   transition: 0.5s ease;
 }
 
-.key{
+.key {
   width: 80px;
   height: 80px;
   margin: 1vh 15px;
   border-radius: 50%;
   border: var(--main-colour) 1px solid;
-filter: none;
+  filter: none;
 }
 
 /* -------------- */
@@ -425,9 +424,6 @@ filter: none;
 /* -------------- */
 /* -------------- */
 /* -------------- */
-
-
-
 
 /* MAIN DATA */
 .ciecz {
@@ -452,20 +448,20 @@ filter: none;
   color: #1f1f1d;
 }
 
-.game-screen-content{
+.game-screen-content {
   transition: ease 0.4s;
   width: 100vw;
 }
 
-.game-screen-bg{
+.game-screen-bg {
   position: absolute;
   display: flex;
-  justify-items: center
+  justify-items: center;
 }
 
-.game-screen-bg img{
+.game-screen-bg img {
   height: 150vw;
-width: 100vw;
+  width: 100vw;
 }
 
 .game-top-bar {
@@ -491,9 +487,6 @@ width: 100vw;
   transition: 0.5s ease;
 }
 
-
-
-
 /* DECKS */
 
 .deck {
@@ -514,7 +507,7 @@ width: 100vw;
   margin-top: 10px;
 }
 
-.deck-turn{
+.deck-turn {
   background-color: var(--orange);
   height: 100vh;
   z-index: 0;
@@ -545,7 +538,6 @@ width: 100vw;
   transition: 0.4s ease;
 }
 
-
 /* MENU */
 
 .game-menu-bar {
@@ -566,7 +558,7 @@ width: 100vw;
   margin-top: 20px;
 }
 
-.testBTN{
+.testBTN {
   z-index: 20;
   position: absolute;
   top: 100px;
@@ -672,7 +664,7 @@ width: 100vw;
 /* DU */
 
 .du-all-containers,
-.e-all-containers{
+.e-all-containers {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -777,7 +769,7 @@ width: 100vw;
   margin: 0;
 }
 
-.bar-label{
+.bar-label {
   width: 10px;
   transform: translateX(-20px);
 }
@@ -855,27 +847,32 @@ width: 100vw;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* border: rgba(255, 255, 255, 0.08) 1px solid; */
 }
 
-.e-container.e-top-bar{
-  height: 20vh;
+.e-container.e-top-bar {
+  height: 7vh;
 }
 
 .e-exchange-sell,
+.e-exchange-buy {
+  height: 30vh;
+}
+
 .e-exchange-buy{
-  height: 35vh;
+  height: 40vh;
 }
 
-.e-separator-container{
+.e-separator-container {
   flex-direction: row;
-  height: 10vh;
+  height: 2vh;
 }
 
-.e-separator{
+.e-separator {
   background-color: var(--main-colour);
-  height: 2px;
-  width: 30vw;
-  margin: 0px 10px;
+  height: 1px;
+  width: 40vw;
+  margin: 0px 5px;
 }
 
 .e-elements {
@@ -887,22 +884,45 @@ width: 100vw;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  /* border: #4e6c9819 1px solid */
+  /* border: #4e6c9819 1px solid; */
 }
 
-.e-info{
-  height: 30px;
+.e-value-sale,
+.e-value-buy{
+  align-items: center;
+  .btn{
+    margin: 5px;
+  }
 }
-.e-label-container{
-  margin-top: 5vw;
+
+.e-info {
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  transition: ease 0.2s;
+
+  .small-circle{
+    position: inherit;
+    display: flex;
+    margin: 7px;
+    width: 25px;
+    height: 25px;
+  }
+  .small-circle img{
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.e-label-container {
   height: 40px;
 }
 
-.e-source-btn{
+.e-source-btn {
   position: absolute;
-  width: 45px;
-  height: 45px;
-  margin: 8px;
+  width: 50px;
+  height: 50px;
+  margin: 10px;
 }
 
 .e-sell-input,
@@ -910,7 +930,7 @@ width: 100vw;
   outline: none;
   border: var(--main-colour) 1px solid;
   border-radius: 6px;
-  width: 200px;
+  width: 100px;
   height: 100%;
   margin: 10px;
   background-color: var(--black);
@@ -920,20 +940,33 @@ width: 100vw;
   font-family: "Bebas Neue", sans-serif;
 }
 
+
 .e-sell-input::placeholder {
   font-size: 15px;
 }
 
-.exchange-direction{
-  display: none
-}
-
-.exchange-direction svg{
+.exchange-direction svg {
   width: 20px;
   height: 20px;
   fill: white;
+  transform: translateY(5px);
 }
 
+.make-deal-btn {
+  width: 80px;
+  height: 80px;
+}
+
+.make-deal-btn svg {
+  width: 30px;
+  height: 30px;
+  fill: var(--main-colour);
+}
+
+#info-1,
+#info-2{
+  transform: translateY(-60px);
+}
 
 /* --------------------- */
 /* --------------------- */
