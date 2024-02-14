@@ -661,6 +661,54 @@ h3 {
 /* --------------------- */
 /* --------------------- */
 /* --------------------- */
+/* BU */
+
+.deck-buildings{
+  display: flex;
+  flex-direction: column;
+}
+
+.bu-container{
+  width: 90vw;
+  height: 50px;
+  margin: 5px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  .bu-label{
+    width: calc(30% - 50px);
+    text-align: end;
+    padding-right: 10px;
+  }
+  .bu-bar{
+    border: #4b4b4b1e 1px solid;
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .btn-container{
+    width: 50px;
+  }
+}
+
+.bu-dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: var(--main-colour) 1px solid;
+  margin: 2px;
+}
+
+
+
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
 /* DU */
 
 .du-all-containers,

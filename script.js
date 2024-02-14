@@ -70,6 +70,10 @@ const addCrystal = document.querySelector(".add-crystal");
 const changeCrystal = document.querySelector(".change-crystal");
 const exchangeBTNs = document.querySelectorAll(".SVG-exchange");
 
+const allBuildingsContainer = document.querySelector(
+  ".all-buildings-container"
+);
+
 // DECKS
 const allDecks = document.querySelectorAll(".deck");
 const deckPrices = document.querySelector(".deck-prices");
@@ -78,10 +82,9 @@ const deckTurn = document.querySelector(".deck-turn");
 
 const daninaContainer = document.querySelector(".danina-container");
 
-
 //MENU
 
-const gameMenuBtnUser = document.getElementById('game-menu-btn-user');
+const gameMenuBtnUser = document.getElementById("game-menu-btn-user");
 
 // OTHER
 const notificationContainer = document.querySelector(".notification-container");
@@ -138,6 +141,36 @@ const sourceBTNS = {
 `,
 };
 
+// 0: "Źródło",
+// 1: "Gildia",
+// 2: "Kopalnia",
+// 3: "Huta",
+// 4: "Generator",
+// 5: "Sąd",
+// 6: "Wieża",
+// 7: "Krąg kupców",
+// 8: "Konwerter",
+// 9: "Monolit",
+// 10: "Portal1",
+// 11: "Portal2",
+// 12: "Orbita",
+
+const allBuildingsArray = [
+  "Źródło",
+  "Gildia",
+  "Kopalnia",
+  "Huta",
+  "Generator",
+  "Sąd",
+  "Wieża",
+  "Krąg kupców",
+  "Konwerter",
+  "Monolit",
+  "Portal 1",
+  "Portal 2",
+  "Orbita",
+];
+
 ////////////////
 // CODE
 ///////////////
@@ -174,11 +207,15 @@ function formatInputValue(inputValue, arg) {
 
 const updateCurrentGame = function (gameName) {
   // reading game from DB and making currentGamme & currentPlayer really current
+  let passedGameName = gameName;
+  if (!gameName) {
+    passedGameName = currentGame.name;
+  }
 
   console.log("=== RUNNING FUNCTION updateCurrentGame ===");
-  console.log(gamesArray);
-  const foundGame = gamesArray.find((game) => game.name === gameName);
+  const foundGame = gamesArray.find((game) => game.name === passedGameName);
 
+  console.log(foundGame);
   if (currentPlayer) {
     const foundPlayer = foundGame.gameOrder.find(
       (player) => player.player === currentPlayer.player
@@ -205,6 +242,41 @@ const updateCurrentGame = function (gameName) {
 
   console.log("=== ENDING update === CURENT GAME IS:");
   console.log(currentGame);
+};
+
+const updateBuildingsScreen = function () {
+  const removeOldList = function () {
+    const buildings = document.querySelectorAll(".bu-container");
+    buildings.forEach((building) => {
+      building.parentNode.removeChild(building);
+    });
+  };
+  removeOldList();
+
+  for (let i = 0; i < allBuildingsArray.length; i++) {
+    const newBuildingDiv = document.createElement("div");
+    newBuildingDiv.innerHTML = `
+    <div class="bu-container">
+    <h2 class="bu-label">${allBuildingsArray[i]}</h2>
+    <div class="bu-bar bu-bar-id-${i}"></div>
+    <div class="btn-container ">
+      <div class="btn btn-super-small">i</div>
+    </div>
+  </div>`;
+    allBuildingsContainer.appendChild(newBuildingDiv);
+    const targetBar = document.querySelector(`.bu-bar-id-${i}`);
+    const newDot = document.createElement("div");
+    newDot.className = "bu-dot";
+
+    if (currentGame.buildings[i].activities && currentGame.buildings[i].activities.length > 0) {
+      for (let j = 0; j < currentGame.buildings[i].activities.length; j++) {
+        const newDot = document.createElement("div");
+        newDot.className = "bu-dot";
+        targetBar.appendChild(newDot);
+      }
+    }
+
+  }
 };
 
 ///////////////////////////
@@ -675,6 +747,14 @@ finalNewGameBTN.addEventListener("click", function () {
   currentGame.gameOrder = rearangedGameOrder;
   currentGame.prices = [2, 2, 2, 2];
 
+  let buildings = {};
+
+  for (let i = 0; i < allBuildingsArray.length; i++) {
+    buildings[i] = { build: false, activities: [] };
+  }
+
+  currentGame.buildings = buildings;
+
   push(gamesDB, currentGame);
   goToScreen(finalJoinGameScreen);
 
@@ -762,6 +842,61 @@ finalJoinGameBTN.addEventListener("click", function () {
 // GAME
 //////////////////////
 //////////////////////
+
+// funkcja ktora sprawdzi ile jest neutralnych, pozytywnych i negatywnych w building.activity
+const summaryBuilidingActivities = function (id) {
+  let neutrals = 0;
+  let positives = 0;
+  let negatives = 0;
+
+  for (let i = 0; i < currentGame.buildings[id].activities.length; i++) {
+    switch (currentGame.buildings[id].activities[i]) {
+      case 0:
+        neutrals++;
+        break;
+      case 1:
+        positives++;
+        break;
+      case 2:
+        negatives++;
+        break;
+      default:
+        // Ignoruj inne wartości
+        break;
+    }
+  }
+  return [neutrals, positives, negatives];
+};
+
+// funkcja która doda losową aktywność do building.activity
+const addRandomActivity = function (id) {
+  function losujLiczbe() {
+    const losowaLiczba = Math.random(); // Losuje liczbę z przedziału [0, 1)
+
+    if (losowaLiczba < 0.5) {
+      return 0; // 50% szans na 0
+    } else if (losowaLiczba < 0.75) {
+      return 1; // 25% szans na 1
+    } else {
+      return 2; // 25% szans na 2
+    }
+  }
+
+  // Add Activity do CurrentGame
+  Object.keys(currentGame.buildings).forEach((buildingId) => {
+    const building = currentGame.buildings[buildingId];
+
+    if (buildingId === id.toString()) {
+      if (!building.activities) {
+        building.activities = []; // dodaj array jeśli jeszcze go nie ma
+      }
+      building.activities.push(losujLiczbe());
+      updateDB();
+    }
+  });
+
+  // Add Dot
+};
 
 function sortBars() {
   const barsContainer = document.querySelector(".danina-container");
@@ -964,7 +1099,7 @@ testBTN.addEventListener("click", function () {
   // passTurn();
   console.log(currentGame);
   console.log(currentPlayer);
-  updateUserScreen();
+  addRandomActivity(2);
 });
 
 gameMenuBTNs.forEach((button) => {
@@ -1058,11 +1193,10 @@ exchangeDealBTN.addEventListener("click", function () {
   currentPlayer.resources[buySourceId] =
     parseFloat(currentPlayer.resources[buySourceId]) +
     parseFloat(eBuyInput.value);
-    gameMenuBtnUser.click()
-    setTimeout(()=>{
-      updateCurrentPlayerToDB();
-    }, 1000)
-
+  gameMenuBtnUser.click();
+  setTimeout(() => {
+    updateCurrentPlayerToDB();
+  }, 1000);
 });
 
 const makeConversion = function (input, direction) {
@@ -1139,9 +1273,8 @@ const makeConversion = function (input, direction) {
   };
   checkIfProperValue();
 
-
   const displayDealBTN = function () {
-    console.log('checking if DEAL BTN posiible....');
+    console.log("checking if DEAL BTN posiible....");
     if (
       !rollOutsideBuy &&
       !rollOutsideSell &&
@@ -1200,11 +1333,11 @@ manipulateBTNs.forEach((btn) => {
 
     choosenValueInput.value = formatInputValue(newValue, "number");
     console.log(choosenValueInput.classList[1]);
-    let origin
-    if (choosenValueInput.classList[1]=== 'e-buy-input'){
-      origin = "from-buy"
+    let origin;
+    if (choosenValueInput.classList[1] === "e-buy-input") {
+      origin = "from-buy";
     } else {
-      origin = "from-sell"
+      origin = "from-sell";
     }
     makeConversion(choosenValueInput.value, origin);
   });
@@ -1257,7 +1390,6 @@ eSourceBTNs.forEach((icon) => {
         updateInfoBar(sellSource, "sell");
         makeConversion(eSellInput.value, "from-sell");
       }
-
     }
 
     // DOWN BAR
@@ -1380,6 +1512,8 @@ const updateUserScreen = function () {
       makeNotification(newestNotification);
     }
   }
+
+  updateBuildingsScreen();
 
   // CHECK IF IT'S MY TURN
   if (currentPlayer.turn === true && alreadyActive === false) {
@@ -1602,7 +1736,7 @@ zapobiegajWygaszaniuEkranu();
 
 setInterval(() => {
   updateUserScreen();
-}, 5000);
+}, 10000);
 // function domReady(fn) {
 //   if (document.readyState === 'complete' || document.readyState === 'interactive') {
 //     setTimeout(fn, 1);
