@@ -148,12 +148,13 @@ const sourceBTNS = {
 // 4: "Generator",
 // 5: "Sąd",
 // 6: "Wieża",
-// 7: "Krąg kupców",
-// 8: "Konwerter",
-// 9: "Monolit",
-// 10: "Portal1",
-// 11: "Portal2",
-// 12: "Orbita",
+// 8: "Krąg kupców",
+// 9: "Orbita"
+// 9: "Konwerter",
+// 10: "Monolit",
+// 11: "Portal1",
+// 12: "Portal2",
+
 
 const allBuildingsArray = [
   "Źródło",
@@ -164,11 +165,10 @@ const allBuildingsArray = [
   "Sąd",
   "Wieża",
   "Krąg kupców",
+  "Orbita",
   "Konwerter",
   "Monolit",
-  "Portal 1",
-  "Portal 2",
-  "Orbita",
+  "Portal",
 ];
 
 ////////////////
@@ -254,28 +254,48 @@ const updateBuildingsScreen = function () {
   removeOldList();
 
   for (let i = 0; i < allBuildingsArray.length; i++) {
+    let kind;
+    if ((i === 0 || i === 4 || i === 5 || i === 6)) {
+      kind = 0;
+    }
+    if ((i === 1 || i === 7 || i === 12)) {
+      kind = 1;
+    }
+    if ((i === 2 || i === 8 || i === 9 || i === 10)) {
+      kind = 2;
+    }
+    if ((i === 3 || i === 11 || i === 12)) {
+      kind = 3;
+    }
+
     const newBuildingDiv = document.createElement("div");
     newBuildingDiv.innerHTML = `
     <div class="bu-container">
     <h2 class="bu-label">${allBuildingsArray[i]}</h2>
+    ${sourceBTNS[kind]}
     <div class="bu-bar bu-bar-id-${i}"></div>
     <div class="btn-container ">
-      <div class="btn btn-super-small">i</div>
+      <div class="btn btn-super-small">...</div>
     </div>
   </div>`;
+    if (i === 4) {
+      newBuildingDiv.style = "margin-top: 40px";
+    }
     allBuildingsContainer.appendChild(newBuildingDiv);
     const targetBar = document.querySelector(`.bu-bar-id-${i}`);
     const newDot = document.createElement("div");
     newDot.className = "bu-dot";
 
-    if (currentGame.buildings[i].activities && currentGame.buildings[i].activities.length > 0) {
+    if (
+      currentGame.buildings[i].activities &&
+      currentGame.buildings[i].activities.length > 0
+    ) {
       for (let j = 0; j < currentGame.buildings[i].activities.length; j++) {
         const newDot = document.createElement("div");
         newDot.className = "bu-dot";
         targetBar.appendChild(newDot);
       }
     }
-
   }
 };
 
