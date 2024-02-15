@@ -554,6 +554,11 @@ let previousScreens = [];
 const goToPreviousScreen = function () {
   if (previousScreens.length > 0) {
     currentScreen.classList.add("no-active");
+    // setTimeout(() => {
+    //   currentScreen.style.display= 'none'
+    // }, 100);
+
+
     currentScreen = previousScreens.pop();
 
     currentScreen.style.display = "flex";

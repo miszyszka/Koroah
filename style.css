@@ -65,7 +65,7 @@ h3 {
   height: 100vh;
   z-index: -1;
   position: absolute;
-  /* overflow: hidden; */
+  overflow-x: hidden;
 }
 
 .loading-screen-EL {
