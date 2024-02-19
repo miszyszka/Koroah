@@ -1376,12 +1376,12 @@ const updateInfoBar = function (id, bar) {
 
     eInfoSellText.innerHTML = `<div><h2>Dostępne ${userResources}</h2></div> ${sourceBTNS[resourceId]}`;
   }
-  if (bar === "buy") {
-    const resourceId = parseInt(id.classList[2].slice(-1));
-    const userResources = currentPlayer.resources[resourceId];
+  // if (bar === "buy") {
+  //   const resourceId = parseInt(id.classList[2].slice(-1));
+  //   const userResources = currentPlayer.resources[resourceId];
 
-    eInfoBuyText.innerHTML = `<div><h2>Dostępne ${userResources}</h2></div> ${sourceBTNS[resourceId]}`;
-  }
+  //   eInfoBuyText.innerHTML = `<div><h2>Dostępne ${userResources}</h2></div> ${sourceBTNS[resourceId]}`;
+  // }
 };
 
 eSourceBTNs.forEach((icon) => {
