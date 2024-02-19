@@ -508,7 +508,6 @@ h3 {
   justify-content: center;
   flex-direction: row;
   transform: translateY(0px);
-  transition: 0.23s ease;
 }
 
 .deck h2 {
@@ -538,13 +537,11 @@ h3 {
 
 .deck-active {
   transform: translateY(0%);
-  transition: 0.4s ease;
   display: flex;
 }
 
 .deck-inactive {
   transform: translateY(100%);
-  transition: 0.4s ease;
 }
 
 /* MENU */
