@@ -17,73 +17,74 @@
   </head>
 
   <body>
-    <div class="BG"></div>
+    <div class="test-btn">TEST</div>
+    <!-- <div class="BG"></div> -->
+
     <div class="loading-screen-EL">
       <h1>LOADING....</h1>
     </div>
-    <div class="message-container"></div>
+    <!-- 
+    <div class="message-container"></div> -->
+
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!-- Create and join-->
+
+    <!--  -->
+    <!--  -->
+    <!-- MAIN SCREEN -->
     <div class="screen main-screen active">
-      <div class="top-bar"></div>
-      <div class="main-content" style="height: 400px">
-        <div class="btn btn-big new-game-BTN">Nowa gra</div>
-        <div class="btn btn-big join-game-BTN">Dołącz</div>
-        <div class="btn btn-small join-game-BTN1" style="margin-top: 20px">
-          1
-        </div>
-        <div class="btn btn-small join-game-BTN2">2</div>
-        <div class="btn btn-small join-game-BTN3">3</div>
-        <!-- <div id="my-qr-reader" style="width: 300px;"></div> -->
-      </div>
+      <img src="img/Main-GB.png" id="main-bg-img" />
+      <div class="laubray-svg" id="main-logo"></div>
+      <div id="main-label">KOROAH</div>
+      <div class="btn btn-big new-game-BTN navigate-btn">Nowa gra</div>
+      <div class="btn btn-big join-game-BTN navigate-btn">Dołącz</div>
     </div>
 
-    <!-- NEXT NEW GAME SCREEN -->
-    <div class="screen next-new-game-screen no-active">
-      <div class="top-bar">
-        <div class="btn-small go-back">
-          <img src="svg/angles-left-solid.svg" alt="" />
-        </div>
-      </div>
-      <div class="main-content">
+    <!-- FIRST-CREATE-SCREEN -->
+    <div class="screen first-create-screen no-active">
+      <div class="go-back-svg go-to-main"></div>
+      <div class="container h150">
         <h2 class="label">NAZWA GRY</h2>
         <input class="input name-game-input" type="text" />
+      </div>
+      <div class="container h150">
         <h2 class="label">ilość graczy</h2>
         <div class="circle-container">
-          <!-- <div class="btn btn-small cricle">2</div> -->
           <div class="btn btn-small cricle">3</div>
           <div class="btn btn-small cricle">4</div>
           <div class="btn btn-small cricle">5</div>
         </div>
       </div>
-      <div class="menu-bar">
-        <div class="btn btn-big next-new-game-BTN btn-invisible">Dalej</div>
+      <div class="container h150">
+        <div class="btn btn-big go-to-chair-screen-BTN btn-inactive">Dalej</div>
       </div>
     </div>
 
-    <!-- FINAL NEW GAME SCREEN -->
-    <div class="screen final-new-game-screen no-active">
-      <div class="top-bar">
-        <div class="btn-small go-back">
-          <img src="svg/angles-left-solid.svg" alt="" />
-        </div>
+    <!--  -->
+    <!--  -->
+    <!-- CHAIR-SCREEN -->
+    <div class="screen chair-screen no-active">
+      <div class="go-back-svg go-to-first-screen"></div>
+      <div class="container h400">
+        <div class="table"></div>
+        <div class="chair chair-1" data-chair-id="1"></div>
+        <div class="chair chair-2" data-chair-id="2"></div>
+        <div class="chair chair-3" data-chair-id="3"></div>
+        <div class="chair chair-4" data-chair-id="4"></div>
+        <div class="chair chair-5" data-chair-id="5"></div>
       </div>
-      <div class="main-content">
-        <div class="container">
-          <div class="table"></div>
-          <div class="chair chair-1" data-chair-id="1"></div>
-          <div class="chair chair-2" data-chair-id="2"></div>
-          <div class="chair chair-3" data-chair-id="3"></div>
-          <div class="chair chair-4" data-chair-id="4"></div>
-          <div class="chair chair-5" data-chair-id="5"></div>
-        </div>
-      </div>
-      <div class="menu-bar">
-        <div
-          class="btn btn-big final-new-game-BTN btn-invisible"
-          style="display: none"
-        >
-          STWÓRZ
-        </div>
-      </div>
+      <div class="btn btn-big final-new-game-BTN btn-inactive">STWÓRZ</div>
       <div class="avatars-container no-active">
         <div class="avatar acalas" id="avatar-acalas"></div>
         <div class="avatar umza" id="avatar-umza"></div>
@@ -93,42 +94,42 @@
       </div>
     </div>
 
-    <!-- NEXT JOIN GAME SCREEN -->
-    <div class="screen next-join-game-screen no-active">
-      <div class="top-bar">
-        <div class="btn-small go-back">
-          <img src="svg/angles-left-solid.svg" alt="" />
-        </div>
-      </div>
-      <div class="main-content">
+    <!--  -->
+    <!--  -->
+    <!-- FIRST-JOIN-SCREEN -->
+    <div class="screen first-join-screen no-active">
+      <div class="go-back-svg go-to-main"></div>
+
+      <div class="container h150">
         <h2 class="label">NAZWA GRY</h2>
         <input class="input join-game-input" type="text" />
       </div>
-      <div class="menu-bar">
-        <div
-          class="btn btn-big next-join-game-BTN btn-invisible"
-          style="display: none"
-        >
-          join
-        </div>
+      <div class="container h150">
+        <div class="btn btn-big go-to-pin-BTN btn-inactive">join</div>
       </div>
     </div>
 
-    <!-- FINAL JOIN GAME SCREEN -->
-    <div class="screen final-join-game-screen no-active">
-      <div class="top-bar">
-        <div class="btn-small go-home">
-          <img src="svg/house-solid.svg" alt="" />
-        </div>
-      </div>
-      <div class="main-content">
+    <!--  -->
+    <!--  -->
+    <!-- PIN-SCREEN -->
+    <div class="screen pin-screen no-active">
+      <div class="container h100">
         <h2>Kim grasz?</h2>
         <div class="icon-container"></div>
-        <div class="pin-box el-invisible">
+      </div>
+      <div class="container h100">
+        <div class="pin-box no-active">
           <h2 class="pin-label">Stwórz PIN</h2>
-          <input class="input pin-game-input" type="text" maxlength="4" />
+          <div class="pin-dots">
+            <div class="pin-dot pin-dot-0"></div>
+            <div class="pin-dot pin-dot-1"></div>
+            <div class="pin-dot pin-dot-2"></div>
+            <div class="pin-dot pin-dot-3"></div>
+          </div>
         </div>
-        <div class="keyboard el-invisible">
+      </div>
+      <div class="container h400">
+        <div class="keyboard no-active">
           <div class="btn key 1">1</div>
           <div class="btn key 2">2</div>
           <div class="btn key 3">3</div>
@@ -138,18 +139,15 @@
           <div class="btn key 7">7</div>
           <div class="btn key 8">8</div>
           <div class="btn key 9">9</div>
+          <div class="btn key 9 null"></div>
           <div class="btn key 0">0</div>
+          <div class="btn key del">
+            <div class="delete-svg"></div>
+          </div>
         </div>
       </div>
-      <div class="menu-bar">
-        <div class="btn btn-big final-join-game-BTN btn-invisible">START</div>
-      </div>
-    </div>
-
-    <!-- SELLECT PLAYER SCREEN -->
-    <div class="screen select-player-screen no-active">
-      <div class="btn-small go-back">
-        <img src="svg/angles-left-solid.svg" alt="" />
+      <div class="container h150">
+        <div class="btn btn-big final-join-game-BTN btn-inactive">START</div>
       </div>
     </div>
 
@@ -157,495 +155,162 @@
     <!--  -->
     <!--  -->
     <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!-- GAME -->
 
-    <!-- PLAYER PAGE -->
-    <div class="screen game-screen no-active">
-      <div class="game-screen-content">
-        <div class="game-screen-bg">
-          <img src="img/raona.png" alt="raona" />
-        </div>
-        <div class="game-top-bar">
-          <div class="du-label-container">
-            <h1 class="du-label">NAME</h1>
-          </div>
-          <div class="btn testBTN btn-small">TEST</div>
-        </div>
+    <!--  -->
+    <!--  -->
+    <!-- TURN-SCREEN -->
+    <div class="screen turn-screen turn no-active">
+      <div class="">TURN SCREEN</div>
+    </div>
 
-        <div class="notification-container">
-          <h2>wartość kryształu</h2>
-          <input class="crystal-input" type="text" />
-          <div class="btn btn-big change-crystal">change</div>
-          <div class="btn btn-big add-crystal">ADD</div>
-          <h1>NOTIFICATIONS 2</h1>
-        </div>
+    <!--  -->
+    <!--  -->
+    <!-- HOME-SCREEN -->
+    <div class="screen home-screen home no-active">
+      <div class="">HOME SCREEN</div>
+    </div>
+
+    <!--  -->
+    <!--  -->
+    <!-- BUILDING-SCREEN -->
+    <div class="screen building-screen buildings no-active">
+      <div class="">HELLO - first screen</div>
+    </div>
+
+    <!--  -->
+    <!--  -->
+    <!-- EXCHANGE-SCREEN -->
+    <div class="screen exchange-screen exchange no-active">
+      <div class="">HELLO - first screen</div>
+    </div>
+
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!-- MENU -->
+
+    <div class="game-menu-bar no-active">
+      <div class="game-menu-btn turn" id="game-menu-btn-turn">
+        <div class="laubray-svg"></div>
+      </div>
+      <div class="game-menu-btn home selected" id="game-menu-btn-home">
+        <div class="home-svg"></div>
+      </div>
+      <div class="game-menu-btn buildings">
+        <div class="btn-building-svg"></div>
       </div>
 
-      <!--  -->
-      <!--  -->
-      <!-- DECK TURN -->
-
-        <div class="deck deck-turn turn deck-inactive">
-          <div class="btn btn-big pass-turn-btn">PASS</div>
-        </div>
-
-
-      <!--  -->
-      <!--  -->
-      <!-- DECK PRICES -->
-
-        <div class="deck deck-prices prices deck-inactive">
-          <div class="bars-container price-container">
-            <div class="bar-container">
-              <div class="measure measure-1 ciecz"></div>
-              <div class="small-circle ciecz">
-                <img src="svg/ciecz.svg" alt="" />
-              </div>
-              <h2 class="price-bar-value price-1">3</h2>
-            </div>
-            <div class="bar-container">
-              <div class="measure measure-2 krysztal"></div>
-              <div class="small-circle krysztal">
-                <img src="svg/krysztal.svg" alt="" />
-              </div>
-              <h2 class="price-bar-value price-2">3</h2>
-            </div>
-            <div class="bar-container">
-              <div class="measure measure-3 skala"></div>
-              <div class="small-circle skala">
-                <img src="svg/skala.svg" alt="" />
-              </div>
-              <h2 class="price-bar-value price-3">2</h2>
-            </div>
-            <div class="bar-container">
-              <div class="measure measure-4 zelazo"></div>
-              <div class="small-circle zelazo">
-                <img src="svg/zelazo.svg" alt="" />
-              </div>
-              <h2 class="price-bar-value price-4">3</h2>
-            </div>
-          </div>
-          <!-- SEPARATOR -->
-          <div class="separator"></div>
-          <div class="bars-container danina-container"></div>
-        </div>
-
-      <!--  -->
-      <!--  -->
-      <!-- DECK BUILDINGS -->
-      <div class="deck deck-buildings buildings deck-inactive">
-        <h1>Buildings</h1>
-        <div class="all-buildings-container"></div>
-      </div>
-
-      <!--  -->
-      <!--  -->
-      <!-- DECK EXCHANGE -->
-      <div class="deck deck-exchange exchange deck-active">
-        <div class="e-all-containers">
-          <div class="e-container e-top-bar"></div>
-
-          <!-- SEL SECTION -->
-          <div class="e-container e-exchange-sell">
-            <div class="e-elements e-label-container">
-              <h1>Sprzedaj</h1>
-            </div>
-            <div class="e-elements e-buttons">
-              <div class="e-elements e-icons">
-                <div
-                  class="btn e-source-btn e-source-btn-0 btn-super-small e-source-btn-sell"
-                >
-                  <div class="small-circle ciecz">
-                    <img src="svg/ciecz.svg" alt="" />
-                  </div>
-                </div>
-
-                <div
-                  class="btn e-source-btn e-source-btn-1 btn-super-small e-source-btn-sell"
-                >
-                  <div class="small-circle krysztal">
-                    <img src="svg/krysztal.svg" alt="" />
-                  </div>
-                </div>
-
-                <div
-                  class="btn e-source-btn e-source-btn-2 btn-super-small e-source-btn-sell"
-                >
-                  <div class="small-circle skala">
-                    <img src="svg/skala.svg" alt="" />
-                  </div>
-                </div>
-
-                <div
-                  class="btn e-source-btn e-source-btn-3 btn-super-small e-source-btn-sell"
-                >
-                  <div class="small-circle zelazo">
-                    <img src="svg/zelazo.svg" alt="" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="e-elements e-values">
-              <div class="e-value-sale btn-invisible">
-                <div class="btn manipulate btn-super-small sub01">-0.1</div>
-                <div class="btn manipulate btn-small sub1">-1</div>
-                <input class="e-value e-sell-input" value="0" />
-                <div class="btn manipulate btn-small add1">+1</div>
-                <div class="btn manipulate btn-super-small add01">+0.1</div>
-              </div>
-            </div>
-            <div class="e-elements e-info">
-              <div class="btn-visible" id="info-1">
-                Wybierz surowiec który chcesz sprzedać
-              </div>
-              <div class="e-info e-info-sell-text"></div>
-            </div>
-          </div>
-
-          <!-- SEPARATOR -->
-          <div class="e-container e-separator-container">
-            <div class="e-separator"></div>
-            <div class="exchange-direction">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                <!--! Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                <path
-                  d="M197.8 477.5c-1.5 1.6-3.6 2.5-5.8 2.5s-4.3-.9-5.8-2.5l-184-192c-3.1-3.2-2.9-8.3 .2-11.3s8.3-2.9 11.3 .2L184 452.1V40c0-4.4 3.6-8 8-8s8 3.6 8 8V452.1L370.2 274.5c3.1-3.2 8.1-3.3 11.3-.2s3.3 8.1 .2 11.3l-184 192z"
-                />
-              </svg>
-            </div>
-            <div class="e-separator"></div>
-          </div>
-
-          <!-- BUY SECTION -->
-          <div class="e-container e-exchange-buy">
-            <div class="e-elements e-label-container">
-              <h1>KUP</h1>
-            </div>
-            <div class="e-elements e-buttons">
-              <div class="e-elements e-icons">
-                <div
-                  class="btn e-source-btn e-source-btn-0 btn-super-small e-source-btn-buy"
-                >
-                  <div class="small-circle ciecz">
-                    <img src="svg/ciecz.svg" alt="" />
-                  </div>
-                </div>
-
-                <div
-                  class="btn e-source-btn e-source-btn-1 btn-super-small e-source-btn-buy"
-                >
-                  <div class="small-circle krysztal">
-                    <img src="svg/krysztal.svg" alt="" />
-                  </div>
-                </div>
-
-                <div
-                  class="btn e-source-btn e-source-btn-2 btn-super-small e-source-btn-buy"
-                >
-                  <div class="small-circle skala">
-                    <img src="svg/skala.svg" alt="" />
-                  </div>
-                </div>
-
-                <div
-                  class="btn e-source-btn e-source-btn-3 btn-super-small e-source-btn-buy"
-                >
-                  <div class="small-circle zelazo">
-                    <img src="svg/zelazo.svg" alt="" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="e-elements e-values">
-              <div class="e-value-buy btn-invisible">
-                <div class="btn manipulate btn-super-small sub01">-0.1</div>
-                <div class="btn manipulate btn-small sub1">-1</div>
-                <input class="e-value e-buy-input" value="0" />
-                <div class="btn manipulate btn-small add1">+1</div>
-                <div class="btn manipulate btn-super-small add01">+0.1</div>
-              </div>
-            </div>
-            <div class="e-elements e-info">
-              <div class="e-info e-info-buy-text"></div>
-              <div class="btn-visible" id="info-2">
-                Wybierz surowiec który chcesz kupić
-              </div>
-            </div>
-
-            <div class="e-elements">
-              <div class="e-elements btn btn-big make-deal-btn btn-invisible">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                  <!--! Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                  <path
-                    d="M256 16a240 240 0 1 1 0 480 240 240 0 1 1 0-480zm0 496A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM357.7 197.7c3.1-3.1 3.1-8.2 0-11.3s-8.2-3.1-11.3 0L224 308.7l-58.3-58.3c-3.1-3.1-8.2-3.1-11.3 0s-3.1 8.2 0 11.3l64 64c3.1 3.1 8.2 3.1 11.3 0l128-128z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <div class="e-container e-foot"></div>
-        </div>
-      </div>
-
-      <!--  -->
-      <!--  -->
-      <!-- DECK USER -->
-      <div class="deck deck-user user deck-inactive">
-        <div class="du-all-containers">
-          <div class="du-title du-container">
-            <div class="du-label-container">
-              <h1 class="du-label">NAME</h1>
-            </div>
-            <div class="main-sources">
-              <div class="token-container">
-                <h1 class="token-coins-value">4</h1>
-                <div class="token user-coins-tokens"></div>
-              </div>
-              <div class="token-separator"></div>
-              <div class="token-container">
-                <h1 class="token-coins-value">2</h1>
-                <div class="token user-move-tokens">
-                  <svg
-                    width="11"
-                    height="11"
-                    viewBox="0 0 11 11"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M11 5.5C11 8.53711 8.5376 11 5.5 11C2.4624 11 0 8.53711 0 5.5C0 2.46289 2.4624 0 5.5 0C8.5376 0 11 2.46289 11 5.5ZM5.95679 2L5.24976 2.70703L8.07812 5.53516L5.24976 8.36426L5.95679 9.07129L9.49243 5.53516L5.95679 2ZM2.99243 2L6.52808 5.53516L2.99243 9.07129L2.2854 8.36426L5.11377 5.53516L2.2854 2.70703L2.99243 2Z"
-                      fill="#D9D9D9"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="du-buildings du-container"></div>
-          <div class="du-prices du-container">
-            <div class="bars-container">
-              <div class="bar-container bar-label">
-                <h2>cena</h2>
-              </div>
-              <div class="bar-container">
-                <div class="small-circle ciecz">
-                  <img src="svg/ciecz.svg" alt="" />
-                </div>
-                <h2 class="price-bar-value price-1">3</h2>
-              </div>
-              <div class="bar-container">
-                <div class="small-circle krysztal">
-                  <img src="svg/krysztal.svg" alt="" />
-                </div>
-                <h2 class="price-bar-value price-2">3</h2>
-              </div>
-              <div class="bar-container">
-                <div class="small-circle skala">
-                  <img src="svg/skala.svg" alt="" />
-                </div>
-                <h2 class="price-bar-value price-3">3</h2>
-              </div>
-              <div class="bar-container">
-                <div class="small-circle zelazo">
-                  <img src="svg/zelazo.svg" alt="" />
-                </div>
-                <h2 class="price-bar-value price-4">3</h2>
-              </div>
-            </div>
-          </div>
-          <div class="du-resources du-container">
-            <div class="bars-container">
-              <div class="bar-container bar-label">
-                <h2>zasoby</h2>
-              </div>
-
-              <div class="bar-container">
-                <div class="plus plus-1">+</div>
-                <div class="resources-box box-1 ciecz"></div>
-                <h2 class="resource-bar-value resource-value-1">3</h2>
-              </div>
-              <div class="bar-container">
-                <div class="plus plus-2">+</div>
-                <div class="resources-box box-2 krysztal"></div>
-                <h2 class="resource-bar-value resource-value-2">3</h2>
-              </div>
-              <div class="bar-container">
-                <div class="plus plus-3">+</div>
-                <div class="resources-box box-3 skala"></div>
-                <h2 class="resource-bar-value resource-value-3">3</h2>
-              </div>
-              <div class="bar-container">
-                <div class="plus plus-4">+</div>
-                <div class="resources-box box-4 zelazo"></div>
-                <h2 class="resource-bar-value resource-value-4">3</h2>
-              </div>
-            </div>
-          </div>
-          <div class="du-value du-container">
-            <div class="bars-container">
-              <div class="bar-container bar-label">
-                <h2>wartość</h2>
-              </div>
-              <div class="value-container">
-                <h2 class="calculated-bar-value calculated-value-1">1</h2>
-                <div class="token-small user-coins-tokens"></div>
-              </div>
-              <div class="value-container">
-                <h2 class="calculated-bar-value calculated-value-2">3</h2>
-                <div class="token-small user-coins-tokens"></div>
-              </div>
-              <div class="value-container">
-                <h2 class="calculated-bar-value calculated-value-3">3</h2>
-                <div class="token-small user-coins-tokens"></div>
-              </div>
-              <div class="value-container">
-                <h2 class="calculated-bar-value calculated-value-4">3</h2>
-                <div class="token-small user-coins-tokens"></div>
-              </div>
-            </div>
-          </div>
-          <div class="du-foot du-container"></div>
-        </div>
-      </div>
-
-      <!--  -->
-      <!--  -->
-      <!--  -->
-      <!--  -->
-      <!-- MENU -->
-
-      <div class="game-menu-bar not-your-turn">
-        <div
-          class="btn game-menu-btn prices selected"
-          id="game-menu-btn-prices"
-        >
-          <svg
-            width="23"
-            height="30"
-            viewBox="0 0 23 30"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M22 30C21.4477 30 21 29.5523 21 29L21 1C21 0.447716 21.4477 0 22 0C22.5523 0 23 0.447716 23 1L23 29C23 29.5523 22.5523 30 22 30ZM0 29C0 29.5523 0.447716 30 1 30C1.55229 30 2 29.5523 2 29L2 9C2 8.44772 1.55228 8 1 8C0.447715 8 0 8.44772 0 9V29ZM7 29C7 29.5523 7.44772 30 8 30C8.55229 30 9 29.5523 9 29L9 13C9 12.4477 8.55229 12 8 12C7.44772 12 7 12.4477 7 13L7 29ZM14 29C14 29.5523 14.4477 30 15 30C15.5523 30 16 29.5523 16 29V19C16 18.4477 15.5523 18 15 18C14.4477 18 14 18.4477 14 19V29Z"
-              fill="white"
-            />
-          </svg>
-        </div>
-        <div class="btn game-menu-btn buildings">
-          <svg
-            width="11"
-            height="13"
-            viewBox="0 0 11 13"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M0.573486 0.392578H10.5735V10.3926H0.573486V0.392578ZM9.57349 9.39258H1.57349L1.57349 1.39258L9.57349 1.39258V9.39258ZM9.57349 11.3926H1.57349V12.3926H9.57349V11.3926Z"
-              fill="#D9D9D9"
-            />
-          </svg>
-        </div>
-        <div class="btn game-menu-btn exchange">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="white"
-            viewBox="0 0 512 512"
-          >
-            <!--! Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-            <path
-              d="M442.6 210.6C422.2 126.5 346.4 64 256 64c-71.1 0-133.1 38.6-166.3 96H144c8.8 0 16 7.2 16 16s-7.2 16-16 16H63.3 48c-8.8 0-16-7.2-16-16V80c0-8.8 7.2-16 16-16s16 7.2 16 16v60.6C103.2 75.5 174.5 32 256 32c106.4 0 195.5 74.2 218.3 173.6c2.2 9.6-5.4 18.4-15.3 18.4c-7.9 0-14.6-5.7-16.5-13.4zM69.4 301.4C89.8 385.5 165.6 448 256 448c71.1 0 133.1-38.6 166.3-96H367.8c-8.8 0-16-7.2-16-16s7.2-16 16-16h80.9 15.1c8.8 0 16 7.2 16 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V371.8C408.6 436.6 337.3 480 256 480C149.6 480 60.5 405.8 37.7 306.4C35.5 296.8 43.1 288 53 288c7.9 0 14.6 5.7 16.5 13.4z"
-            />
-          </svg>
-        </div>
-        <div class="btn game-menu-btn user" id="game-menu-btn-user">
-          <svg
-            width="14"
-            height="12"
-            viewBox="0 0 14 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M6.98307 0.0566406L13.9193 10.7277L13.0808 11.2727L7.017 1.94374L1.88313 10.5002H7.00004V11.5002H0.116943L6.98307 0.0566406Z"
-              fill="#D9D9D9"
-            />
-          </svg>
-        </div>
-      </div>
-
-      <div class="game-menu-bar your-turn">
-        <div
-          class="btn game-menu-btn turn selected"
-          id="game-menu-btn-turn"
-        ></div>
-        <div class="btn game-menu-btn buildings">
-          <svg
-            width="11"
-            height="13"
-            viewBox="0 0 11 13"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M0.573486 0.392578H10.5735V10.3926H0.573486V0.392578ZM9.57349 9.39258H1.57349L1.57349 1.39258L9.57349 1.39258V9.39258ZM9.57349 11.3926H1.57349V12.3926H9.57349V11.3926Z"
-              fill="#D9D9D9"
-            />
-          </svg>
-        </div>
-        <div class="btn game-menu-btn exchange">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="white"
-            viewBox="0 0 512 512"
-          >
-            <!--! Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-            <path
-              d="M442.6 210.6C422.2 126.5 346.4 64 256 64c-71.1 0-133.1 38.6-166.3 96H144c8.8 0 16 7.2 16 16s-7.2 16-16 16H63.3 48c-8.8 0-16-7.2-16-16V80c0-8.8 7.2-16 16-16s16 7.2 16 16v60.6C103.2 75.5 174.5 32 256 32c106.4 0 195.5 74.2 218.3 173.6c2.2 9.6-5.4 18.4-15.3 18.4c-7.9 0-14.6-5.7-16.5-13.4zM69.4 301.4C89.8 385.5 165.6 448 256 448c71.1 0 133.1-38.6 166.3-96H367.8c-8.8 0-16-7.2-16-16s7.2-16 16-16h80.9 15.1c8.8 0 16 7.2 16 16v96c0 8.8-7.2 16-16 16s-16-7.2-16-16V371.8C408.6 436.6 337.3 480 256 480C149.6 480 60.5 405.8 37.7 306.4C35.5 296.8 43.1 288 53 288c7.9 0 14.6 5.7 16.5 13.4z"
-            />
-          </svg>
-        </div>
-        <div class="btn game-menu-btn user">
-          <svg
-            width="14"
-            height="12"
-            viewBox="0 0 14 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M6.98307 0.0566406L13.9193 10.7277L13.0808 11.2727L7.017 1.94374L1.88313 10.5002H7.00004V11.5002H0.116943L6.98307 0.0566406Z"
-              fill="#D9D9D9"
-            />
-          </svg>
-        </div>
+      <div class="game-menu-btn exchange">
+        <div class="user-screen-svg"></div>
       </div>
     </div>
+
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <!--  -->
 
     <!-- SKYTPTY DO UZUPEŁNIANIAN LOGO -->
     <script>
-      fetch("htmls/coin-token.html")
+      fetch("html-svgs/go-back-svg.html")
         .then((response) => response.text())
         .then((data) => {
-          const userCoinsTokens =
-            document.querySelectorAll(".user-coins-tokens");
+          const userCoinsTokens = document.querySelectorAll(".go-back-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
           userCoinsTokens.forEach((coin) => {
             coin.innerHTML = data;
           });
         });
     </script>
+
+<script>
+  fetch("html-svgs/delete-svg.html")
+    .then((response) => response.text())
+    .then((data) => {
+      const userCoinsTokens = document.querySelectorAll(".delete-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+      userCoinsTokens.forEach((coin) => {
+        coin.innerHTML = data;
+      });
+    });
+</script>
+
+    <script>
+      fetch("html-svgs/coin-token.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens =
+            document.querySelectorAll(".user-coins-tokens"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <!-- Logotypy w menu -->
+    <script>
+      fetch("html-svgs/laubray-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".laubray-svg");
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <script>
+      fetch("html-svgs/home-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".home-svg");
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <script>
+      fetch("html-svgs/building-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens =
+            document.querySelectorAll(".btn-building-svg");
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+    <script>
+      fetch("html-svgs/user-screen-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".user-screen-svg");
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
     <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="script.js" type="module"></script>
   </body>
