@@ -22,16 +22,13 @@ const chairScreen = document.querySelector(".chair-screen");
 const pinScreen = document.querySelector(".pin-screen");
 const firstJoinScreen = document.querySelector(".first-join-screen");
 
-const allScreens = document.querySelectorAll('.screen');
-const homeScreen = document.querySelector('.home-screen');
-const turnScreen = document.querySelector('.turn-screen');
-const buildingScreen = document.querySelector('.building-screen');
-const exchangeScreen = document.querySelector('.exchange-screen')
+const allScreens = document.querySelectorAll(".screen");
+const homeScreen = document.querySelector(".home-screen");
+const turnScreen = document.querySelector(".turn-screen");
+const buildingScreen = document.querySelector(".building-screen");
+const exchangeScreen = document.querySelector(".exchange-screen");
 
-const gameMenuBar = document.querySelector('.game-menu-bar');
-
-
-
+const gameMenuBar = document.querySelector(".game-menu-bar");
 
 // DATABASE
 const appSettings = {
@@ -49,7 +46,6 @@ let allScreensArray = [];
 allScreens.forEach((screen) => {
   allScreensArray.push(screen);
 });
-
 
 let currentGame = {}; // Object to store information about the created game
 let gameOrder = {}; // Object to store information about the selected avatar for each chair-id
@@ -200,8 +196,6 @@ const makeNotification = function (i) {
   }, 10);
 };
 
-
-
 ////////////////
 // VISIBILITY
 ///////////////
@@ -258,7 +252,6 @@ const Visibility = function (item, direction, action) {
     }
   }
 };
-
 
 // UPDATE CURRENT GAME
 // reading game from DB and making currentGamme & currentPlayer really current
@@ -772,10 +765,10 @@ keys.forEach((key) => {
       key.style.background = "var(--black)";
     }, 200);
     fillDots();
-    if (ongoingPIN.length === 4){
-      Visibility(finalJoinGameBTN, "btn-active")
+    if (ongoingPIN.length === 4) {
+      Visibility(finalJoinGameBTN, "btn-active");
     } else {
-      Visibility(finalJoinGameBTN, "btn-inactive")
+      Visibility(finalJoinGameBTN, "btn-inactive");
     }
   });
 });
@@ -801,7 +794,7 @@ const reallyStart = function () {
 };
 
 finalJoinGameBTN.addEventListener("click", function () {
-  let enteredPin = formatInputValue(ongoingPIN, 'number')
+  let enteredPin = formatInputValue(ongoingPIN, "number");
   console.log(ongoingPIN);
   if (finalJoinGameBTN.classList[3] === "btn-inactive") {
     finalJoinGameBTN.classList.add("invalid");
@@ -831,12 +824,9 @@ finalJoinGameBTN.addEventListener("click", function () {
 ////////////////
 // GAME
 
-
-
-
 const gameMenuBTNs = document.querySelectorAll(".game-menu-btn");
-const gameMenuBTNTurn = document.getElementById('game-menu-btn-turn')
-const gameMenuBTNHome = document.getElementById('game-menu-btn-home')
+const gameMenuBTNTurn = document.getElementById("game-menu-btn-turn");
+const gameMenuBTNHome = document.getElementById("game-menu-btn-home");
 //////////////////////
 // UPDATE USER SCREEN
 
@@ -859,7 +849,7 @@ const updateUserScreen = function () {
       });
     };
     removeOldList();
-  
+
     for (let i = 0; i < allBuildingsArray.length; i++) {
       let kind;
       if (i === 0 || i === 4 || i === 5 || i === 6) {
@@ -874,7 +864,7 @@ const updateUserScreen = function () {
       if (i === 3 || i === 11 || i === 12) {
         kind = 3;
       }
-  
+
       const newBuildingDiv = document.createElement("div");
       newBuildingDiv.innerHTML = `
       <div class="bu-container">
@@ -892,7 +882,7 @@ const updateUserScreen = function () {
       const targetBar = document.querySelector(`.bu-bar-id-${i}`);
       const newDot = document.createElement("div");
       newDot.className = "bu-dot";
-  
+
       if (
         currentGame.buildings[i].activities &&
         currentGame.buildings[i].activities.length > 0
@@ -940,8 +930,6 @@ const updateUserScreen = function () {
     }, 1000);
   }
 };
-
-
 
 const updatePrices = function (origin) {
   /////// CURRENT USER VALUES
@@ -1124,15 +1112,14 @@ const startGame = function () {
 gameMenuBTNs.forEach((button) => {
   button.addEventListener("click", function () {
     gameMenuBTNs.forEach((btn) => btn.classList.remove("selected"));
- this.classList.toggle("selected");
- console.log(this.classList[1]);
-     const choosenScreen = allScreensArray.find(
+    this.classList.toggle("selected");
+    console.log(this.classList[1]);
+    const choosenScreen = allScreensArray.find(
       (screen) => screen.classList[2] === this.classList[1]
     );
-console.log(choosenScreen);
-  })
+  });
+});
 
-})
 
 
 
@@ -1216,9 +1203,8 @@ const checkIfstandalone = function () {
 /////////// SKIP LOGIN
 const skipLogin = function (arg) {
   Visibility(mainScreen, "left", "hide");
-  Visibility(homeScreen, "right", 'show')
+  Visibility(homeScreen, "right", "show");
   Visibility(gameMenuBar, "left", "show");
-
 
   currentGame = gamesArray[0];
 
