@@ -4,10 +4,9 @@
   border-radius: 50%;
   border: solid 1px var(--orange);
   position: absolute;
-  top: 7px;
-  left: -15px;
+  top: 5px;
+  left: 11vw;
   z-index: 10;
-  grid-column: 2;
   opacity: 0;
   display: none;
 }
@@ -18,7 +17,7 @@
 
 @keyframes circleSign {
   0% {
-    transform: scale(0.1);
+    transform: scale(0);
     opacity: 0;
     filter: blur(0px);
   }
@@ -26,11 +25,11 @@
     opacity: 1;
   }
   80% {
-    transform: scale(3); /* Stopniowe zmniejszenie skali */
+    transform: scale(5); /* Stopniowe zmniejszenie skali */
     filter: blur(10px); /* Stopniowe zwiększenie rozmycia */
   }
   100% {
-    transform: scale(4); /* Zmniejszenie skali do zera */
+    transform: scale(6); /* Zmniejszenie skali do zera */
     opacity: 0; /* Zmniejszenie przezroczystości do zera */
     filter: blur(20px); /* Zwiększenie rozmycia do maksimum */
   }

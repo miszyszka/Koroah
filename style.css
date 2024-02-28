@@ -434,10 +434,10 @@ h3 {
   bottom: 0px;
   height: 100px;
   width: 100vw;
-  display: grid;
+  /* display: grid;
   grid-template-columns: 1fr 20px 20px 20px 1fr;
   gap: 80px;
-  grid-auto-rows: 100px;
+  grid-auto-rows: 100px; */
   z-index: 100;
 }
 
@@ -470,16 +470,21 @@ h3 {
 
 
 .game-menu-btn.turn{
-  grid-column: 2;
+  /* grid-column: 2; */
+  left: 15vw
 }
 .game-menu-btn.home{
-  grid-column: 2;
+  /* grid-column: 2; */
+  left: 15vw
 }
 .game-menu-btn.buildings{
-  grid-column: 3;
+  right: 50%;
+  transform: translateX(50%);
+  /* grid-column: 3; */
 }
 .game-menu-btn.exchange{
-  grid-column: 4;
+  /* grid-column: 4; */
+  right: 15vw
 }
 
 
