@@ -53,6 +53,7 @@ let currentPlayer;
 
 let numberOfPlayersSelected = false;
 let inputForNewGame;
+let gameStarted = false
 
 const classNumber = {
   0: "one",
@@ -1196,6 +1197,7 @@ let alreadyActive = false;
 let alreadyPassive = false;
 
 const updateUserScreen = function () {
+
   console.log("Updating user screen...");
   if (allNots) {
     const newestNotification = highestKey(allNots);
@@ -1271,6 +1273,7 @@ const passTurn = function () {
 // STARTING GAME
 
 const startGame = function () {
+  gameStarted = true
   console.log("starting GAME");
   currentScreen = homeScreen;
 
@@ -1454,5 +1457,7 @@ async function preventSleep() {
 preventSleep();
 
 setInterval(() => {
+  if (gameStarted){
   updateUserScreen();
+  }
 }, 5000);

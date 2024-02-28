@@ -130,7 +130,6 @@
 /* Home screen */
 
 .home-screen {
-  display: flex;
   flex-direction: column;
   .price-container,
   .danina-container {
