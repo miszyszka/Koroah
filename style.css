@@ -439,8 +439,6 @@ h3 {
   gap: 80px;
   grid-auto-rows: 100px;
   z-index: 100;
-  border: #7b1c43 1px solid;
-
 }
 
 .game-menu-btn {
@@ -448,9 +446,6 @@ h3 {
   height: 60px;
   transition: 1s ease;
   position: absolute;
-  display: flex; /* Dodanie tej linii */
-  justify-content: center; /* Wyśrodkowanie wzdłuż osi poziomej */
-  align-items: center; /* Wyśrodkowanie wzdłuż osi pionowej */
 }
 
 .game-menu-btn svg path {
