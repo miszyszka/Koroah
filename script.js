@@ -1430,7 +1430,7 @@ const skipLogin = function (arg) {
 };
 
 setTimeout(() => {
-  skipLogin(0);
+  // skipLogin(0);
 }, 1000);
 
 /////////// PREVENT SLEEP

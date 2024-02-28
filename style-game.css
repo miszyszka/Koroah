@@ -260,3 +260,41 @@ margin-top: 12px;
     margin: 10px;
   }
 }
+
+
+
+
+
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* VISIBILITY */
+
+.active {
+  display: flex;
+  transform: translateX(0%);
+}
+
+.no-active {
+  display: none;
+}
+
+.hide-left {
+  transform: translateX(-100%);
+}
+
+.hide-right {
+  transform: translateX(100%);
+}
+
+.hide-down {
+  transform: translateY(200px);
+}
+
+.btn-inactive {
+  color: var(--zelazo);
+}
+
+.btn-active {
+  color: var(--main-colour);
+}
