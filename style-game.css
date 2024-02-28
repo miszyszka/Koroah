@@ -16,13 +16,36 @@
 .top-bar {
   width: 100vw;
   height: 100px;
+  display: flex;
+  position: absolute;
+  top: 0;
+
 }
-.turn-screen,
-.home-screen {
+
+.token-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 20px;
+    height: 100%;
+    width: 10%;
+}
+
+
+.token-container svg{
+    width: 15px;
+    height: 15px;
+    fill: var(--orange);
+    margin: 5px;
+    transform: translateY(2px);
+}
+
+
+.turn-screen {
   flex-wrap: wrap;
   flex-direction: row;
   justify-items: top;
-  align-content: start;
+  align-content: center;
 }
 
 .price-container,
@@ -51,7 +74,7 @@
 /* --------------------- */
 /* --------------------- */
 /* --------------------- */
-/* TURN DECK */
+/* TURN screen */
 
 .small-circle {
   width: 20px;
@@ -109,9 +132,13 @@
 /* --------------------- */
 /* Home screen */
 
+.home-screen{
+    display: flex;
+    flex-direction: column;
+}
 
 .upper-part,
-.bottom-part{
+.bottom-part {
   width: 100vw;
   height: 50vh;
   display: flex;
@@ -120,20 +147,19 @@
 
 }
 
-
-.upper-part img{
-    width: 100vw; 
-    position: absolute;
-    z-index: -1;
+.home-screen-bg{
+  width: 100vw;
+  position: absolute;
+  z-index: -3;
 }
 
-.upper-part h1{
-    position: absolute;
-    left: 20px;
-    top: 20px
+.bottom-part {
+  background-color: var(--black);
+  padding-top: 30px;
 }
 
-.bottom-part{
-    background-color: var(--black);
-    padding-top: 30px;
-}
+
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
+/* EXCHANGE SCREEN */

@@ -175,7 +175,9 @@
     <!-- TURN-SCREEN -->
     <div class="screen turn-screen turn no-active">
       <div class="top-bar">
-        <h1 class="name-label"></h1>
+        <div class="token-container">
+          <h1 class="name-label"></h1>
+        </div>
       </div>
       <div class="price-container shadow-element" id="originalContainerPrices">
         <div class="bar-container">
@@ -223,16 +225,20 @@
     <!--  -->
     <!-- HOME-SCREEN -->
     <div class="screen home-screen home no-active">
+ 
       <div class="top-bar">
-        <div class="upper-part">
-          <img src="img/raona.png" alt="">
+        <div class="token-container">
           <h1 class="name-label"></h1>
+        </div>
+      </div>
+        <div class="upper-part">
+          <img class="home-screen-bg" src="img/raona.png" alt="" />
         </div>
         <div class="bottom-part">
           <div class="mirrored-container-prices"></div>
           <div class="mirrored-container-danina"></div>
         </div>
-      </div>
+
     </div>
 
     <!--  -->
@@ -246,7 +252,27 @@
     <!--  -->
     <!-- EXCHANGE-SCREEN -->
     <div class="screen exchange-screen exchange no-active">
-      <div class="">HELLO - first screen</div>
+      <div class="top-bar">
+        <div class="token-container" style="flex-grow: 3">
+          <h1 class="name-label"></h1>
+        </div>
+        <div class="token-container">
+          <h2 class="token-coins-value">4</h2>
+          <div class="user-coins-tokens"></div>
+        </div>
+
+        <div class="token-container">
+          <h2 class="token-move-value">2</h2>
+          <div class="move-svg"></div>
+        </div>
+
+        <div class="token-container">
+          <h2 class="token-move-value">2</h2>
+          <h2 style="color: var(--orange);">%</h2>
+        </div>
+
+
+      </div>
     </div>
 
     <!--  -->
@@ -311,6 +337,17 @@
         .then((data) => {
           const userCoinsTokens =
             document.querySelectorAll(".user-coins-tokens"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <script>
+      fetch("html-svgs/move-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".move-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
           userCoinsTokens.forEach((coin) => {
             coin.innerHTML = data;
           });

@@ -213,9 +213,9 @@ const makeCircle = function () {
 
   }, 500);
 
-  // setTimeout(() => {
-  //   gameMenuBTNTurn.click();
-  // }, 1500);
+  setTimeout(() => {
+    gameMenuBTNTurn.click();
+  }, 1500);
 
 };
 
