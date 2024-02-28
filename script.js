@@ -102,6 +102,7 @@ testBTN.addEventListener("click", function () {
   console.log(currentGame);
   console.log(currentPlayer);
   passTurn();
+  updatePricesAndValues()
 });
 
 ////////////////
@@ -200,17 +201,21 @@ const makeNotification = function (i) {
 
 const makeCircle = function () {
   const circleSign = document.querySelector(".circle-sign");
-  circleSign.style.display= 'flex'
+  circleSign.style.display = "flex";
   setTimeout(() => {
     circleSign.classList.add("newTurnSign");
     setTimeout(() => {
       circleSign.classList.remove("newTurnSign");
     }, 500);
     setTimeout(() => {
-      circleSign.style.display= 'none'
+      circleSign.style.display = "none";
     }, 500);
 
   }, 500);
+
+  // setTimeout(() => {
+  //   gameMenuBTNTurn.click();
+  // }, 1500);
 
 };
 
@@ -380,13 +385,13 @@ allNavigateBtns.forEach((btn) => {
       currentScreen = firstJoinScreen;
     }
 
-    if (btnName === "exchange") {
+    if (btnName === "exchange" && currentScreen !== exchangeScreen) {
       Visibility(currentScreen, "left", "hide");
       Visibility(exchangeScreen, "left", "show");
       currentScreen = exchangeScreen;
     }
 
-    if (btnName === "buildings") {
+    if (btnName === "buildings" && currentScreen !== buildingScreen) {
       console.log(currentScreen.classList[2]);
       if (currentScreen.classList[2] === "exchange") {
         Visibility(currentScreen, "right", "hide");
@@ -398,13 +403,13 @@ allNavigateBtns.forEach((btn) => {
       currentScreen = buildingScreen;
     }
 
-    if (btnName === "turn") {
+    if (btnName === "turn" && currentScreen !== turnScreen) {
       Visibility(currentScreen, "right", "hide");
       Visibility(turnScreen, "right", "show");
       currentScreen = turnScreen;
     }
 
-    if (btnName === "home") {
+    if (btnName === "home" && currentScreen !== homeScreen) {
       Visibility(currentScreen, "right", "hide");
       Visibility(homeScreen, "right", "show");
       currentScreen = homeScreen;
@@ -894,6 +899,236 @@ const gameMenuBTNs = document.querySelectorAll(".game-menu-btn");
 const gameMenuBTNTurn = document.getElementById("game-menu-btn-turn");
 const gameMenuBTNHome = document.getElementById("game-menu-btn-home");
 
+////////////////
+// SMALL FUNCTIONS
+
+// funkcja ktora sprawdzi ile jest neutralnych, pozytywnych i negatywnych w building.activity
+const summaryBuilidingActivities = function (id) {
+  let neutrals = 0;
+  let positives = 0;
+  let negatives = 0;
+
+  for (let i = 0; i < currentGame.buildings[id].activities.length; i++) {
+    switch (currentGame.buildings[id].activities[i]) {
+      case 0:
+        neutrals++;
+        break;
+      case 1:
+        positives++;
+        break;
+      case 2:
+        negatives++;
+        break;
+      default:
+        // Ignoruj inne wartości
+        break;
+    }
+  }
+  return [neutrals, positives, negatives];
+};
+
+// funkcja która doda losową aktywność do building.activity
+const addRandomActivity = function (id) {
+  function losujLiczbe() {
+    const losowaLiczba = Math.random(); // Losuje liczbę z przedziału [0, 1)
+
+    if (losowaLiczba < 0.5) {
+      return 0; // 50% szans na 0
+    } else if (losowaLiczba < 0.75) {
+      return 1; // 25% szans na 1
+    } else {
+      return 2; // 25% szans na 2
+    }
+  }
+
+  // Add Activity do CurrentGame
+  Object.keys(currentGame.buildings).forEach((buildingId) => {
+    const building = currentGame.buildings[buildingId];
+
+    if (buildingId === id.toString()) {
+      if (!building.activities) {
+        building.activities = []; // dodaj array jeśli jeszcze go nie ma
+      }
+      building.activities.push(losujLiczbe());
+      updateDB();
+    }
+  });
+
+  // Add Dot
+};
+
+//////////////////////
+//////////////////////
+//////////////////////
+// UPDATE PRICES (prices and values - ta funkcja jest updatowana tylko jezeli jest zmiana w bazie danych)
+const updatePricesAndValues = function (origin) {
+ 
+  /////// CURRENT USER VALUES
+  function removeOldDots() {
+    const allPluses = document.querySelectorAll(".plus");
+    const allBoxes = document.querySelectorAll(".resource-box");
+
+    allPluses.forEach((plus) => {
+      plus.style.opacity = "0";
+    });
+    allBoxes.forEach((box) => {
+      box.style.opacity = "1";
+    });
+    const dots = document.querySelectorAll(".dot");
+    dots.forEach((dot) => {
+      dot.parentNode.removeChild(dot);
+    });
+  }
+  // Wywołanie funkcji
+  removeOldDots();
+
+  const tokenCoinsValue = document.querySelector(".token-coins-value");
+  const tokenMoveValue = document.querySelector(".token-move-value");
+
+  const userResourcesUpdate = function () {
+    for (const resource in currentPlayer.resources) {
+      const id = parseInt(resource) + 1;
+      let amount = currentPlayer.resources[resource];
+      const element = document.querySelector(`.resource-value-${id}`);
+      const calculatedElement = document.querySelector(
+        `.calculated-value-${id}`
+      );
+      const position = id - 1;
+      const calculatedValue = amount * currentGame.prices[position];
+      calculatedElement.innerHTML = `${calculatedValue}`;
+      element.innerHTML = `${amount}`;
+
+      if (amount > 40) {
+        amount = 40;
+      }
+
+      for (let i = 0; i < amount; i++) {
+        const dot = document.createElement("div");
+        dot.className = "dot";
+        const box = document.querySelector(`.box-${id}`);
+        box.appendChild(dot);
+
+        if (amount <= 10) {
+          box.style.transform = "translateX(-10px)";
+        } else if (amount > 10 && amount <= 20) {
+          box.style.transform = "translateX(-5px)";
+        } else if (amount > 20 && amount <= 30) {
+          box.style.transform = "translateX(0px)";
+        } else if (amount > 30) {
+          box.style.transform = "translateX(5px)";
+        }
+        const plus = document.querySelector(`.plus-${id}`);
+        if (amount >= 40) {
+          plus.style.opacity = "1";
+          box.style.opacity = "0.2";
+        }
+      }
+    }
+  };
+  // userResourcesUpdate();
+
+  /////// GLOBAL VALUES
+
+  const priceBarValues = document.querySelectorAll(".price-bar-value");
+  const daninaBarValues = document.querySelectorAll(".danina-bar-value");
+
+  priceBarValues.forEach((price) => {
+    const resourceId = parseInt(price.classList[1].slice(-1));
+    const element = document.querySelectorAll(`.price-${resourceId}`);
+    const bar = document.querySelector(`.measure-${resourceId}`);
+    const currentPrice = currentGame.prices[resourceId - 1];
+    const max = Math.max(...currentGame.prices);
+    let multiplier = function (max) {
+      if (max < 10) {
+        return 20;
+      } else if (max >= 10 && max < 15) {
+        return 12;
+      } else if (max >= 15 && max < 25) {
+        return 7;
+      } else if (max >= 25 && max < 35) {
+        return 4;
+      } else {
+        return 2;
+      }
+    };
+    multiplier = multiplier(max);
+    bar.style.height = currentPrice * multiplier + "px";
+    element.forEach((el) => {
+      el.innerHTML = formatInputValue(currentPrice, "number");
+    });
+  });
+
+  daninaBarValues.forEach((danina) => {
+    const daninaId = parseFloat(danina.classList[1].slice(-1));
+    const element = document.querySelector(`.danina-${daninaId}`);
+    const bar = document.querySelector(`.danina-measure-${daninaId}`);
+    const currentDanina = currentGame.gameOrder[daninaId].danina;
+    bar.style.height = currentDanina * 8 + "px";
+    element.innerHTML = `${currentGame.gameOrder[daninaId].danina}`;
+  });
+
+  function sortBars() {
+    const barsContainer = document.querySelector(".danina-container");
+    const barContainers = Array.from(
+      barsContainer.querySelectorAll(".bar-container")
+    );
+
+    // Sortowanie kontenerów na podstawie wartości h2
+    barContainers.sort((a, b) => {
+      const valueA = parseFloat(
+        a.querySelector(".danina-bar-value").textContent
+      );
+      const valueB = parseFloat(
+        b.querySelector(".danina-bar-value").textContent
+      );
+      return valueB - valueA; // Sortowanie malejąco
+    });
+
+    // Przeniesienie posortowanych kontenerów na początek kontenera .bars-container
+    barContainers.forEach((barContainer) =>
+      barsContainer.appendChild(barContainer)
+    );
+  }
+
+const cloneElementsToHomeScreen = function(){
+
+
+  const originalContainerPrices = document.getElementById('originalContainerPrices');
+  const originalContainerDanina = document.getElementById('originalContainerDanina');
+
+  const clonedContainerPrices = originalContainerPrices.cloneNode(true)
+  const clonedContainerDanina = originalContainerDanina.cloneNode(true)
+
+  const mirroredContainerPrices = document.querySelector('.mirrored-container-prices');
+  const mirroredContainerDanina = document.querySelector('.mirrored-container-danina');
+
+  // Usuń stare elementy
+  while (mirroredContainerPrices.firstChild) {
+    mirroredContainerPrices.removeChild(mirroredContainerPrices.firstChild);
+  }
+  
+  while (mirroredContainerDanina.firstChild) {
+    mirroredContainerDanina.removeChild(mirroredContainerDanina.firstChild);
+  }
+
+  mirroredContainerPrices.appendChild(clonedContainerPrices)
+  mirroredContainerDanina.appendChild(clonedContainerDanina)
+}
+
+
+
+
+  setTimeout(() => {
+    sortBars();
+    cloneElementsToHomeScreen()
+  }, 500);
+
+
+
+};
+
+//////////////////////
+//////////////////////
 //////////////////////
 // UPDATE USER SCREEN
 
@@ -909,6 +1144,7 @@ const updateUserScreen = function () {
       // makeNotification(newestNotification);
     }
   }
+
   const updateBuildingsScreen = function () {
     const removeOldList = function () {
       const buildings = document.querySelectorAll(".bu-container");
@@ -980,7 +1216,7 @@ const updateUserScreen = function () {
     // PASSIVE MENU
     Visibility(gameMenuBTNHome, "down", "hide");
     setTimeout(() => {
-      Visibility(homeScreen, "right", "hide");
+      Visibility(homeScreen, "left", "hide");
     }, 300);
   }
   // CHECK IF IT"S NOT MY TURN
@@ -996,7 +1232,7 @@ const updateUserScreen = function () {
     // PASSIVE MENU
     Visibility(gameMenuBTNHome, "down", "show");
     setTimeout(() => {
-      Visibility(homeScreen, "right", "show");
+      Visibility(homeScreen, "left", "show");
     }, 300);
   }
 };
@@ -1068,6 +1304,7 @@ const updatePrices = function (origin) {
   userResourcesUpdate();
 
   /////// GLOBAL VALUES
+
   const priceBarValues = document.querySelectorAll(".price-bar-value");
   const daninaBarValues = document.querySelectorAll(".danina-bar-value");
 
@@ -1105,6 +1342,29 @@ const updatePrices = function (origin) {
     bar.style.height = currentDanina * 8 + "px";
     element.innerHTML = `${currentGame.gameOrder[daninaId].danina}`;
   });
+
+  function sortBars() {
+    const barsContainer = document.querySelector(".danina-container");
+    const barContainers = Array.from(
+      barsContainer.querySelectorAll(".bar-container")
+    );
+
+    // Sortowanie kontenerów na podstawie wartości h2
+    barContainers.sort((a, b) => {
+      const valueA = parseFloat(
+        a.querySelector(".danina-bar-value").textContent
+      );
+      const valueB = parseFloat(
+        b.querySelector(".danina-bar-value").textContent
+      );
+      return valueB - valueA; // Sortowanie malejąco
+    });
+
+    // Przeniesienie posortowanych kontenerów na początek kontenera .bars-container
+    barContainers.forEach((barContainer) =>
+      barsContainer.appendChild(barContainer)
+    );
+  }
   setTimeout(() => {
     sortBars();
   }, 500);
@@ -1130,7 +1390,6 @@ const passTurn = function () {
     }
   });
   currentGame.gameOrder[nextPlayerId].turn = true;
-
   updateDB();
   updateUserScreen();
 };
@@ -1141,8 +1400,33 @@ const passTurn = function () {
 const startGame = function () {
   console.log("starting GAME");
   currentScreen = homeScreen;
-  gameMenuBar.style.display = "grid";
+  gameMenuBar.style.display = "flex";
 
+  // Uzupełnij imię gracza na wszystkich ekranach
+  const nameLabels = document.querySelectorAll(".name-label");
+  nameLabels.forEach((label) => {
+    label.innerHTML = currentPlayer.player;
+  });
+
+  // ta funkcja wrzuca aktualną liczbę elementów do konterów danina-container
+  const fillDaninaContainer = function () {
+    for (let i = 0; i < currentGame.gameOrder.length; i++) {
+      const daninaContainer = document.querySelector(".danina-container");
+      const foundPlayer = currentGame.gameOrder[i];
+      const className = `${foundPlayer.player} ${classNumber[i]}`;
+      const myHtml = `
+        <div class="bar-container bar-${className}">
+        <div class="measure danina-measure-${i} ${className}"></div>
+        <div class="small-circle ${className}">
+        </div>
+        <h2 class="danina-bar-value danina-${i}"></h2>
+        </div>`;
+      const barContainerDiv = document.createElement("div");
+      barContainerDiv.innerHTML = myHtml;
+      daninaContainer.appendChild(barContainerDiv.firstElementChild);
+    }
+  };
+  fillDaninaContainer();
   // const resetTurnDeck = function () {
   //   if (currentPlayer.turn === false) {
   //     gameMenuBtnPrices.click();
@@ -1162,27 +1446,6 @@ const startGame = function () {
   // };
 
   // resetTurnDeck();
-
-  // const duLabels = document.querySelectorAll(".du-label");
-  // duLabels.forEach((label) => {
-  //   label.innerHTML = currentPlayer.player;
-  // });
-
-  // for (let i = 0; i < currentGame.gameOrder.length; i++) {
-  //   const foundPlayer = currentGame.gameOrder[i];
-  //   const className = `${foundPlayer.player} ${classNumber[i]}`;
-  //   const myHtml = `
-  //   <div class="bar-container bar-${className}">
-  //   <div class="measure danina-measure-${i} ${className}"></div>
-  //   <div class="small-circle ${className}">
-  //   </div>
-  //   <h2 class="danina-bar-value danina-${i}"></h2>
-  // </div>`;
-  //   const barContainerDiv = document.createElement("div");
-  //   barContainerDiv.innerHTML = myHtml;
-  //   daninaContainer.appendChild(barContainerDiv.firstElementChild);
-  // }
-
   // updatePrices("from startGame()");
 
   updateUserScreen();
@@ -1281,6 +1544,7 @@ onValue(gamesDB, (snapshot) => {
   if (currentGame.name !== undefined) {
     const name = currentGame.name;
     updateCurrentGame(name);
+    updatePricesAndValues()
     updateUserScreen();
   }
 });
