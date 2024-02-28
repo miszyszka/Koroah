@@ -160,6 +160,16 @@ h3 {
 
 .selected {
   filter: var(--drop-shadow-active);
+  animation: clickAnimation 1s ease 0s;
+}
+
+@keyframes clickAnimation{
+  0%{
+    filter: var(--drop-shadow-active);
+  }
+  100%{
+    filter: var(--drop-shadow-item);
+  }
 }
 
 .btn-big {

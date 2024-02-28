@@ -1356,6 +1356,7 @@ eSourceBTNs.forEach((icon) => {
           const iconId = parseInt(i.classList[2].slice(-1));
           const translateValue = 67 * iconId;
           i.style.transform = `translateX(${translateValue}px)`;
+          i.style.filter='var(--drop-shadow-item)'
           i.style.zIndex = "1";
           sellSource = "";
         });
@@ -1364,6 +1365,7 @@ eSourceBTNs.forEach((icon) => {
         eSourceBTNsSell.forEach((i) => {
           // ZWIJANIE
           i.style.transform = `translateY(0px)`;
+          i.style.filter= 'none'
           icon.style.zIndex = "2";
           sellSource = icon;
         });
