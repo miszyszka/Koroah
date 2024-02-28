@@ -102,7 +102,7 @@ testBTN.addEventListener("click", function () {
   console.log(currentGame);
   console.log(currentPlayer);
   passTurn();
-  updatePricesAndValues()
+  updatePricesAndValues();
 });
 
 ////////////////
@@ -210,13 +210,11 @@ const makeCircle = function () {
     setTimeout(() => {
       circleSign.style.display = "none";
     }, 500);
-
   }, 500);
 
   setTimeout(() => {
     gameMenuBTNTurn.click();
   }, 1500);
-
 };
 
 ////////////////
@@ -472,14 +470,14 @@ const createPIN = function (pin) {
 };
 
 const clearFields = function (arg) {
+  const allInputs = document.querySelectorAll(".input");
+
   allInputs.forEach((input) => {
     input.value = "";
   });
   circleButtons.forEach((button) => {
     button.classList.remove("selected");
-    Visibility(nextNewGameBTN, "invisible");
   });
-  Visibility(nextJoinGameBTN, "invisible");
 
   // if (arg !== "retain currentGame") {
   //   currentGame = {};
@@ -492,7 +490,6 @@ const clearFields = function (arg) {
     chair.classList.remove("acalas", "umza", "raona", "hess");
     chair.style.display = "block";
   });
-  showPinBox("invisible");
 };
 
 let isWarning = false;
@@ -900,7 +897,7 @@ const gameMenuBTNTurn = document.getElementById("game-menu-btn-turn");
 const gameMenuBTNHome = document.getElementById("game-menu-btn-home");
 
 ////////////////
-// SMALL FUNCTIONS
+// SMALL FUNCTIONS & HANDLERS
 
 // funkcja ktora sprawdzi ile jest neutralnych, pozytywnych i negatywnych w building.activity
 const summaryBuilidingActivities = function (id) {
@@ -957,12 +954,21 @@ const addRandomActivity = function (id) {
   // Add Dot
 };
 
+gameMenuBTNs.forEach((button) => {
+  button.addEventListener("click", function () {
+    gameMenuBTNs.forEach((btn) => btn.classList.remove("selected"));
+    this.classList.toggle("selected");
+    const choosenScreen = allScreensArray.find(
+      (screen) => screen.classList[2] === this.classList[1]
+    );
+  });
+});
+
 //////////////////////
 //////////////////////
 //////////////////////
 // UPDATE PRICES (prices and values - ta funkcja jest updatowana tylko jezeli jest zmiana w bazie danych)
 const updatePricesAndValues = function (origin) {
- 
   /////// CURRENT USER VALUES
   function removeOldDots() {
     const allPluses = document.querySelectorAll(".plus");
@@ -979,171 +985,8 @@ const updatePricesAndValues = function (origin) {
       dot.parentNode.removeChild(dot);
     });
   }
-  // Wywołanie funkcji
   removeOldDots();
 
-  const tokenCoinsValue = document.querySelector(".token-coins-value");
-  const tokenMoveValue = document.querySelector(".token-move-value");
-
-  const userResourcesUpdate = function () {
-    for (const resource in currentPlayer.resources) {
-      const id = parseInt(resource) + 1;
-      let amount = currentPlayer.resources[resource];
-      const element = document.querySelector(`.resource-value-${id}`);
-      const calculatedElement = document.querySelector(
-        `.calculated-value-${id}`
-      );
-      const position = id - 1;
-      const calculatedValue = amount * currentGame.prices[position];
-      calculatedElement.innerHTML = `${calculatedValue}`;
-      element.innerHTML = `${amount}`;
-
-      if (amount > 40) {
-        amount = 40;
-      }
-
-      for (let i = 0; i < amount; i++) {
-        const dot = document.createElement("div");
-        dot.className = "dot";
-        const box = document.querySelector(`.box-${id}`);
-        box.appendChild(dot);
-
-        if (amount <= 10) {
-          box.style.transform = "translateX(-10px)";
-        } else if (amount > 10 && amount <= 20) {
-          box.style.transform = "translateX(-5px)";
-        } else if (amount > 20 && amount <= 30) {
-          box.style.transform = "translateX(0px)";
-        } else if (amount > 30) {
-          box.style.transform = "translateX(5px)";
-        }
-        const plus = document.querySelector(`.plus-${id}`);
-        if (amount >= 40) {
-          plus.style.opacity = "1";
-          box.style.opacity = "0.2";
-        }
-      }
-    }
-  };
-  // userResourcesUpdate();
-
-  /////// GLOBAL VALUES
-
-  const priceBarValues = document.querySelectorAll(".price-bar-value");
-  const daninaBarValues = document.querySelectorAll(".danina-bar-value");
-
-  priceBarValues.forEach((price) => {
-    const resourceId = parseInt(price.classList[1].slice(-1));
-    const element = document.querySelectorAll(`.price-${resourceId}`);
-    const bar = document.querySelector(`.measure-${resourceId}`);
-    const currentPrice = currentGame.prices[resourceId - 1];
-    const max = Math.max(...currentGame.prices);
-    let multiplier = function (max) {
-      if (max < 10) {
-        return 20;
-      } else if (max >= 10 && max < 15) {
-        return 12;
-      } else if (max >= 15 && max < 25) {
-        return 7;
-      } else if (max >= 25 && max < 35) {
-        return 4;
-      } else {
-        return 2;
-      }
-    };
-    multiplier = multiplier(max);
-    bar.style.height = currentPrice * multiplier + "px";
-    element.forEach((el) => {
-      el.innerHTML = formatInputValue(currentPrice, "number");
-    });
-  });
-
-  daninaBarValues.forEach((danina) => {
-    const daninaId = parseFloat(danina.classList[1].slice(-1));
-    const element = document.querySelector(`.danina-${daninaId}`);
-    const bar = document.querySelector(`.danina-measure-${daninaId}`);
-    const currentDanina = currentGame.gameOrder[daninaId].danina;
-    bar.style.height = currentDanina * 8 + "px";
-    element.innerHTML = `${currentGame.gameOrder[daninaId].danina}`;
-  });
-
-  function sortBars() {
-    const barsContainer = document.querySelector(".danina-container");
-    const barContainers = Array.from(
-      barsContainer.querySelectorAll(".bar-container")
-    );
-
-    // Sortowanie kontenerów na podstawie wartości h2
-    barContainers.sort((a, b) => {
-      const valueA = parseFloat(
-        a.querySelector(".danina-bar-value").textContent
-      );
-      const valueB = parseFloat(
-        b.querySelector(".danina-bar-value").textContent
-      );
-      return valueB - valueA; // Sortowanie malejąco
-    });
-
-    // Przeniesienie posortowanych kontenerów na początek kontenera .bars-container
-    barContainers.forEach((barContainer) =>
-      barsContainer.appendChild(barContainer)
-    );
-  }
-
-const cloneElementsToHomeScreen = function(){
-
-
-  const originalContainerPrices = document.getElementById('originalContainerPrices');
-  const originalContainerDanina = document.getElementById('originalContainerDanina');
-
-  const clonedContainerPrices = originalContainerPrices.cloneNode(true)
-  const clonedContainerDanina = originalContainerDanina.cloneNode(true)
-
-  const mirroredContainerPrices = document.querySelector('.mirrored-container-prices');
-  const mirroredContainerDanina = document.querySelector('.mirrored-container-danina');
-
-  // Usuń stare elementy
-  while (mirroredContainerPrices.firstChild) {
-    mirroredContainerPrices.removeChild(mirroredContainerPrices.firstChild);
-  }
-  
-  while (mirroredContainerDanina.firstChild) {
-    mirroredContainerDanina.removeChild(mirroredContainerDanina.firstChild);
-  }
-
-  mirroredContainerPrices.appendChild(clonedContainerPrices)
-  mirroredContainerDanina.appendChild(clonedContainerDanina)
-}
-
-
-
-
-  setTimeout(() => {
-    sortBars();
-    cloneElementsToHomeScreen()
-  }, 500);
-
-
-
-};
-
-//////////////////////
-//////////////////////
-//////////////////////
-// UPDATE USER SCREEN
-
-let lastNotification;
-let alreadyActive = false;
-let alreadyPassive = false;
-
-const updateUserScreen = function () {
-  console.log("Updating user screen...");
-  if (allNots) {
-    const newestNotification = highestKey(allNots);
-    if (newestNotification && newestNotification !== lastNotification) {
-      // makeNotification(newestNotification);
-    }
-  }
 
   const updateBuildingsScreen = function () {
     const removeOldList = function () {
@@ -1201,77 +1044,17 @@ const updateUserScreen = function () {
   };
   // updateBuildingsScreen();
 
-  // CHECK IF IT'S MY TURN
-  if (currentPlayer.turn === true && alreadyActive === false) {
-    alreadyActive = true;
-    alreadyPassive = false;
-
-    Visibility(gameMenuBTNTurn, "down", "show");
-    setTimeout(() => {
-      Visibility(turnScreen, "left", "show");
-    }, 300);
-
-    makeCircle();
-
-    // PASSIVE MENU
-    Visibility(gameMenuBTNHome, "down", "hide");
-    setTimeout(() => {
-      Visibility(homeScreen, "left", "hide");
-    }, 300);
-  }
-  // CHECK IF IT"S NOT MY TURN
-  if (currentPlayer.turn === false && alreadyPassive === false) {
-    alreadyPassive = true;
-    alreadyActive = false;
-
-    Visibility(gameMenuBTNTurn, "down", "hide");
-    setTimeout(() => {
-      Visibility(turnScreen, "left", "hide");
-    }, 300);
-
-    // PASSIVE MENU
-    Visibility(gameMenuBTNHome, "down", "show");
-    setTimeout(() => {
-      Visibility(homeScreen, "left", "show");
-    }, 300);
-  }
-};
-
-const updatePrices = function (origin) {
-  /////// CURRENT USER VALUES
-  function removeOldDots() {
-    const allPluses = document.querySelectorAll(".plus");
-    const allBoxes = document.querySelectorAll(".resource-box");
-
-    allPluses.forEach((plus) => {
-      plus.style.opacity = "0";
-    });
-    allBoxes.forEach((box) => {
-      box.style.opacity = "1";
-    });
-    const dots = document.querySelectorAll(".dot");
-    dots.forEach((dot) => {
-      dot.parentNode.removeChild(dot);
-    });
-  }
-
-  // Wywołanie funkcji
-  removeOldDots();
-
   const tokenCoinsValue = document.querySelector(".token-coins-value");
   const tokenMoveValue = document.querySelector(".token-move-value");
+
 
   const userResourcesUpdate = function () {
     for (const resource in currentPlayer.resources) {
       const id = parseInt(resource) + 1;
       let amount = currentPlayer.resources[resource];
       const element = document.querySelector(`.resource-value-${id}`);
-      const calculatedElement = document.querySelector(
-        `.calculated-value-${id}`
-      );
+
       const position = id - 1;
-      const calculatedValue = amount * currentGame.prices[position];
-      calculatedElement.innerHTML = `${calculatedValue}`;
       element.innerHTML = `${amount}`;
 
       if (amount > 40) {
@@ -1365,10 +1148,100 @@ const updatePrices = function (origin) {
       barsContainer.appendChild(barContainer)
     );
   }
+
+  const cloneElementsToHomeScreen = function () {
+    const originalContainerPrices = document.getElementById(
+      "originalContainerPrices"
+    );
+    const originalContainerDanina = document.getElementById(
+      "originalContainerDanina"
+    );
+
+    const clonedContainerPrices = originalContainerPrices.cloneNode(true);
+    const clonedContainerDanina = originalContainerDanina.cloneNode(true);
+
+    const mirroredContainerPrices = document.querySelector(
+      ".mirrored-container-prices"
+    );
+    const mirroredContainerDanina = document.querySelector(
+      ".mirrored-container-danina"
+    );
+
+    // Usuń stare elementy
+    while (mirroredContainerPrices.firstChild) {
+      mirroredContainerPrices.removeChild(mirroredContainerPrices.firstChild);
+    }
+
+    while (mirroredContainerDanina.firstChild) {
+      mirroredContainerDanina.removeChild(mirroredContainerDanina.firstChild);
+    }
+
+    mirroredContainerPrices.appendChild(clonedContainerPrices);
+    mirroredContainerDanina.appendChild(clonedContainerDanina);
+  };
+
   setTimeout(() => {
     sortBars();
+    cloneElementsToHomeScreen();
   }, 500);
 };
+
+//////////////////////
+//////////////////////
+//////////////////////
+// UPDATE USER SCREEN
+
+let lastNotification;
+let alreadyActive = false;
+let alreadyPassive = false;
+
+const updateUserScreen = function () {
+  console.log("Updating user screen...");
+  if (allNots) {
+    const newestNotification = highestKey(allNots);
+    if (newestNotification && newestNotification !== lastNotification) {
+      // makeNotification(newestNotification);
+    }
+  }
+
+  
+
+  // CHECK IF IT'S MY TURN
+  if (currentPlayer.turn === true && alreadyActive === false) {
+    alreadyActive = true;
+    alreadyPassive = false;
+
+    Visibility(gameMenuBTNTurn, "down", "show");
+    setTimeout(() => {
+      Visibility(turnScreen, "left", "show");
+    }, 300);
+
+    makeCircle();
+
+    // PASSIVE MENU
+    Visibility(gameMenuBTNHome, "down", "hide");
+    setTimeout(() => {
+      Visibility(homeScreen, "left", "hide");
+    }, 300);
+  }
+  // CHECK IF IT"S NOT MY TURN
+  if (currentPlayer.turn === false && alreadyPassive === false) {
+    alreadyPassive = true;
+    alreadyActive = false;
+
+    Visibility(gameMenuBTNTurn, "down", "hide");
+    setTimeout(() => {
+      Visibility(turnScreen, "left", "hide");
+    }, 300);
+
+    // PASSIVE MENU
+    Visibility(gameMenuBTNHome, "down", "show");
+    setTimeout(() => {
+      Visibility(homeScreen, "left", "show");
+    }, 300);
+  }
+};
+
 
 //////////////////////
 // PASSING TURN
@@ -1400,6 +1273,9 @@ const passTurn = function () {
 const startGame = function () {
   console.log("starting GAME");
   currentScreen = homeScreen;
+
+  updatePricesAndValues();
+
   gameMenuBar.style.display = "flex";
 
   // Uzupełnij imię gracza na wszystkich ekranach
@@ -1427,105 +1303,78 @@ const startGame = function () {
     }
   };
   fillDaninaContainer();
-  // const resetTurnDeck = function () {
-  //   if (currentPlayer.turn === false) {
-  //     gameMenuBtnPrices.click();
-  //     yourTurnMenu.style.transform = "translateX(-100%)";
-  //     deckTurn.style.transform = "translateX(-100%)";
-  //     setTimeout(() => {
-  //       yourTurnMenu.style.display = "none";
-  //       deckTurn.style.display = "none";
-  //     }, 1000);
-
-  //     // PASSIVE MENU
-  //     notYourTurnMenu.style.display = "flex";
-  //     setTimeout(() => {
-  //       notYourTurnMenu.style.transform = "translateX(0%)";
-  //     }, 1000);
-  //   }
-  // };
-
-  // resetTurnDeck();
-  // updatePrices("from startGame()");
-
   updateUserScreen();
 };
 
-// changeCrystal.addEventListener("click", function () {
-//   const crystalValue = parseFloat(crystalInput.value);
-//   currentPlayer.resources[2] = crystalValue;
-//   updateCurrentPlayerToDB();
-//   updateDB();
-// });
 
-// addCrystal.addEventListener("click", function () {
-//   const crystalValue = parseFloat(crystalInput.value);
-
-//   currentGame.prices = [2, 2, crystalValue.toFixed(1), 2]; // dodaj array do currenGame
-
-//   updateDB();
-
-//   const name = currentGame.name;
-//   updateCurrentGame(name);
-// });
 
 ///////////////////////////
 ///////////////////////////
-// Handlers
+// EXCHANGE
 ///////////////////////////
 
-gameMenuBTNs.forEach((button) => {
-  button.addEventListener("click", function () {
-    gameMenuBTNs.forEach((btn) => btn.classList.remove("selected"));
-    this.classList.toggle("selected");
-    const choosenScreen = allScreensArray.find(
-      (screen) => screen.classList[2] === this.classList[1]
-    );
+
+let sellSource;
+let buySource;
+
+const eSourceBTNs = document.querySelectorAll(".e-source-btn");
+const eSourceBTNsSell = document.querySelectorAll(".e-source-btn-sell");
+const eSourceBTNsBuy = document.querySelectorAll(".e-source-btn-buy");
+const eSellInput = document.querySelector(".e-sell-input");
+const eBuyInput = document.querySelector(".e-buy-input");
+
+// whole e-elements = VALUE
+const eValueSale = document.querySelector(".e-value-sale");
+const eValueBuy = document.querySelector(".e-value-buy");
+
+// informacje
+const info1 = document.getElementById("info-1");
+const info2 = document.getElementById("info-2");
+
+const eInfoSellText = document.querySelector(".e-info-sell-text");
+const eInfoBuyText = document.querySelector(".e-info-buy-text");
+
+// Wstępne rozwinięcie wszystkich source BTN's
+eSourceBTNs.forEach((i) => {
+  const iconId = parseInt(i.classList[2].slice(-1));
+  const translateValue = 67 * iconId;
+  i.style.transform = `translateX(${translateValue}px)`;
+  i.style.zIndex = "1";
+});
+
+let rollOutsideSell = true;
+let rollOutsideBuy = true;
+
+
+eSourceBTNs.forEach((icon) => {
+  icon.addEventListener("click", function () {
+    // UPPER BAR
+    if (icon.classList[4] === "e-source-btn-sell") {
+      if (rollOutsideSell === false) {
+        eSourceBTNsSell.forEach((i) => {
+          // ROZWIJANIE
+          const iconId = parseInt(i.classList[2].slice(-1));
+          const translateValue = 67 * iconId;
+          i.style.transform = `translateX(${translateValue}px)`;
+          i.style.zIndex = "1";
+          sellSource = "";
+        });
+        rollOutsideSell = true;
+      } else {
+        eSourceBTNsSell.forEach((i) => {
+          // ZWIJANIE
+          i.style.transform = `translateY(0px)`;
+          icon.style.zIndex = "2";
+          sellSource = icon;
+        });
+        rollOutsideSell = false;
+
+      }
+    }
   });
 });
 
-// gameMenuBTNs.forEach((button) => {
-//   button.addEventListener("click", function () {
-//     gameMenuBTNs.forEach((btn) => btn.classList.remove("selected"));
-//     this.classList.toggle("selected");
 
-//     const choosenDeck = allDecksArray.find(
-//       (deck) => deck.classList[2] === this.classList[2]
-//     );
-
-//     if (choosenDeck.classList[2] === "prices") {
-//       gameScreenContent.style.display = "flex";
-//       setTimeout(() => {
-//         gameScreenContent.style.transform = "translateY(0%)";
-//         gameScreenContent.style.opacity = "1";
-//       }, 100);
-//     } else {
-//       gameScreenContent.style.transform = "translateY(150%)";
-//       setTimeout(() => {
-//         gameScreenContent.style.display = "none";
-//         gameScreenContent.style.opacity = "0";
-//       }, 100);
-//     }
-
-//     allDecks.forEach((d) => {
-//       d.style.display = "flex";
-//     });
-//     setTimeout(() => {
-//       allDecks.forEach((d) => {
-//         d.classList.remove("deck-active");
-//         d.classList.add("deck-inactive");
-//       });
-//       choosenDeck.classList.remove("deck-inactive");
-//       choosenDeck.classList.add("deck-active");
-//       const inactiveDecks = document.querySelectorAll(".deck-inactive");
-//       setTimeout(() => {
-//         inactiveDecks.forEach((d) => {
-//           d.style.display = "none";
-//         });
-//       }, 50);
-//     }, 10);
-//   });
-// });
 
 /////////// NASŁUCHIWANIE
 onValue(gamesDB, (snapshot) => {
@@ -1544,7 +1393,7 @@ onValue(gamesDB, (snapshot) => {
   if (currentGame.name !== undefined) {
     const name = currentGame.name;
     updateCurrentGame(name);
-    updatePricesAndValues()
+    updatePricesAndValues();
     updateUserScreen();
   }
 });
@@ -1568,10 +1417,9 @@ const skipLogin = function (arg) {
   Visibility(homeScreen, "right", "show");
   currentGame = gamesArray[0];
 
-  reallyStart();
-
   setTimeout(() => {
     currentPlayer = currentGame.gameOrder[arg];
+    reallyStart();
 
     setTimeout(() => {
       allNots = currentGame.notifications;

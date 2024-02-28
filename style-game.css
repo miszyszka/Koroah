@@ -132,12 +132,15 @@
 .home-screen {
   display: flex;
   flex-direction: column;
+  .price-container,
+  .danina-container {
+    margin-top: -120px;
+  }
 }
 
 .upper-part,
 .bottom-part {
   width: 100vw;
-  height: 50vh;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -149,7 +152,12 @@
   z-index: -3;
 }
 
+.upper-part {
+  height: 70vh;
+}
+
 .bottom-part {
+  height: 30vh;
   background-color: var(--black);
   padding-top: 30px;
 }
@@ -183,7 +191,72 @@
     height: 22px;
     width: 22px;
   }
-  .price-bar-value{
+  .price-bar-value {
     margin-top: 10px;
+  }
+}
+
+.resources-box {
+  width: 32px;
+  height: 115px;
+  /* border: white 1px solid; */
+  background-color: var(--black);
+  display: flex;
+  flex-direction: column-reverse;
+  flex-wrap: wrap;
+  align-content: end;
+  align-items: center; /* Wyśrodkowanie kulek */
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin: 1px; /* Odstęp między kropkami */
+}
+
+.plus {
+  color: white;
+  position: absolute;
+  font-size: 20px;
+  width: 30px;
+  height: 30px;
+  bottom: 135px;
+  right: -2px;
+  z-index: 5;
+  filter: drop-shadow(-2px 2px 5px #000000);
+  opacity: 0;
+}
+
+.calculated-bar-value {
+  font-size: 14px;
+}
+
+.ciecz .dot {
+  background-color: var(--ciecz);
+}
+
+.krysztal .dot {
+  background-color: var(--krysztal);
+}
+
+.skala .dot {
+  background-color: var(--skala);
+}
+
+.zelazo .dot {
+  background-color: var(--zelazo);
+}
+
+/* EXCHANGE */
+
+.e-elements.e-icons {
+transform: translateX(-140px);
+margin-top: 10px;
+  .btn {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    margin: 10px;
   }
 }
