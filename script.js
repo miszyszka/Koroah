@@ -100,6 +100,8 @@ const allBuildingsArray = [
 const testBTN = document.querySelector(".test-btn");
 testBTN.addEventListener("click", function () {
   console.log(currentGame);
+  console.log(currentPlayer);
+  passTurn();
 });
 
 ////////////////
@@ -196,6 +198,22 @@ const makeNotification = function (i) {
   }, 10);
 };
 
+const makeCircle = function () {
+  const circleSign = document.querySelector(".circle-sign");
+  circleSign.style.display= 'flex'
+  setTimeout(() => {
+    circleSign.classList.add("newTurnSign");
+    setTimeout(() => {
+      circleSign.classList.remove("newTurnSign");
+    }, 500);
+    setTimeout(() => {
+      circleSign.style.display= 'none'
+    }, 500);
+
+  }, 500);
+
+};
+
 ////////////////
 // VISIBILITY
 ///////////////
@@ -234,6 +252,10 @@ const Visibility = function (item, direction, action) {
       item.classList.add("hide-right");
       addNoActive(item);
     }
+    if (direction === "down") {
+      item.classList.add("hide-down");
+      addNoActive(item);
+    }
   }
   if (action === "show") {
     if (direction === "right") {
@@ -247,6 +269,13 @@ const Visibility = function (item, direction, action) {
       item.classList.add("hide-right");
       setTimeout(() => {
         item.classList.remove("hide-right");
+        item.classList.add("active");
+      }, 10);
+    }
+    if (direction === "down") {
+      item.classList.add("hide-down");
+      setTimeout(() => {
+        item.classList.remove("hide-down");
         item.classList.add("active");
       }, 10);
     }
@@ -336,7 +365,9 @@ let currentScreen;
 
 allNavigateBtns.forEach((btn) => {
   btn.addEventListener("click", function (event) {
-    const btnName = event.target.classList[2];
+    let btnName = event.target.classList[2];
+
+    console.log(btnName);
 
     if (btnName === "new-game-BTN") {
       Visibility(mainScreen, "left", "hide");
@@ -347,6 +378,36 @@ allNavigateBtns.forEach((btn) => {
       Visibility(mainScreen, "left", "hide");
       Visibility(firstJoinScreen, "left", "show");
       currentScreen = firstJoinScreen;
+    }
+
+    if (btnName === "exchange") {
+      Visibility(currentScreen, "left", "hide");
+      Visibility(exchangeScreen, "left", "show");
+      currentScreen = exchangeScreen;
+    }
+
+    if (btnName === "buildings") {
+      console.log(currentScreen.classList[2]);
+      if (currentScreen.classList[2] === "exchange") {
+        Visibility(currentScreen, "right", "hide");
+        Visibility(buildingScreen, "right", "show");
+      } else {
+        Visibility(currentScreen, "left", "hide");
+        Visibility(buildingScreen, "left", "show");
+      }
+      currentScreen = buildingScreen;
+    }
+
+    if (btnName === "turn") {
+      Visibility(currentScreen, "right", "hide");
+      Visibility(turnScreen, "right", "show");
+      currentScreen = turnScreen;
+    }
+
+    if (btnName === "home") {
+      Visibility(currentScreen, "right", "hide");
+      Visibility(homeScreen, "right", "show");
+      currentScreen = homeScreen;
     }
   });
 });
@@ -665,6 +726,7 @@ joinGameInput.addEventListener("input", function () {
   }
 });
 
+// Przycisk do wejścia w ekran PIN
 goToPinBNT.addEventListener("click", function () {
   if (goToPinBNT.classList[3] === "btn-inactive") {
     goToPinBNT.classList.add("invalid");
@@ -678,6 +740,8 @@ goToPinBNT.addEventListener("click", function () {
   logIn();
 });
 
+//////////////////////
+//////////////////////
 // PIN SCREEN
 
 const pinBox = document.querySelector(".pin-box");
@@ -685,6 +749,7 @@ const pinDots = document.querySelectorAll(".pin-dot");
 const pinLabel = document.querySelector(".pin-label");
 const keyboard = document.querySelector(".keyboard");
 const keys = document.querySelectorAll(".key");
+
 // ta fukncja jest uruchamiana po wejściu w okno pinScreen
 const logIn = function () {
   const createIcons = function () {
@@ -741,12 +806,7 @@ const logIn = function () {
 
 let ongoingPIN = "";
 
-const fillDots = function () {
-  const length = ongoingPIN.length - 1;
-  const dotForFill = document.querySelector(`.pin-dot-${length}`);
-  dotForFill.style.background = "var(--main-colour)";
-};
-
+// Funkcja obsługi klawiszy i ekranu PIN
 keys.forEach((key) => {
   key.addEventListener("click", function (event) {
     if (key.classList[2] === "del") {
@@ -764,6 +824,11 @@ keys.forEach((key) => {
       key.style.filter = "none";
       key.style.background = "var(--black)";
     }, 200);
+    const fillDots = function () {
+      const length = ongoingPIN.length - 1;
+      const dotForFill = document.querySelector(`.pin-dot-${length}`);
+      dotForFill.style.background = "var(--main-colour)";
+    };
     fillDots();
     if (ongoingPIN.length === 4) {
       Visibility(finalJoinGameBTN, "btn-active");
@@ -773,6 +838,7 @@ keys.forEach((key) => {
   });
 });
 
+// Funkcja startująca grę
 const reallyStart = function () {
   const loadingScreen = function () {
     const loadingScreenEL = document.querySelector(".loading-screen-EL");
@@ -785,7 +851,6 @@ const reallyStart = function () {
   loadingScreen();
 
   setTimeout(() => {
-    goToScreen(gameScreen);
     setTimeout(() => {
       startGame();
     }, 500);
@@ -793,6 +858,7 @@ const reallyStart = function () {
   }, 500);
 };
 
+// Przycisk do rozpoczęcia gry
 finalJoinGameBTN.addEventListener("click", function () {
   let enteredPin = formatInputValue(ongoingPIN, "number");
   console.log(ongoingPIN);
@@ -827,6 +893,7 @@ finalJoinGameBTN.addEventListener("click", function () {
 const gameMenuBTNs = document.querySelectorAll(".game-menu-btn");
 const gameMenuBTNTurn = document.getElementById("game-menu-btn-turn");
 const gameMenuBTNHome = document.getElementById("game-menu-btn-home");
+
 //////////////////////
 // UPDATE USER SCREEN
 
@@ -835,6 +902,7 @@ let alreadyActive = false;
 let alreadyPassive = false;
 
 const updateUserScreen = function () {
+  console.log("Updating user screen...");
   if (allNots) {
     const newestNotification = highestKey(allNots);
     if (newestNotification && newestNotification !== lastNotification) {
@@ -895,39 +963,41 @@ const updateUserScreen = function () {
       }
     }
   };
-  updateBuildingsScreen();
+  // updateBuildingsScreen();
 
   // CHECK IF IT'S MY TURN
   if (currentPlayer.turn === true && alreadyActive === false) {
     alreadyActive = true;
     alreadyPassive = false;
 
-    Visibility(gameMenuBTNTurn, "left", "show");
+    Visibility(gameMenuBTNTurn, "down", "show");
     setTimeout(() => {
       Visibility(turnScreen, "left", "show");
-    }, 1000);
+    }, 300);
+
+    makeCircle();
 
     // PASSIVE MENU
-    Visibility(gameMenuBTNHome, "right", "hide");
+    Visibility(gameMenuBTNHome, "down", "hide");
     setTimeout(() => {
       Visibility(homeScreen, "right", "hide");
-    }, 1000);
+    }, 300);
   }
   // CHECK IF IT"S NOT MY TURN
   if (currentPlayer.turn === false && alreadyPassive === false) {
     alreadyPassive = true;
     alreadyActive = false;
 
-    Visibility(gameMenuBTNTurn, "left", "hide");
+    Visibility(gameMenuBTNTurn, "down", "hide");
     setTimeout(() => {
       Visibility(turnScreen, "left", "hide");
-    }, 1000);
+    }, 300);
 
     // PASSIVE MENU
-    Visibility(gameMenuBTNHome, "right", "show");
+    Visibility(gameMenuBTNHome, "down", "show");
     setTimeout(() => {
       Visibility(homeScreen, "right", "show");
-    }, 1000);
+    }, 300);
   }
 };
 
@@ -1040,8 +1110,38 @@ const updatePrices = function (origin) {
   }, 500);
 };
 
+//////////////////////
+// PASSING TURN
+
+const passTurn = function () {
+  let nextPlayerId = "";
+
+  // ZMIANA GRACZA
+  Object.keys(currentGame.gameOrder).forEach((chairId) => {
+    const playerOnTurn = currentGame.gameOrder[chairId].turn;
+    if (playerOnTurn === true) {
+      currentGame.gameOrder[chairId].turn = false;
+      const numberOfPlayers = Object.keys(currentGame.gameOrder).length;
+      if (parseInt(chairId) === numberOfPlayers - 1) {
+        nextPlayerId = 0;
+      } else {
+        nextPlayerId = parseInt(chairId) + 1;
+      }
+    }
+  });
+  currentGame.gameOrder[nextPlayerId].turn = true;
+
+  updateDB();
+  updateUserScreen();
+};
+
+//////////////////////
+// STARTING GAME
+
 const startGame = function () {
   console.log("starting GAME");
+  currentScreen = homeScreen;
+  gameMenuBar.style.display = "grid";
 
   // const resetTurnDeck = function () {
   //   if (currentPlayer.turn === false) {
@@ -1063,26 +1163,28 @@ const startGame = function () {
 
   // resetTurnDeck();
 
-  const duLabels = document.querySelectorAll(".du-label");
-  duLabels.forEach((label) => {
-    label.innerHTML = currentPlayer.player;
-  });
+  // const duLabels = document.querySelectorAll(".du-label");
+  // duLabels.forEach((label) => {
+  //   label.innerHTML = currentPlayer.player;
+  // });
 
-  for (let i = 0; i < currentGame.gameOrder.length; i++) {
-    const foundPlayer = currentGame.gameOrder[i];
-    const className = `${foundPlayer.player} ${classNumber[i]}`;
-    const myHtml = `
-    <div class="bar-container bar-${className}">
-    <div class="measure danina-measure-${i} ${className}"></div>
-    <div class="small-circle ${className}">
-    </div>
-    <h2 class="danina-bar-value danina-${i}"></h2>
-  </div>`;
-    const barContainerDiv = document.createElement("div");
-    barContainerDiv.innerHTML = myHtml;
-    daninaContainer.appendChild(barContainerDiv.firstElementChild);
-  }
-  updatePrices("from startGame()");
+  // for (let i = 0; i < currentGame.gameOrder.length; i++) {
+  //   const foundPlayer = currentGame.gameOrder[i];
+  //   const className = `${foundPlayer.player} ${classNumber[i]}`;
+  //   const myHtml = `
+  //   <div class="bar-container bar-${className}">
+  //   <div class="measure danina-measure-${i} ${className}"></div>
+  //   <div class="small-circle ${className}">
+  //   </div>
+  //   <h2 class="danina-bar-value danina-${i}"></h2>
+  // </div>`;
+  //   const barContainerDiv = document.createElement("div");
+  //   barContainerDiv.innerHTML = myHtml;
+  //   daninaContainer.appendChild(barContainerDiv.firstElementChild);
+  // }
+
+  // updatePrices("from startGame()");
+
   updateUserScreen();
 };
 
@@ -1113,15 +1215,11 @@ gameMenuBTNs.forEach((button) => {
   button.addEventListener("click", function () {
     gameMenuBTNs.forEach((btn) => btn.classList.remove("selected"));
     this.classList.toggle("selected");
-    console.log(this.classList[1]);
     const choosenScreen = allScreensArray.find(
       (screen) => screen.classList[2] === this.classList[1]
     );
   });
 });
-
-
-
 
 // gameMenuBTNs.forEach((button) => {
 //   button.addEventListener("click", function () {
@@ -1204,23 +1302,22 @@ const checkIfstandalone = function () {
 const skipLogin = function (arg) {
   Visibility(mainScreen, "left", "hide");
   Visibility(homeScreen, "right", "show");
-  Visibility(gameMenuBar, "left", "show");
-
   currentGame = gamesArray[0];
+
+  reallyStart();
 
   setTimeout(() => {
     currentPlayer = currentGame.gameOrder[arg];
 
     setTimeout(() => {
       allNots = currentGame.notifications;
-      startGame();
     }, 200);
   }, 400);
 };
 
 setTimeout(() => {
-  skipLogin();
-}, 1500);
+  skipLogin(0);
+}, 1000);
 
 /////////// PREVENT SLEEP
 async function preventSleep() {
@@ -1244,4 +1341,4 @@ preventSleep();
 
 setInterval(() => {
   updateUserScreen();
-}, 1000);
+}, 5000);

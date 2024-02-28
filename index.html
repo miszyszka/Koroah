@@ -13,6 +13,7 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="animation.css" />
     <title>KOROAH</title>
   </head>
 
@@ -203,20 +204,20 @@
     <!-- MENU -->
 
     <div class="game-menu-bar no-active">
-      <div class="game-menu-btn turn" id="game-menu-btn-turn">
-        <div class="laubray-svg"></div>
+      <div class="circle-sign"></div>
+      <div
+        class="game-menu-btn navigate-btn turn laubray-svg"
+        id="game-menu-btn-turn"
+      >
       </div>
-      <div class="game-menu-btn home selected" id="game-menu-btn-home">
-        <div class="home-svg"></div>
-      </div>
-      <div class="game-menu-btn buildings">
-        <div class="btn-building-svg"></div>
-      </div>
-
-      <div class="game-menu-btn exchange">
-        <div class="user-screen-svg"></div>
-      </div>
+      <div
+        class="game-menu-btn navigate-btn home selected home-svg"
+        id="game-menu-btn-home"
+      ></div>
+      <div class="game-menu-btn navigate-btn buildings btn-building-svg"></div>
+      <div class="game-menu-btn navigate-btn exchange user-screen-svg"></div>
     </div>
+
 
     <!--  -->
     <!--  -->
@@ -243,16 +244,16 @@
         });
     </script>
 
-<script>
-  fetch("html-svgs/delete-svg.html")
-    .then((response) => response.text())
-    .then((data) => {
-      const userCoinsTokens = document.querySelectorAll(".delete-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
-      userCoinsTokens.forEach((coin) => {
-        coin.innerHTML = data;
-      });
-    });
-</script>
+    <script>
+      fetch("html-svgs/delete-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".delete-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
 
     <script>
       fetch("html-svgs/coin-token.html")

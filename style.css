@@ -34,13 +34,15 @@
 
 
 .loading-screen-EL {
+  background-color: var(--black);
   width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   display: none;
-  z-index: 10000;
+  z-index: 1000;
+  position: absolute;
 }
 
 .test-btn {
@@ -54,7 +56,6 @@
   justify-content: center;
   align-items: center;
   opacity: 0.1;
-
   border: var(--main-colour) 1px solid;
 }
 
@@ -127,6 +128,7 @@ h3 {
   width: 300px;
   display: flex;
   justify-content: center;
+  z-index: 5;
 }
 
 /* --------------------- */
@@ -432,20 +434,23 @@ h3 {
   bottom: 0px;
   height: 100px;
   width: 100vw;
-  padding: 0px 10px;
-  display: flex;
-  justify-content: space-evenly;
-  transition: 1s ease;
-  z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr 20px 20px 20px 1fr;
+  gap: 80px;
+  grid-auto-rows: 100px;
+  z-index: 100;
+  border: #7b1c43 1px solid;
+
 }
 
 .game-menu-btn {
   width: 20px;
   height: 60px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-items: center;
+  transition: 1s ease;
+  position: absolute;
+  display: flex; /* Dodanie tej linii */
+  justify-content: center; /* Wyśrodkowanie wzdłuż osi poziomej */
+  align-items: center; /* Wyśrodkowanie wzdłuż osi pionowej */
 }
 
 .game-menu-btn svg path {
@@ -468,6 +473,19 @@ h3 {
   fill: var(--orange);
 }
 
+
+.game-menu-btn.turn{
+  grid-column: 2;
+}
+.game-menu-btn.home{
+  grid-column: 2;
+}
+.game-menu-btn.buildings{
+  grid-column: 3;
+}
+.game-menu-btn.exchange{
+  grid-column: 4;
+}
 
 
 /* --------------------- */
@@ -526,6 +544,10 @@ h3 {
 
 .hide-right {
   transform: translateX(100%);
+}
+
+.hide-down {
+  transform: translateY(200px);
 }
 
 .btn-inactive {
