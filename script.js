@@ -53,7 +53,7 @@ let currentPlayer;
 
 let numberOfPlayersSelected = false;
 let inputForNewGame;
-let gameStarted = false
+let gameStarted = false;
 
 const classNumber = {
   0: "one",
@@ -311,7 +311,7 @@ const updateCurrentGame = function (gameName) {
     currentGame = foundGame;
 
     allNots = currentGame.notifications;
-    updatePrices("from = updateCurrentGame()");
+    // updatePrices("from = updateCurrentGame()");
 
     // usunięcie 0 z liczb dziesiętnych
     for (let i = 0; i < currentGame.prices.length; i++) {
@@ -802,6 +802,10 @@ const logIn = function () {
           i.style.zIndex = "1";
         });
         rollDown = true;
+        ongoingPIN = "";
+        pinDots.forEach((dot) => {
+          dot.style.background = "var(--black)";
+        });
       }
     });
   });
@@ -812,12 +816,21 @@ let ongoingPIN = "";
 // Funkcja obsługi klawiszy i ekranu PIN
 keys.forEach((key) => {
   key.addEventListener("click", function (event) {
+    Visibility(finalJoinGameBTN, "btn-inactive");
     if (key.classList[2] === "del") {
+      setTimeout(() => {
+        key.style.filter = "var(--drop-shadow-item)";
+      }, 200);
       const dotForFill = document.querySelector(
         `.pin-dot-${ongoingPIN.length - 1}`
       );
       dotForFill.style.background = "var(--black)";
       ongoingPIN = ongoingPIN.slice(0, -1);
+      keys.forEach((key) => {
+        key.classList.remove("btn-inactive");
+        key.classList.add("btn-active");
+        key.style.pointerEvents = "auto";
+      });
       return;
     }
     ongoingPIN = ongoingPIN + event.target.classList[2];
@@ -835,8 +848,20 @@ keys.forEach((key) => {
     fillDots();
     if (ongoingPIN.length === 4) {
       Visibility(finalJoinGameBTN, "btn-active");
+      keys.forEach((key) => {
+        if (!key.classList.contains("del")) {
+          key.classList.remove("btn-active");
+          key.classList.add("btn-inactive");
+          key.style.pointerEvents = "none";
+        }
+      });
     } else {
       Visibility(finalJoinGameBTN, "btn-inactive");
+      keys.forEach((key) => {
+        key.classList.remove("btn-inactive");
+        key.classList.add("btn-active");
+        key.style.pointerEvents = "auto";
+      });
     }
   });
 });
@@ -847,6 +872,7 @@ const reallyStart = function () {
     const loadingScreenEL = document.querySelector(".loading-screen-EL");
 
     loadingScreenEL.style.display = "flex";
+    pinScreen.style.display = "none";
     setTimeout(() => {
       loadingScreenEL.style.display = "none";
     }, 1500);
@@ -863,12 +889,15 @@ const reallyStart = function () {
 
 // Przycisk do rozpoczęcia gry
 finalJoinGameBTN.addEventListener("click", function () {
+  setTimeout(() => {
+    finalJoinGameBTN.style.filter = "var(--drop-shadow-item)";
+  }, 200);
   let enteredPin = formatInputValue(ongoingPIN, "number");
   console.log(ongoingPIN);
   if (finalJoinGameBTN.classList[3] === "btn-inactive") {
-    finalJoinGameBTN.classList.add("invalid");
+    pinBox.classList.add("invalid");
     setTimeout(() => {
-      finalJoinGameBTN.classList.remove("invalid");
+      pinBox.classList.remove("invalid");
     }, 500);
     return;
   }
@@ -988,7 +1017,6 @@ const updatePricesAndValues = function (origin) {
   }
   removeOldDots();
 
-
   const updateBuildingsScreen = function () {
     const removeOldList = function () {
       const buildings = document.querySelectorAll(".bu-container");
@@ -1047,7 +1075,6 @@ const updatePricesAndValues = function (origin) {
 
   const tokenCoinsValue = document.querySelector(".token-coins-value");
   const tokenMoveValue = document.querySelector(".token-move-value");
-
 
   const userResourcesUpdate = function () {
     for (const resource in currentPlayer.resources) {
@@ -1197,7 +1224,6 @@ let alreadyActive = false;
 let alreadyPassive = false;
 
 const updateUserScreen = function () {
-
   console.log("Updating user screen...");
   if (allNots) {
     const newestNotification = highestKey(allNots);
@@ -1205,8 +1231,6 @@ const updateUserScreen = function () {
       // makeNotification(newestNotification);
     }
   }
-
-  
 
   // CHECK IF IT'S MY TURN
   if (currentPlayer.turn === true && alreadyActive === false) {
@@ -1244,7 +1268,6 @@ const updateUserScreen = function () {
   }
 };
 
-
 //////////////////////
 // PASSING TURN
 
@@ -1273,7 +1296,7 @@ const passTurn = function () {
 // STARTING GAME
 
 const startGame = function () {
-  gameStarted = true
+  gameStarted = true;
   console.log("starting GAME");
   currentScreen = homeScreen;
 
@@ -1309,38 +1332,38 @@ const startGame = function () {
   updateUserScreen();
 };
 
-
-
 ///////////////////////////
 ///////////////////////////
 // EXCHANGE
 ///////////////////////////
 
+let sellSource; // string - nazwa surowca
+let buySource; // string - nazwa surowca
 
-let sellSource;
-let buySource;
+let choosenSellSource; // liczba przyporządkowana konkretnemu surowcowi
+let choosenBuySource; // liczba przyporządkowana konkretnemu surowcowi
 
 const eSourceBTNs = document.querySelectorAll(".e-source-btn");
 const eSourceBTNsSell = document.querySelectorAll(".e-source-btn-sell");
 const eSourceBTNsBuy = document.querySelectorAll(".e-source-btn-buy");
-const eSellInput = document.querySelector(".e-sell-input");
-const eBuyInput = document.querySelector(".e-buy-input");
 
-// whole e-elements = VALUE
-const eValueSale = document.querySelector(".e-value-sale");
-const eValueBuy = document.querySelector(".e-value-buy");
+// caly element "exchange"
+const exchangeElement = document.getElementById("exchange-element");
 
-// informacje
-const info1 = document.getElementById("info-1");
-const info2 = document.getElementById("info-2");
+// dwa elementy które wjezdzaja jezeli jest ready for exchange
+const exchangeContainer = document.querySelector(".exchange-container");
+const exchangeValueContainer = document.querySelector(
+  ".exchange-value-container"
+);
 
-const eInfoSellText = document.querySelector(".e-info-sell-text");
-const eInfoBuyText = document.querySelector(".e-info-buy-text");
+// Wartości wyświetlane na ekranie
+const sellAmount = document.querySelector(".sell-amount");
+const buyAmount = document.querySelector(".buy-amount");
 
 // Wstępne rozwinięcie wszystkich source BTN's
 eSourceBTNs.forEach((i) => {
   const iconId = parseInt(i.classList[2].slice(-1));
-  const translateValue = 67 * iconId;
+  const translateValue = 68 * iconId;
   i.style.transform = `translateX(${translateValue}px)`;
   i.style.zIndex = "1";
 });
@@ -1348,38 +1371,103 @@ eSourceBTNs.forEach((i) => {
 let rollOutsideSell = true;
 let rollOutsideBuy = true;
 
+const calculateOffer = function () {
+  // sellValue (wartość sprzedawanego surowca w monetach)
+  const sellValue =
+    sellAmount * currentGame.prices[choosenSellSource] * currentPlayer.feeLevel;
+
+  sellSource = currentPlayer.resources[choosenSellSource];
+  buySource = currentPlayer.resources[choosenBuySource];
+
+  let currentOffer = sellValue / currentGame.prices[choosenBuySource];
+  if (currentOffer) {
+    eBuyInput.value = formatInputValue(currentOffer);
+  }
+};
+
+const readyForExchange = function () {
+  exchangeElement.style.width = "300px";
+  if (!rollOutsideBuy && !rollOutsideSell) {
+    console.log("starting makeCoversion.....");
+    exchangeContainer.style.transform= "translateX(0px)"
+    exchangeContainer.style.opacity= '1'
+    exchangeValueContainer.style.transform= "translateX(0px)"
+    exchangeValueContainer.style.opacity= '1'
+
+
+    exchangeElement.style.width = "120vw";
+
+    choosenSellSource = sellSource.classList[2].slice(-1);
+    choosenBuySource = buySource.classList[2].slice(-1);
+  } else {
+    exchangeContainer.style.transform= "translateX(300px)"
+    exchangeContainer.style.opacity= '0'
+    exchangeValueContainer.style.transform= "translateX(-100px)"
+    exchangeValueContainer.style.opacity= '0'
+  }
+};
 
 eSourceBTNs.forEach((icon) => {
   icon.addEventListener("click", function () {
     // UPPER BAR
-    if (icon.classList[4] === "e-source-btn-sell") {
+    if (icon.classList[3] === "e-source-btn-sell") {
       if (rollOutsideSell === false) {
         eSourceBTNsSell.forEach((i) => {
           // ROZWIJANIE
           const iconId = parseInt(i.classList[2].slice(-1));
-          const translateValue = 67 * iconId;
+          const translateValue = 68 * iconId;
           i.style.transform = `translateX(${translateValue}px)`;
-          i.style.filter='var(--drop-shadow-item)'
+          i.style.filter = "var(--drop-shadow-item)";
           i.style.zIndex = "1";
           sellSource = "";
         });
         rollOutsideSell = true;
+        readyForExchange();
       } else {
         eSourceBTNsSell.forEach((i) => {
           // ZWIJANIE
           i.style.transform = `translateY(0px)`;
-          i.style.filter= 'none'
+          i.style.filter = "none";
           icon.style.zIndex = "2";
           sellSource = icon;
         });
         rollOutsideSell = false;
+        readyForExchange();
+      }
+    }
 
+    // LOWER BAR
+    if (icon.classList[3] === "e-source-btn-buy") {
+      if (rollOutsideBuy === false) {
+        eSourceBTNsBuy.forEach((i) => {
+          // ROZWIJANIE
+          const iconId = parseInt(i.classList[2].slice(-1));
+          const translateValue = 68 * iconId;
+          i.style.transform = `translateX(${translateValue}px)`;
+          i.style.filter = "var(--drop-shadow-item)";
+          i.style.zIndex = "1";
+        });
+        rollOutsideBuy = true;
+        readyForExchange();
+      } else {
+        eSourceBTNsBuy.forEach((i) => {
+          // ZWIJANIE
+          i.style.transform = "translateY(0px)";
+          i.style.filter = "none";
+          icon.style.zIndex = "2";
+          buySource = icon;
+        });
+        rollOutsideBuy = false;
+        readyForExchange();
       }
     }
   });
 });
 
-
+// END OF EXCHANGE
+///////////////////////////
+///////////////////////////
+///////////////////////////
 
 /////////// NASŁUCHIWANIE
 onValue(gamesDB, (snapshot) => {
@@ -1433,7 +1521,7 @@ const skipLogin = function (arg) {
 };
 
 setTimeout(() => {
-  // skipLogin(0);
+  skipLogin(1);
 }, 1000);
 
 /////////// PREVENT SLEEP
@@ -1457,7 +1545,7 @@ async function preventSleep() {
 preventSleep();
 
 setInterval(() => {
-  if (gameStarted){
-  updateUserScreen();
+  if (gameStarted) {
+    updateUserScreen();
   }
 }, 5000);
