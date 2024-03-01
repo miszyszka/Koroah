@@ -28,8 +28,8 @@
     drop-shadow(-4px -4px 4px #ffffff10);
   --drop-shadow-hover: drop-shadow(19px 17px 12px #000000)
     drop-shadow(-12px -12px 8px #ffffff10);
-  --drop-shadow-active: drop-shadow(4px 4px 4px #000000)
-    drop-shadow(-3px -3px 4px #ffffff30);
+  --drop-shadow-active: drop-shadow(2px 2px 3px #000000)
+    drop-shadow(-2px -2px 3px #ffffff30);
 }
 
 .loading-screen-EL {
@@ -470,6 +470,7 @@ h3 {
   margin-top: -20px;
 }
 
+.svg-icon svg path,
 .game-menu-btn svg path {
   fill: var(--main-colour);
 }
@@ -481,9 +482,11 @@ h3 {
   opacity: 0.1;
 }
 
+.svg-icon svg,
 .game-menu-btn svg {
   width: 20px;
   height: 20px;
+  
 }
 
 .selected svg path {

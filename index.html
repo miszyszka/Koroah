@@ -382,10 +382,17 @@
           </div>
         </div>
         <!-- e-icons - exchange-container -->
-        <div class="ready-for-exchange-el exchange-container"></div>
-        <!-- e-icons - exchange-container -->
+        <div class="ready-for-exchange-el exchange-container">
+          <div class="btn btn-small toggle" id="toggle0.1">0.1</div>
+          <div class="btn btn-small minus">-</div>
+          <div class="btn btn-small add">+</div>
+          <div class="btn btn-big deal">
+            <div class="svg-icon hammer-svg"></div>
+          </div>
+        </div>
+        <!-- e-icons - exchange-value-container -->
         <div class="ready-for-exchange-el exchange-value-container">
-          <h1 class="sell-amount">1</h1>
+          <h1 class="sell-amount">13</h1>
           <h1 class="buy-amount">1</h1>
         </div>
       </div>
@@ -469,6 +476,17 @@
           });
         });
     </script>
+
+<script>
+  fetch("html-svgs/hammer-svg.html")
+    .then((response) => response.text())
+    .then((data) => {
+      const userCoinsTokens = document.querySelectorAll(".hammer-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+      userCoinsTokens.forEach((coin) => {
+        coin.innerHTML = data;
+      });
+    });
+</script>
 
     <!-- Logotypy w menu -->
     <script>

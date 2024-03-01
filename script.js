@@ -13,6 +13,8 @@ import {
 const allNavigateBtns = document.querySelectorAll(".navigate-btn");
 
 // ELEMENTS
+const allButtons = document.querySelectorAll(".btn");
+
 const iconContainer = document.querySelector(".icon-container");
 
 // screens
@@ -31,6 +33,7 @@ const exchangeScreen = document.querySelector(".exchange-screen");
 const gameMenuBar = document.querySelector(".game-menu-bar");
 
 // DATABASE
+
 const appSettings = {
   databaseURL:
     "https://koroah-947d1-default-rtdb.europe-west1.firebasedatabase.app/",
@@ -109,6 +112,16 @@ testBTN.addEventListener("click", function () {
 ////////////////
 // USEFULL FUNCTION
 ///////////////
+
+allButtons.forEach((btn) => {
+  btn.addEventListener("click", function () {
+    if (!btn.classList.contains("toggle")) {
+      setTimeout(() => {
+        btn.style.filter = "var(--drop-shadow-item)";
+      }, 200);
+    }
+  });
+});
 
 function formatInputValue(inputValue, arg) {
   inputValue = inputValue.toString();
@@ -1350,6 +1363,8 @@ const eSourceBTNsBuy = document.querySelectorAll(".e-source-btn-buy");
 // caly element "exchange"
 const exchangeElement = document.getElementById("exchange-element");
 
+const toggle01btn = document.getElementById("toggle0.1");
+
 // dwa elementy które wjezdzaja jezeli jest ready for exchange
 const exchangeContainer = document.querySelector(".exchange-container");
 const exchangeValueContainer = document.querySelector(
@@ -1370,6 +1385,18 @@ eSourceBTNs.forEach((i) => {
 
 let rollOutsideSell = true;
 let rollOutsideBuy = true;
+let toggle01 = false;
+
+toggle01btn.addEventListener("click", function () {
+  toggle01 = !toggle01;
+  if (toggle01) {
+    toggle01btn.style.filter = "var(--drop-shadow-active)";
+    toggle01btn.style.color = 'var(--main-colour)'
+  } else {
+    toggle01btn.style.filter = "var(--drop-shadow-item)";
+    toggle01btn.style.color = 'var(--zelazo)'
+  }
+});
 
 const calculateOffer = function () {
   // sellValue (wartość sprzedawanego surowca w monetach)
@@ -1389,23 +1416,21 @@ const readyForExchange = function () {
   exchangeElement.style.width = "300px";
   if (!rollOutsideBuy && !rollOutsideSell) {
     console.log("starting makeCoversion.....");
-    exchangeContainer.style.transform= "translateX(0px)"
-    exchangeContainer.style.opacity= '1'
-    exchangeValueContainer.style.transform= "translateX(0px)"
-    exchangeValueContainer.style.opacity= '1'
-
-
+    exchangeContainer.style.transform = "translateX(0px)";
+    exchangeContainer.style.opacity = "1";
+    exchangeValueContainer.style.transform = "translateX(0px)";
+    exchangeValueContainer.style.opacity = "1";
     exchangeElement.style.width = "120vw";
-
     choosenSellSource = sellSource.classList[2].slice(-1);
     choosenBuySource = buySource.classList[2].slice(-1);
   } else {
-    exchangeContainer.style.transform= "translateX(300px)"
-    exchangeContainer.style.opacity= '0'
-    exchangeValueContainer.style.transform= "translateX(-100px)"
-    exchangeValueContainer.style.opacity= '0'
+    exchangeContainer.style.transform = "translateX(300px)";
+    exchangeContainer.style.opacity = "0";
+    exchangeValueContainer.style.transform = "translateX(-100px)";
+    exchangeValueContainer.style.opacity = "0";
   }
 };
+readyForExchange()
 
 eSourceBTNs.forEach((icon) => {
   icon.addEventListener("click", function () {
