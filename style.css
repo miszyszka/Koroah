@@ -155,7 +155,7 @@ h3 {
   justify-content: center;
   color: var(--main-colour);
   cursor: pointer;
-  transition: ease 0.3s;
+  transition: ease 0.6s;
   user-select: none;
 }
 
