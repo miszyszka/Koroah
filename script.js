@@ -115,9 +115,14 @@ testBTN.addEventListener("click", function () {
 
 allButtons.forEach((btn) => {
   btn.addEventListener("click", function () {
+
+
     if (!btn.classList.contains("toggle")) {
+
+        btn.classList.add("selected");
+
       setTimeout(() => {
-        btn.style.filter = "var(--drop-shadow-item)";
+        btn.classList.remove("selected");
       }, 200);
     }
   });
@@ -431,6 +436,8 @@ allNavigateBtns.forEach((btn) => {
 
 const goToMain = document.querySelectorAll(".go-to-main");
 const goToFirst = document.querySelector(".go-to-first-screen");
+
+
 
 goToMain.forEach((btn) => {
   btn.addEventListener("click", function () {

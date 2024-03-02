@@ -274,7 +274,6 @@
 
 .ready-for-exchange-el {
   position: absolute;
-  height: 100%;
   transition: 1s ease;
   display: flex;
 }

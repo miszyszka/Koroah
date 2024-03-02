@@ -155,22 +155,23 @@ h3 {
   justify-content: center;
   color: var(--main-colour);
   cursor: pointer;
-  transition: ease 0.6s;
+  transition: ease 0.4s;
   user-select: none;
 }
 
-.btn:hover {
+/* .btn:hover {
   filter: var(--drop-shadow-hover);
-}
+} */
 
-.btn.selected:hover {
+/* .btn.selected:hover {
   filter: var(
     --drop-shadow-active
   ); /* lub inna wartość, aby anulować efekt hover */
-}
+
 
 .selected {
   filter: var(--drop-shadow-active);
+  transform: scale(0.95);
 }
 
 .btn-big {
