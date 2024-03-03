@@ -115,11 +115,8 @@ testBTN.addEventListener("click", function () {
 
 allButtons.forEach((btn) => {
   btn.addEventListener("click", function () {
-
-
     if (!btn.classList.contains("toggle")) {
-
-        btn.classList.add("selected");
+      btn.classList.add("selected");
 
       setTimeout(() => {
         btn.classList.remove("selected");
@@ -436,8 +433,6 @@ allNavigateBtns.forEach((btn) => {
 
 const goToMain = document.querySelectorAll(".go-to-main");
 const goToFirst = document.querySelector(".go-to-first-screen");
-
-
 
 goToMain.forEach((btn) => {
   btn.addEventListener("click", function () {
@@ -1382,6 +1377,12 @@ const exchangeValueContainer = document.querySelector(
 const sellAmount = document.querySelector(".sell-amount");
 const buyAmount = document.querySelector(".buy-amount");
 
+// Deal btn
+const exchangeDealBTN = document.querySelector('.deal');
+
+
+
+
 // Wstępne rozwinięcie wszystkich source BTN's
 eSourceBTNs.forEach((i) => {
   const iconId = parseInt(i.classList[2].slice(-1));
@@ -1398,12 +1399,71 @@ toggle01btn.addEventListener("click", function () {
   toggle01 = !toggle01;
   if (toggle01) {
     toggle01btn.style.filter = "var(--drop-shadow-active)";
-    toggle01btn.style.color = 'var(--main-colour)'
+    toggle01btn.style.color = "var(--main-colour)";
   } else {
     toggle01btn.style.filter = "var(--drop-shadow-item)";
-    toggle01btn.style.color = 'var(--zelazo)'
+    toggle01btn.style.color = "var(--zelazo)";
   }
 });
+
+// ADDING AND SUBSTRACTING 1 and 0.1
+const manipulateBTNs = document.querySelectorAll(".manipulate");
+
+
+manipulateBTNs.forEach((btn) => {
+  btn.addEventListener("click", function () {
+    const choosenEL = btn.classList[2];
+
+    function roundNumber(number, decimals) {
+      var newnumber = new Number(number + "").toFixed(parseInt(decimals));
+      return parseFloat(newnumber);
+    }
+
+    function myCalculation(number, direction) {
+      if (direction === "plus") {
+        return parseFloat(sellAmount.innerHTML) + parseFloat(number);
+      }
+      if (direction === "minus") {
+        return parseFloat(sellAmount.innerHTML) - parseFloat(number);
+      }
+    };
+
+
+    if (!toggle01) {
+      if (choosenEL === "minus") {
+        sellAmount.innerHTML = roundNumber(myCalculation(1, "minus"), 3);
+      }
+      if (choosenEL === "add") {
+        sellAmount.innerHTML = roundNumber(myCalculation(1, "plus"), 3);
+      }
+    }
+    if (toggle01) {
+      if (choosenEL === "minus") {
+        sellAmount.innerHTML = roundNumber(myCalculation(0.1, "minus"), 3);
+      }
+      if (choosenEL === "add") {
+        sellAmount.innerHTML = roundNumber(myCalculation(0.1, "plus"), 3);
+      }
+    }
+
+    checkIfExchangeCorrect(parseFloat(sellAmount.innerHTML))
+  });
+});
+
+const checkIfExchangeCorrect = function(sellValue){
+  console.log('checking....');
+  const userResources = currentPlayer.resources[choosenSellSource]
+  console.log(userResources);
+if (sellValue >= 1 && sellValue <= userResources){
+  sellAmount.style.color= "var(--main-colour)"
+  Visibility(exchangeDealBTN, 'btn-active')
+
+} else {
+  sellAmount.style.color= "var(--raona)"
+  Visibility(exchangeDealBTN, 'btn-inactive')
+}
+}
+
 
 const calculateOffer = function () {
   // sellValue (wartość sprzedawanego surowca w monetach)
@@ -1437,12 +1497,17 @@ const readyForExchange = function () {
     exchangeValueContainer.style.opacity = "0";
   }
 };
-readyForExchange()
+readyForExchange();
 
 eSourceBTNs.forEach((icon) => {
   icon.addEventListener("click", function () {
     // UPPER BAR
     if (icon.classList[3] === "e-source-btn-sell") {
+      // id other bar has duplicate
+if (buySource && parseInt(icon.classList[2].slice(-1)) === parseInt(buySource.classList[2].slice(-1))){
+  buySource.click()
+  buySource = ''
+}
       if (rollOutsideSell === false) {
         eSourceBTNsSell.forEach((i) => {
           // ROZWIJANIE
@@ -1470,6 +1535,12 @@ eSourceBTNs.forEach((icon) => {
 
     // LOWER BAR
     if (icon.classList[3] === "e-source-btn-buy") {
+// id other bar has duplicate
+if (sellSource && parseInt(icon.classList[2].slice(-1)) === parseInt(sellSource.classList[2].slice(-1))){
+  sellSource.click()
+  sellSource = ''
+}
+
       if (rollOutsideBuy === false) {
         eSourceBTNsBuy.forEach((i) => {
           // ROZWIJANIE
