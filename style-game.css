@@ -251,6 +251,7 @@
 
 #exchange-element {
   transition: 1s ease;
+  position: relative;
 }
 
 .e-elements.e-icons {
@@ -279,7 +280,6 @@
 }
 
 .exchange-container {
-  position: relative;
   width: 220px;
   margin-left: 95px;
   .btn {
