@@ -314,22 +314,32 @@
 .exchange-value-container {
   width: 60px;
   margin-left: -320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sell-amount {
-  position: absolute;
-  top: 37px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-top: 36px;
+height: 93px;
+transition: 0.2s ease;
 }
 
 .buy-amount {
-  position: absolute;
-  top: 129px;
-  left: 50%;
-  transform: translateX(-50%);
+  transition: 0.2s ease;
+
 }
 
+
+.arrow-down-svg{
+  width: 15px;
+  height: 15px;
+  fill: var(--main-colour);
+  position: absolute;
+  top:90px;
+  transition: 0.5s ease;
+
+}
 
 /* --------------------- */
 /* --------------------- */

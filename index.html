@@ -357,7 +357,8 @@
             </div>
           </div>
         </div>
-
+<!-- ARROW -->
+        <div class="arrow-down-svg"></div>
         <!-- e-icons - buy-BAR -->
         <div class="e-elements e-icons buy-bar">
           <div class="btn e-source-btn e-source-btn-0 e-source-btn-buy">
@@ -398,6 +399,7 @@
           <h1 class="sell-amount">1</h1>
           <h1 class="buy-amount">1</h1>
         </div>
+
       </div>
     </div>
 
@@ -445,6 +447,17 @@
           });
         });
     </script>
+
+<script>
+  fetch("html-svgs/arrow-down-svg.html")
+    .then((response) => response.text())
+    .then((data) => {
+      const userCoinsTokens = document.querySelectorAll(".arrow-down-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+      userCoinsTokens.forEach((coin) => {
+        coin.innerHTML = data;
+      });
+    });
+</script>
 
     <script>
       fetch("html-svgs/delete-svg.html")

@@ -105,7 +105,8 @@ const testBTN = document.querySelector(".test-btn");
 testBTN.addEventListener("click", function () {
   console.log(currentGame);
   console.log(currentPlayer);
-  passTurn();
+  changePrice(2, 0);
+  // passTurn();
   updatePricesAndValues();
 });
 
@@ -231,6 +232,37 @@ const makeCircle = function () {
   setTimeout(() => {
     gameMenuBTNTurn.click();
   }, 1500);
+};
+
+let iteration = 1
+const changePrice = function (value, resource) {
+
+const executing = function(time){
+  setTimeout(() => {
+    console.log(`executing ${iteration}`);
+    iteration ++
+    let allExistingResources = 0;
+
+    // Podliczenie ile łącznie jest danego surwca w grze
+    Object.keys(currentGame.gameOrder).forEach((chairId) => {
+      allExistingResources =
+        allExistingResources +
+        currentGame.gameOrder[chairId].resources[resource];
+    });
+
+    // Transaction Importance to ile % surowca przybyło względem wszystkich dotychczasowych w grze.
+    const transactionImportance = value / allExistingResources;
+    console.log(transactionImportance);
+
+    currentGame.prices[resource] =
+      currentGame.prices[resource] +
+      currentGame.prices[resource] * transactionImportance;
+    updateDB();
+  }, time);
+}
+  // losuje o 0 do 30 sec.
+  const randomTime = Math.random() * 1000 * 30;
+  console.log(randomTime / 30000);
 };
 
 ////////////////
@@ -1316,6 +1348,7 @@ const startGame = function () {
   currentScreen = homeScreen;
 
   updatePricesAndValues();
+readyForExchange()
 
   gameMenuBar.style.display = "flex";
 
@@ -1378,8 +1411,8 @@ const sellAmount = document.querySelector(".sell-amount");
 const buyAmount = document.querySelector(".buy-amount");
 
 // Deal btn
-const exchangeDealBTN = document.querySelector('.deal');
-
+const exchangeDealBTN = document.querySelector(".deal");
+const arrowDown = document.querySelector('.arrow-down-svg');
 
 
 
@@ -1409,7 +1442,6 @@ toggle01btn.addEventListener("click", function () {
 // ADDING AND SUBSTRACTING 1 and 0.1
 const manipulateBTNs = document.querySelectorAll(".manipulate");
 
-
 manipulateBTNs.forEach((btn) => {
   btn.addEventListener("click", function () {
     const choosenEL = btn.classList[2];
@@ -1426,8 +1458,7 @@ manipulateBTNs.forEach((btn) => {
       if (direction === "minus") {
         return parseFloat(sellAmount.innerHTML) - parseFloat(number);
       }
-    };
-
+    }
 
     if (!toggle01) {
       if (choosenEL === "minus") {
@@ -1446,43 +1477,42 @@ manipulateBTNs.forEach((btn) => {
       }
     }
 
-    checkIfExchangeCorrect(parseFloat(sellAmount.innerHTML))
+    checkIfExchangeCorrect(parseFloat(sellAmount.innerHTML));
   });
 });
 
-const checkIfExchangeCorrect = function(sellValue){
-  console.log('checking....');
-  const userResources = currentPlayer.resources[choosenSellSource]
-  console.log(userResources);
-if (sellValue >= 1 && sellValue <= userResources){
-  sellAmount.style.color= "var(--main-colour)"
-  Visibility(exchangeDealBTN, 'btn-active')
-
-} else {
-  sellAmount.style.color= "var(--raona)"
-  Visibility(exchangeDealBTN, 'btn-inactive')
-}
-}
-
+const checkIfExchangeCorrect = function (sellValue) {
+  const userResources = currentPlayer.resources[choosenSellSource];
+  if (sellValue >= 0.1 && sellValue <= userResources) {
+    sellAmount.style.color = "var(--main-colour)";
+    buyAmount.style.transform = "translateX(0px)";
+    Visibility(exchangeDealBTN, "btn-active");
+    calculateOffer();
+  } else {
+    sellAmount.style.color = "var(--krysztal)";
+    buyAmount.style.transform = "translateX(-200px)";
+    Visibility(exchangeDealBTN, "btn-inactive");
+  }
+};
 
 const calculateOffer = function () {
   // sellValue (wartość sprzedawanego surowca w monetach)
   const sellValue =
-    sellAmount * currentGame.prices[choosenSellSource] * currentPlayer.feeLevel;
-
-  sellSource = currentPlayer.resources[choosenSellSource];
-  buySource = currentPlayer.resources[choosenBuySource];
+    formatInputValue(sellAmount.innerHTML, "number") *
+    currentGame.prices[choosenSellSource] *
+    currentPlayer.feeLevel;
 
   let currentOffer = sellValue / currentGame.prices[choosenBuySource];
-  if (currentOffer) {
-    eBuyInput.value = formatInputValue(currentOffer);
-  }
+  buyAmount.innerHTML = formatInputValue(currentOffer);
 };
 
 const readyForExchange = function () {
+  setTimeout(() => {
+    sellAmount.innerHTML= '1'
+  }, 100);
   exchangeElement.style.width = "300px";
   if (!rollOutsideBuy && !rollOutsideSell) {
-    console.log("starting makeCoversion.....");
+    arrowDown.style.transform = "translateX(-105px)";
     exchangeContainer.style.transform = "translateX(0px)";
     exchangeContainer.style.opacity = "1";
     exchangeValueContainer.style.transform = "translateX(0px)";
@@ -1491,23 +1521,29 @@ const readyForExchange = function () {
     choosenSellSource = sellSource.classList[2].slice(-1);
     choosenBuySource = buySource.classList[2].slice(-1);
   } else {
+    arrowDown.style.transform = "translateX(0px)";
     exchangeContainer.style.transform = "translateX(300px)";
     exchangeContainer.style.opacity = "0";
     exchangeValueContainer.style.transform = "translateX(-100px)";
     exchangeValueContainer.style.opacity = "0";
   }
+  calculateOffer()
 };
-readyForExchange();
+
 
 eSourceBTNs.forEach((icon) => {
   icon.addEventListener("click", function () {
     // UPPER BAR
     if (icon.classList[3] === "e-source-btn-sell") {
       // id other bar has duplicate
-if (buySource && parseInt(icon.classList[2].slice(-1)) === parseInt(buySource.classList[2].slice(-1))){
-  buySource.click()
-  buySource = ''
-}
+      if (
+        buySource &&
+        parseInt(icon.classList[2].slice(-1)) ===
+          parseInt(buySource.classList[2].slice(-1))
+      ) {
+        buySource.click();
+        buySource = "";
+      }
       if (rollOutsideSell === false) {
         eSourceBTNsSell.forEach((i) => {
           // ROZWIJANIE
@@ -1535,11 +1571,15 @@ if (buySource && parseInt(icon.classList[2].slice(-1)) === parseInt(buySource.cl
 
     // LOWER BAR
     if (icon.classList[3] === "e-source-btn-buy") {
-// id other bar has duplicate
-if (sellSource && parseInt(icon.classList[2].slice(-1)) === parseInt(sellSource.classList[2].slice(-1))){
-  sellSource.click()
-  sellSource = ''
-}
+      // id other bar has duplicate
+      if (
+        sellSource &&
+        parseInt(icon.classList[2].slice(-1)) ===
+          parseInt(sellSource.classList[2].slice(-1))
+      ) {
+        sellSource.click();
+        sellSource = "";
+      }
 
       if (rollOutsideBuy === false) {
         eSourceBTNsBuy.forEach((i) => {
@@ -1611,7 +1651,7 @@ const checkIfstandalone = function () {
 const skipLogin = function (arg) {
   Visibility(mainScreen, "left", "hide");
   Visibility(homeScreen, "right", "show");
-  currentGame = gamesArray[0];
+  currentGame = gamesArray[2];
 
   setTimeout(() => {
     currentPlayer = currentGame.gameOrder[arg];
