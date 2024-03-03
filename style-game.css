@@ -279,6 +279,7 @@
 }
 
 .exchange-container {
+  position: relative;
   width: 220px;
   margin-left: 95px;
   .btn {
@@ -329,7 +330,6 @@ transition: 0.2s ease;
   transition: 0.2s ease;
 
 }
-
 
 .arrow-down-svg{
   width: 15px;
