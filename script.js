@@ -106,16 +106,17 @@ testBTN.addEventListener("click", function () {
   console.log(currentGame);
   console.log(currentPlayer);
 
-  currentPlayer.resources[0] = 10;
+  currentPlayer.resources[0] = 20;
   currentPlayer.resources[1] = 10;
   currentPlayer.resources[2] = 10;
   currentPlayer.resources[3] = 10;
-  currentGame.prices[0]=5
-  currentGame.prices[1]=5
-  currentGame.prices[2]=5
-  currentGame.prices[3]=5
+  currentGame.prices[0] = 5;
+  currentGame.prices[1] = 5;
+  currentGame.prices[2] = 5;
+  currentGame.prices[3] = 5;
 
   // passTurn();
+  updateDB();
   updatePricesAndValues();
 });
 
@@ -248,38 +249,41 @@ function roundNumber(number, decimals) {
   return parseFloat(newnumber);
 }
 
-
-const changePrice = function (value, resource, action) {
+const changePrice = function (value, BuySRC, SellSRC) {
   // losuje od 15 do 30 sec.
-  const time = Math.floor(Math.random() * (30000 - 15000 + 1)) + 15000;
-  console.log(value, resource);
-
+  // const time = Math.floor((Math.random() * 5000) + 5000);
+  const time = Math.floor(Math.random() * 1000 + 1);
+  console.log("time", time);
 
   setTimeout(() => {
-    let allExistingResources = 0;
+    let allExistingResourcesBuy = 0;
+    let allExistingResourcesSell = 0;
     // Podliczenie ile łącznie jest danego surwca w grze
     Object.keys(currentGame.gameOrder).forEach((chairId) => {
-      allExistingResources =
-        allExistingResources +
-        currentGame.gameOrder[chairId].resources[resource];
+      allExistingResourcesBuy =
+        allExistingResourcesBuy +
+        currentGame.gameOrder[chairId].resources[BuySRC];
+    });
+    Object.keys(currentGame.gameOrder).forEach((chairId) => {
+      allExistingResourcesSell =
+        allExistingResourcesSell +
+        currentGame.gameOrder[chairId].resources[SellSRC];
     });
 
     // Transaction Importance to ile % surowca przybyło względem wszystkich dotychczasowych w grze.
-    const transactionImportance = value / allExistingResources;
+    const transactionImportance =
+      (value * currentGame.prices[SellSRC]) /
+      (allExistingResourcesSell * currentGame.prices[SellSRC]);
     console.log(transactionImportance);
 
-    if (action === 'increase'){
-      console.log('increase', transactionImportance);
-    currentGame.prices[resource] =
-      currentGame.prices[resource] +
-      currentGame.prices[resource] * (transactionImportance / 3);
-    }
-    if (action === 'decrease'){
-      console.log('decrease', transactionImportance);
-      currentGame.prices[resource] =
-        currentGame.prices[resource] -
-        currentGame.prices[resource] * (transactionImportance / 3);
-      }
+    currentGame.prices[BuySRC] =
+      currentGame.prices[BuySRC] +
+      currentGame.prices[BuySRC] * (transactionImportance / 2);
+
+    currentGame.prices[SellSRC] =
+      currentGame.prices[SellSRC] -
+      currentGame.prices[SellSRC] * (transactionImportance / 2);
+
     updateDB();
   }, time);
 };
@@ -1509,8 +1513,7 @@ exchangeDealBTN.addEventListener("click", function () {
 
     updateDB();
     checkIfExchangeCorrect();
-    changePrice(buyVAL, choosenBuySource, 'increase');
-    changePrice(sellVAL, choosenSellSource, 'decrease');
+    changePrice(sellVAL, choosenBuySource, choosenSellSource);
   }
 });
 
@@ -1706,8 +1709,19 @@ const skipLogin = function (arg) {
 };
 
 setTimeout(() => {
-  skipLogin(1);
+  // skipLogin(1);
 }, 1000);
+
+const skipLogin1 = document.querySelector(".skip-login-1");
+const skipLogin2 = document.querySelector(".skip-login-2");
+
+skipLogin1.addEventListener("click", function () {
+  skipLogin(1);
+});
+
+skipLogin2.addEventListener("click", function () {
+  skipLogin(2);
+});
 
 /////////// PREVENT SLEEP
 async function preventSleep() {
