@@ -105,7 +105,16 @@ const testBTN = document.querySelector(".test-btn");
 testBTN.addEventListener("click", function () {
   console.log(currentGame);
   console.log(currentPlayer);
-  changePrice(2, 0);
+
+  currentPlayer.resources[0] = 10;
+  currentPlayer.resources[1] = 10;
+  currentPlayer.resources[2] = 10;
+  currentPlayer.resources[3] = 10;
+  currentGame.prices[0]=5
+  currentGame.prices[1]=5
+  currentGame.prices[2]=5
+  currentGame.prices[3]=5
+
   // passTurn();
   updatePricesAndValues();
 });
@@ -234,15 +243,20 @@ const makeCircle = function () {
   }, 1500);
 };
 
-let iteration = 1
-const changePrice = function (value, resource) {
+function roundNumber(number, decimals) {
+  var newnumber = new Number(number + "").toFixed(parseInt(decimals));
+  return parseFloat(newnumber);
+}
 
-const executing = function(time){
+
+const changePrice = function (value, resource, action) {
+  // losuje od 15 do 30 sec.
+  const time = Math.floor(Math.random() * (30000 - 15000 + 1)) + 15000;
+  console.log(value, resource);
+
+
   setTimeout(() => {
-    console.log(`executing ${iteration}`);
-    iteration ++
     let allExistingResources = 0;
-
     // Podliczenie ile łącznie jest danego surwca w grze
     Object.keys(currentGame.gameOrder).forEach((chairId) => {
       allExistingResources =
@@ -254,15 +268,20 @@ const executing = function(time){
     const transactionImportance = value / allExistingResources;
     console.log(transactionImportance);
 
+    if (action === 'increase'){
+      console.log('increase', transactionImportance);
     currentGame.prices[resource] =
       currentGame.prices[resource] +
-      currentGame.prices[resource] * transactionImportance;
+      currentGame.prices[resource] * (transactionImportance / 3);
+    }
+    if (action === 'decrease'){
+      console.log('decrease', transactionImportance);
+      currentGame.prices[resource] =
+        currentGame.prices[resource] -
+        currentGame.prices[resource] * (transactionImportance / 3);
+      }
     updateDB();
   }, time);
-}
-  // losuje o 0 do 30 sec.
-  const randomTime = Math.random() * 1000 * 30;
-  console.log(randomTime / 30000);
 };
 
 ////////////////
@@ -1126,7 +1145,7 @@ const updatePricesAndValues = function (origin) {
   const userResourcesUpdate = function () {
     for (const resource in currentPlayer.resources) {
       const id = parseInt(resource) + 1;
-      let amount = currentPlayer.resources[resource];
+      let amount = roundNumber(currentPlayer.resources[resource], 2); // TU BYŁO formatValue
       const element = document.querySelector(`.resource-value-${id}`);
 
       const position = id - 1;
@@ -1154,7 +1173,6 @@ const updatePricesAndValues = function (origin) {
         const plus = document.querySelector(`.plus-${id}`);
         if (amount >= 40) {
           plus.style.opacity = "1";
-          box.style.opacity = "0.2";
         }
       }
     }
@@ -1188,7 +1206,8 @@ const updatePricesAndValues = function (origin) {
     multiplier = multiplier(max);
     bar.style.height = currentPrice * multiplier + "px";
     element.forEach((el) => {
-      el.innerHTML = formatInputValue(currentPrice, "number");
+      // el.innerHTML = formatInputValue(currentPrice, "number"); // OLD
+      el.innerHTML = roundNumber(currentPrice, 1);
     });
   });
 
@@ -1348,7 +1367,7 @@ const startGame = function () {
   currentScreen = homeScreen;
 
   updatePricesAndValues();
-readyForExchange()
+  readyForExchange();
 
   gameMenuBar.style.display = "flex";
 
@@ -1377,7 +1396,10 @@ readyForExchange()
     }
   };
   fillDaninaContainer();
-  updateUserScreen();
+  setTimeout(() => {
+    updateUserScreen();
+    updatePricesAndValues();
+  }, 500);
 };
 
 ///////////////////////////
@@ -1412,9 +1434,7 @@ const buyAmount = document.querySelector(".buy-amount");
 
 // Deal btn
 const exchangeDealBTN = document.querySelector(".deal");
-const arrowDown = document.querySelector('.arrow-down-svg');
-
-
+const arrowDown = document.querySelector(".arrow-down-svg");
 
 // Wstępne rozwinięcie wszystkich source BTN's
 eSourceBTNs.forEach((i) => {
@@ -1446,11 +1466,6 @@ manipulateBTNs.forEach((btn) => {
   btn.addEventListener("click", function () {
     const choosenEL = btn.classList[2];
 
-    function roundNumber(number, decimals) {
-      var newnumber = new Number(number + "").toFixed(parseInt(decimals));
-      return parseFloat(newnumber);
-    }
-
     function myCalculation(number, direction) {
       if (direction === "plus") {
         return parseFloat(sellAmount.innerHTML) + parseFloat(number);
@@ -1477,12 +1492,38 @@ manipulateBTNs.forEach((btn) => {
       }
     }
 
-    checkIfExchangeCorrect(parseFloat(sellAmount.innerHTML));
+    checkIfExchangeCorrect();
   });
 });
 
-const checkIfExchangeCorrect = function (sellValue) {
-  const userResources = currentPlayer.resources[choosenSellSource];
+exchangeDealBTN.addEventListener("click", function () {
+  if (exchangeDealBTN.classList.contains("btn-active")) {
+    const buyVAL = roundNumber(buyAmount.innerHTML, 2);
+    const sellVAL = roundNumber(sellAmount.innerHTML, 2);
+
+    currentPlayer.resources[choosenBuySource] =
+      roundNumber(currentPlayer.resources[choosenBuySource], 2) + buyVAL;
+
+    currentPlayer.resources[choosenSellSource] =
+      roundNumber(currentPlayer.resources[choosenSellSource], 2) - sellVAL;
+
+    updateDB();
+    checkIfExchangeCorrect();
+    changePrice(buyVAL, choosenBuySource, 'increase');
+    changePrice(sellVAL, choosenSellSource, 'decrease');
+  }
+});
+
+const checkIfExchangeCorrect = function () {
+  console.log("checkin if correct");
+  choosenSellSource = sellSource.classList[2].slice(-1);
+  choosenBuySource = buySource.classList[2].slice(-1);
+  const sellValue = parseFloat(sellAmount.innerHTML);
+  const userResources = roundNumber(
+    currentPlayer.resources[choosenSellSource],
+    2
+  );
+
   if (sellValue >= 0.1 && sellValue <= userResources) {
     sellAmount.style.color = "var(--main-colour)";
     buyAmount.style.transform = "translateX(0px)";
@@ -1498,20 +1539,22 @@ const checkIfExchangeCorrect = function (sellValue) {
 const calculateOffer = function () {
   // sellValue (wartość sprzedawanego surowca w monetach)
   const sellValue =
-    formatInputValue(sellAmount.innerHTML, "number") *
+    roundNumber(sellAmount.innerHTML, 3) *
     currentGame.prices[choosenSellSource] *
     currentPlayer.feeLevel;
 
   let currentOffer = sellValue / currentGame.prices[choosenBuySource];
-  buyAmount.innerHTML = formatInputValue(currentOffer);
+  buyAmount.innerHTML = roundNumber(currentOffer, 1);
 };
 
 const readyForExchange = function () {
   setTimeout(() => {
-    sellAmount.innerHTML= '1'
+    sellAmount.innerHTML = "1";
   }, 100);
   exchangeElement.style.width = "300px";
   if (!rollOutsideBuy && !rollOutsideSell) {
+    checkIfExchangeCorrect();
+    Visibility(exchangeDealBTN, "btn-active");
     arrowDown.style.transform = "translateX(-105px)";
     exchangeContainer.style.transform = "translateX(0px)";
     exchangeContainer.style.opacity = "1";
@@ -1527,9 +1570,8 @@ const readyForExchange = function () {
     exchangeValueContainer.style.transform = "translateX(-100px)";
     exchangeValueContainer.style.opacity = "0";
   }
-  calculateOffer()
+  calculateOffer();
 };
-
 
 eSourceBTNs.forEach((icon) => {
   icon.addEventListener("click", function () {
@@ -1687,8 +1729,8 @@ async function preventSleep() {
 }
 preventSleep();
 
-setInterval(() => {
-  if (gameStarted) {
-    updateUserScreen();
-  }
-}, 5000);
+// setInterval(() => {
+//   if (gameStarted) {
+//     updateUserScreen();
+//   }
+// }, 5000);
