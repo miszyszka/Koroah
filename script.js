@@ -14,8 +14,9 @@ const allNavigateBtns = document.querySelectorAll(".navigate-btn");
 
 // ELEMENTS
 const allButtons = document.querySelectorAll(".btn");
-
 const iconContainer = document.querySelector(".icon-container");
+
+const eSourceBTNs = document.querySelectorAll(".e-source-btn");
 
 // screens
 const mainScreen = document.querySelector(".main-screen");
@@ -106,16 +107,18 @@ testBTN.addEventListener("click", function () {
   console.log(currentGame);
   console.log(currentPlayer);
 
-  currentPlayer.resources[0] = 20;
-  currentPlayer.resources[1] = 10;
-  currentPlayer.resources[2] = 10;
-  currentPlayer.resources[3] = 10;
-  currentGame.prices[0] = 5;
-  currentGame.prices[1] = 5;
-  currentGame.prices[2] = 5;
-  currentGame.prices[3] = 5;
+  // currentPlayer.resources[0] = 20;
+  // currentPlayer.resources[1] = 10;
+  // currentPlayer.resources[2] = 10;
+  // currentPlayer.resources[3] = 10;
+  // currentGame.prices[0] = 20;
+  // currentGame.prices[1] = 20;
+  // currentGame.prices[2] = 20;
+  // currentGame.prices[3] = 20;
 
-  // passTurn();
+  // currentPlayer.resources[0] =   currentPlayer.resources[0] + 0.1
+  // currentPlayer.feeLevel = 0.9;
+  passTurn();
   updateDB();
   updatePricesAndValues();
 });
@@ -249,41 +252,32 @@ function roundNumber(number, decimals) {
   return parseFloat(newnumber);
 }
 
-const changePrice = function (value, BuySRC, SellSRC) {
+const changePrice = function (value, src) {
   // losuje od 15 do 30 sec.
   // const time = Math.floor((Math.random() * 5000) + 5000);
-  const time = Math.floor(Math.random() * 1000 + 1);
+  const time = Math.floor(Math.random() * 3000 + 2000);
   console.log("time", time);
 
   setTimeout(() => {
-    let allExistingResourcesBuy = 0;
-    let allExistingResourcesSell = 0;
+    let allExistingResources = 0;
     // Podliczenie ile łącznie jest danego surwca w grze
     Object.keys(currentGame.gameOrder).forEach((chairId) => {
-      allExistingResourcesBuy =
-        allExistingResourcesBuy +
-        currentGame.gameOrder[chairId].resources[BuySRC];
+      allExistingResources =
+        allExistingResources + currentGame.gameOrder[chairId].resources[src];
     });
-    Object.keys(currentGame.gameOrder).forEach((chairId) => {
-      allExistingResourcesSell =
-        allExistingResourcesSell +
-        currentGame.gameOrder[chairId].resources[SellSRC];
-    });
+    console.log("all existing Resources = ", allExistingResources);
 
     // Transaction Importance to ile % surowca przybyło względem wszystkich dotychczasowych w grze.
     const transactionImportance =
-      (value * currentGame.prices[SellSRC]) /
-      (allExistingResourcesSell * currentGame.prices[SellSRC]);
+      100 - ((allExistingResources + value) * 100) / allExistingResources;
     console.log(transactionImportance);
 
-    currentGame.prices[BuySRC] =
-      currentGame.prices[BuySRC] +
-      currentGame.prices[BuySRC] * (transactionImportance / 2);
-
-    currentGame.prices[SellSRC] =
-      currentGame.prices[SellSRC] -
-      currentGame.prices[SellSRC] * (transactionImportance / 2);
-
+    const newValue = currentGame.prices[src] + -transactionImportance / 5;
+    if (newValue > 1) {
+      currentGame.prices[src] = newValue;
+    } else {
+      currentGame.prices[src] = 1;
+    }
     updateDB();
   }, time);
 };
@@ -408,29 +402,29 @@ const updateDB = function () {
   update(userRef, game);
 };
 
-const updateCurrentPlayerToDB = function () {
-  Object.keys(currentGame.gameOrder).forEach((chairId) => {
-    const player = currentGame.gameOrder[chairId].player;
+// const updateCurrentPlayerToDB = function () {
+//   Object.keys(currentGame.gameOrder).forEach((chairId) => {
+//     const player = currentGame.gameOrder[chairId].player;
 
-    for (const resource in currentPlayer.resources) {
-      currentPlayer.resources[resource] = formatInputValue(
-        currentPlayer.resources[resource],
-        "number"
-      );
-    }
+//     for (const resource in currentPlayer.resources) {
+//       currentPlayer.resources[resource] = formatInputValue(
+//         currentPlayer.resources[resource],
+//         "number"
+//       );
+//     }
 
-    if (player === currentPlayer.player) {
-      const pinRef = ref(
-        database,
-        `games/${currentGame.id}/gameOrder/${chairId}`
-      );
+//     if (player === currentPlayer.player) {
+//       const pinRef = ref(
+//         database,
+//         `games/${currentGame.id}/gameOrder/${chairId}`
+//       );
 
-      update(pinRef, {
-        ...currentPlayer, // Rozpakowanie obiektu currentPlayer
-      });
-    }
-  });
-};
+//       update(pinRef, {
+//         ...currentPlayer, // Rozpakowanie obiektu currentPlayer
+//       });
+//     }
+//   });
+// };
 
 ////////////////
 // MANAGING SCREENS AND ELEMENTS
@@ -747,7 +741,8 @@ finalNewGameBTN.addEventListener("click", function () {
     rearangedGameOrder[index] = gameOrder[key];
     rearangedGameOrder[index].danina = 2;
     rearangedGameOrder[index].resources = [5, 5, 5, 5];
-    rearangedGameOrder[index].feeLevel = 0.8;
+    rearangedGameOrder[index].coins = 50;
+    rearangedGameOrder[index].moveTokens = 0;
     if (index === 0) {
       rearangedGameOrder[index].turn = true;
     } else {
@@ -1141,10 +1136,16 @@ const updatePricesAndValues = function (origin) {
       }
     }
   };
-  // updateBuildingsScreen();
 
   const tokenCoinsValue = document.querySelector(".token-coins-value");
+  const tokenDaninaValue = document.querySelector(".token-danina-value");
   const tokenMoveValue = document.querySelector(".token-move-value");
+  // const tokenFeeValue = document.querySelector(".token-fee-value");
+
+  tokenCoinsValue.innerHTML = roundNumber(currentPlayer.coins, 0);
+  tokenMoveValue.innerHTML = roundNumber(currentPlayer.moveTokens, 0);
+  tokenDaninaValue.innerHTML = roundNumber(currentPlayer.danina, 0);
+  // tokenFeeValue.innerHTML = roundNumber(100 - 100 * currentPlayer.feeLevel, 0);
 
   const userResourcesUpdate = function () {
     for (const resource in currentPlayer.resources) {
@@ -1183,6 +1184,39 @@ const updatePricesAndValues = function (origin) {
   };
   userResourcesUpdate();
 
+  const eSourceBTNsSell = document.querySelectorAll(".e-source-btn-sell");
+  const eSourceBTNsBuy = document.querySelectorAll(".e-source-btn-buy");
+
+  const checkIfAvaible = function (icon) {};
+
+  // sprawdzanie czy dany sell/buy jest mozliwy
+  eSourceBTNs.forEach((icon) => {
+    if (currentGame.gameOrder) {
+      const iteration = icon.classList[2].slice(-1);
+      const sourcePrice = currentGame.prices[iteration];
+      const userResources = currentPlayer.resources[iteration];
+
+      if (icon.classList[3] === "e-source-btn-sell") {
+        if (userResources < 1) {
+          icon.style.opacity = "0.1";
+          icon.style.pointerEvents = "none";
+        } else {
+          icon.style.opacity = "1";
+          icon.style.pointerEvents = "auto";
+        }
+      }
+      if (icon.classList[3] === "e-source-btn-buy") {
+        if (sourcePrice < currentPlayer.coins) {
+          icon.style.opacity = "1";
+          icon.style.pointerEvents = "auto";
+        } else {
+          icon.style.opacity = "0.21";
+          icon.style.pointerEvents = "none";
+        }
+      }
+    }
+  });
+
   /////// GLOBAL VALUES
 
   const priceBarValues = document.querySelectorAll(".price-bar-value");
@@ -1195,23 +1229,23 @@ const updatePricesAndValues = function (origin) {
     const currentPrice = currentGame.prices[resourceId - 1];
     const max = Math.max(...currentGame.prices);
     let multiplier = function (max) {
-      if (max < 10) {
-        return 20;
-      } else if (max >= 10 && max < 15) {
-        return 12;
-      } else if (max >= 15 && max < 25) {
-        return 7;
-      } else if (max >= 25 && max < 35) {
+      if (max < 20) {
         return 4;
-      } else {
+      } else if (max >= 20 && max < 40) {
+        return 3;
+      } else if (max >= 40 && max < 60) {
         return 2;
+      } else if (max >= 60 && max < 80) {
+        return 1;
+      } else {
+        return 0.5;
       }
     };
     multiplier = multiplier(max);
+    console.log("max =", max, multiplier);
     bar.style.height = currentPrice * multiplier + "px";
     element.forEach((el) => {
-      // el.innerHTML = formatInputValue(currentPrice, "number"); // OLD
-      el.innerHTML = roundNumber(currentPrice, 1);
+      el.innerHTML = roundNumber(currentPrice, 0);
     });
   });
 
@@ -1295,6 +1329,7 @@ let alreadyPassive = false;
 
 const updateUserScreen = function () {
   console.log("Updating user screen...");
+
   if (allNots) {
     const newestNotification = highestKey(allNots);
     if (newestNotification && newestNotification !== lastNotification) {
@@ -1371,7 +1406,6 @@ const startGame = function () {
   currentScreen = homeScreen;
 
   updatePricesAndValues();
-  readyForExchange();
 
   gameMenuBar.style.display = "flex";
 
@@ -1379,6 +1413,40 @@ const startGame = function () {
   const nameLabels = document.querySelectorAll(".name-label");
   nameLabels.forEach((label) => {
     label.innerHTML = currentPlayer.player;
+  });
+
+  // // EXCHANGE - dodaj nasłuchiwacze do przycisków
+  // ///////////////////////////
+
+  eSourceBTNs.forEach((btn) => {
+    const iteration = btn.classList[2].slice(-1);
+
+    btn.addEventListener("click", function () {
+      const currentPrice = currentGame.prices[iteration];
+
+      if (btn.classList[3] === "e-source-btn-sell") {
+        currentPlayer.resources[iteration] = roundNumber(
+          currentPlayer.resources[iteration] - 1,
+          2
+        );
+        currentPlayer.coins = roundNumber(
+          currentPlayer.coins + currentPrice,
+          2
+        );
+        changePrice(-1, iteration);
+      } else if (btn.classList[3] === "e-source-btn-buy") {
+        currentPlayer.resources[iteration] = roundNumber(
+          currentPlayer.resources[iteration] + 1,
+          2
+        );
+        currentPlayer.coins = roundNumber(
+          currentPlayer.coins - currentPrice,
+          0
+        );
+        changePrice(1, iteration);
+      }
+      updateDB();
+    });
   });
 
   // ta funkcja wrzuca aktualną liczbę elementów do konterów danina-container
@@ -1400,262 +1468,16 @@ const startGame = function () {
     }
   };
   fillDaninaContainer();
+
   setTimeout(() => {
     updateUserScreen();
     updatePricesAndValues();
   }, 500);
 };
 
-///////////////////////////
-///////////////////////////
-// EXCHANGE
-///////////////////////////
-
-let sellSource; // string - nazwa surowca
-let buySource; // string - nazwa surowca
-
-let choosenSellSource; // liczba przyporządkowana konkretnemu surowcowi
-let choosenBuySource; // liczba przyporządkowana konkretnemu surowcowi
-
-const eSourceBTNs = document.querySelectorAll(".e-source-btn");
-const eSourceBTNsSell = document.querySelectorAll(".e-source-btn-sell");
-const eSourceBTNsBuy = document.querySelectorAll(".e-source-btn-buy");
-
-// caly element "exchange"
-const exchangeElement = document.getElementById("exchange-element");
-
-const toggle01btn = document.getElementById("toggle0.1");
-
-// dwa elementy które wjezdzaja jezeli jest ready for exchange
-const exchangeContainer = document.querySelector(".exchange-container");
-const exchangeValueContainer = document.querySelector(
-  ".exchange-value-container"
-);
-
-// Wartości wyświetlane na ekranie
-const sellAmount = document.querySelector(".sell-amount");
-const buyAmount = document.querySelector(".buy-amount");
-
-// Deal btn
-const exchangeDealBTN = document.querySelector(".deal");
-const arrowDown = document.querySelector(".arrow-down-svg");
-
-// Wstępne rozwinięcie wszystkich source BTN's
-eSourceBTNs.forEach((i) => {
-  const iconId = parseInt(i.classList[2].slice(-1));
-  const translateValue = 68 * iconId;
-  i.style.transform = `translateX(${translateValue}px)`;
-  i.style.zIndex = "1";
-});
-
-let rollOutsideSell = true;
-let rollOutsideBuy = true;
-let toggle01 = false;
-
-toggle01btn.addEventListener("click", function () {
-  toggle01 = !toggle01;
-  if (toggle01) {
-    toggle01btn.style.filter = "var(--drop-shadow-active)";
-    toggle01btn.style.color = "var(--main-colour)";
-  } else {
-    toggle01btn.style.filter = "var(--drop-shadow-item)";
-    toggle01btn.style.color = "var(--zelazo)";
-  }
-});
-
-// ADDING AND SUBSTRACTING 1 and 0.1
-const manipulateBTNs = document.querySelectorAll(".manipulate");
-
-manipulateBTNs.forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const choosenEL = btn.classList[2];
-
-    function myCalculation(number, direction) {
-      if (direction === "plus") {
-        return parseFloat(sellAmount.innerHTML) + parseFloat(number);
-      }
-      if (direction === "minus") {
-        return parseFloat(sellAmount.innerHTML) - parseFloat(number);
-      }
-    }
-
-    if (!toggle01) {
-      if (choosenEL === "minus") {
-        sellAmount.innerHTML = roundNumber(myCalculation(1, "minus"), 3);
-      }
-      if (choosenEL === "add") {
-        sellAmount.innerHTML = roundNumber(myCalculation(1, "plus"), 3);
-      }
-    }
-    if (toggle01) {
-      if (choosenEL === "minus") {
-        sellAmount.innerHTML = roundNumber(myCalculation(0.1, "minus"), 3);
-      }
-      if (choosenEL === "add") {
-        sellAmount.innerHTML = roundNumber(myCalculation(0.1, "plus"), 3);
-      }
-    }
-
-    checkIfExchangeCorrect();
-  });
-});
-
-exchangeDealBTN.addEventListener("click", function () {
-  if (exchangeDealBTN.classList.contains("btn-active")) {
-    const buyVAL = roundNumber(buyAmount.innerHTML, 2);
-    const sellVAL = roundNumber(sellAmount.innerHTML, 2);
-
-    currentPlayer.resources[choosenBuySource] =
-      roundNumber(currentPlayer.resources[choosenBuySource], 2) + buyVAL;
-
-    currentPlayer.resources[choosenSellSource] =
-      roundNumber(currentPlayer.resources[choosenSellSource], 2) - sellVAL;
-
-    updateDB();
-    checkIfExchangeCorrect();
-    changePrice(sellVAL, choosenBuySource, choosenSellSource);
-  }
-});
-
-const checkIfExchangeCorrect = function () {
-  console.log("checkin if correct");
-  choosenSellSource = sellSource.classList[2].slice(-1);
-  choosenBuySource = buySource.classList[2].slice(-1);
-  const sellValue = parseFloat(sellAmount.innerHTML);
-  const userResources = roundNumber(
-    currentPlayer.resources[choosenSellSource],
-    2
-  );
-
-  if (sellValue >= 0.1 && sellValue <= userResources) {
-    sellAmount.style.color = "var(--main-colour)";
-    buyAmount.style.transform = "translateX(0px)";
-    Visibility(exchangeDealBTN, "btn-active");
-    calculateOffer();
-  } else {
-    sellAmount.style.color = "var(--krysztal)";
-    buyAmount.style.transform = "translateX(-200px)";
-    Visibility(exchangeDealBTN, "btn-inactive");
-  }
-};
-
-const calculateOffer = function () {
-  // sellValue (wartość sprzedawanego surowca w monetach)
-  const sellValue =
-    roundNumber(sellAmount.innerHTML, 3) *
-    currentGame.prices[choosenSellSource] *
-    currentPlayer.feeLevel;
-
-  let currentOffer = sellValue / currentGame.prices[choosenBuySource];
-  buyAmount.innerHTML = roundNumber(currentOffer, 1);
-};
-
-const readyForExchange = function () {
-  setTimeout(() => {
-    sellAmount.innerHTML = "1";
-  }, 100);
-  exchangeElement.style.width = "300px";
-  if (!rollOutsideBuy && !rollOutsideSell) {
-    checkIfExchangeCorrect();
-    Visibility(exchangeDealBTN, "btn-active");
-    arrowDown.style.transform = "translateX(-105px)";
-    exchangeContainer.style.transform = "translateX(0px)";
-    exchangeContainer.style.opacity = "1";
-    exchangeValueContainer.style.transform = "translateX(0px)";
-    exchangeValueContainer.style.opacity = "1";
-    exchangeElement.style.width = "120vw";
-    choosenSellSource = sellSource.classList[2].slice(-1);
-    choosenBuySource = buySource.classList[2].slice(-1);
-  } else {
-    arrowDown.style.transform = "translateX(0px)";
-    exchangeContainer.style.transform = "translateX(300px)";
-    exchangeContainer.style.opacity = "0";
-    exchangeValueContainer.style.transform = "translateX(-100px)";
-    exchangeValueContainer.style.opacity = "0";
-  }
-  calculateOffer();
-};
-
-eSourceBTNs.forEach((icon) => {
-  icon.addEventListener("click", function () {
-    // UPPER BAR
-    if (icon.classList[3] === "e-source-btn-sell") {
-      // id other bar has duplicate
-      if (
-        buySource &&
-        parseInt(icon.classList[2].slice(-1)) ===
-          parseInt(buySource.classList[2].slice(-1))
-      ) {
-        buySource.click();
-        buySource = "";
-      }
-      if (rollOutsideSell === false) {
-        eSourceBTNsSell.forEach((i) => {
-          // ROZWIJANIE
-          const iconId = parseInt(i.classList[2].slice(-1));
-          const translateValue = 68 * iconId;
-          i.style.transform = `translateX(${translateValue}px)`;
-          i.style.filter = "var(--drop-shadow-item)";
-          i.style.zIndex = "1";
-          sellSource = "";
-        });
-        rollOutsideSell = true;
-        readyForExchange();
-      } else {
-        eSourceBTNsSell.forEach((i) => {
-          // ZWIJANIE
-          i.style.transform = `translateY(0px)`;
-          i.style.filter = "none";
-          icon.style.zIndex = "2";
-          sellSource = icon;
-        });
-        rollOutsideSell = false;
-        readyForExchange();
-      }
-    }
-
-    // LOWER BAR
-    if (icon.classList[3] === "e-source-btn-buy") {
-      // id other bar has duplicate
-      if (
-        sellSource &&
-        parseInt(icon.classList[2].slice(-1)) ===
-          parseInt(sellSource.classList[2].slice(-1))
-      ) {
-        sellSource.click();
-        sellSource = "";
-      }
-
-      if (rollOutsideBuy === false) {
-        eSourceBTNsBuy.forEach((i) => {
-          // ROZWIJANIE
-          const iconId = parseInt(i.classList[2].slice(-1));
-          const translateValue = 68 * iconId;
-          i.style.transform = `translateX(${translateValue}px)`;
-          i.style.filter = "var(--drop-shadow-item)";
-          i.style.zIndex = "1";
-        });
-        rollOutsideBuy = true;
-        readyForExchange();
-      } else {
-        eSourceBTNsBuy.forEach((i) => {
-          // ZWIJANIE
-          i.style.transform = "translateY(0px)";
-          i.style.filter = "none";
-          icon.style.zIndex = "2";
-          buySource = icon;
-        });
-        rollOutsideBuy = false;
-        readyForExchange();
-      }
-    }
-  });
-});
-
-// END OF EXCHANGE
-///////////////////////////
-///////////////////////////
-///////////////////////////
+// ///////////////////////////
+// ///////////////////////////
+// ///////////////////////////
 
 /////////// NASŁUCHIWANIE
 onValue(gamesDB, (snapshot) => {
@@ -1696,7 +1518,7 @@ const checkIfstandalone = function () {
 const skipLogin = function (arg) {
   Visibility(mainScreen, "left", "hide");
   Visibility(homeScreen, "right", "show");
-  currentGame = gamesArray[2];
+  currentGame = gamesArray[0];
 
   setTimeout(() => {
     currentPlayer = currentGame.gameOrder[arg];

@@ -1,0 +1,93 @@
+/* EXCHANGE */
+
+#exchange-element {
+    transition: 1s ease;
+    position: relative;
+  }
+  
+  .e-elements.e-icons {
+    position: absolute;
+    transform: translateX(-140px);
+    .btn {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      margin: 10px;
+    }
+  }
+  
+  .sell-bar {
+    margin-top: 19px;
+  }
+  
+  .buy-bar {
+    margin-top: 110px;
+  }
+  
+  .ready-for-exchange-el {
+    position: absolute;
+    transition: 1s ease;
+    display: flex;
+  }
+  
+  .exchange-container {
+    width: 220px;
+    margin-left: 95px;
+    .btn {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+    }
+    .toggle {
+      width: 60px;
+      height: 60px;
+      top: 25px;
+      color: var(--zelazo);
+    }
+    .minus {
+      width: 60px;
+      height: 60px;
+      top: 25px;
+      left: 80px;
+    }
+    .add {
+      width: 60px;
+      height: 60px;
+      top: 25px;
+      left: 160px;
+    }
+    .deal {
+      top: 105px;
+      height: 70px;
+      width: 230px;
+    }
+  }
+  
+  .exchange-value-container {
+    width: 60px;
+    margin-left: -320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .sell-amount {
+    margin-top: 36px;
+  height: 93px;
+  transition: 0.2s ease;
+  }
+  
+  .buy-amount {
+    transition: 0.2s ease;
+  
+  }
+  
+  .arrow-down-svg{
+    width: 15px;
+    height: 15px;
+    fill: var(--main-colour);
+    position: absolute;
+    top:90px;
+    transition: 0.5s ease;
+  
+  }
