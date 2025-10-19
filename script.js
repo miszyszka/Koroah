@@ -15,6 +15,9 @@ const allNavigateBtns = document.querySelectorAll(".navigate-btn");
 // ELEMENTS
 const allButtons = document.querySelectorAll(".btn");
 const iconContainer = document.querySelector(".icon-container");
+const allBuildingsContainer = document.querySelector(
+  ".all-buildings-container"
+);
 
 const eSourceBTNs = document.querySelectorAll(".e-source-btn");
 
@@ -24,7 +27,6 @@ const firstCreateScreen = document.querySelector(".first-create-screen");
 const chairScreen = document.querySelector(".chair-screen");
 const pinScreen = document.querySelector(".pin-screen");
 const firstJoinScreen = document.querySelector(".first-join-screen");
-
 const allScreens = document.querySelectorAll(".screen");
 const homeScreen = document.querySelector(".home-screen");
 const turnScreen = document.querySelector(".turn-screen");
@@ -88,36 +90,29 @@ const sourceBTNS = {
 };
 
 const allBuildingsArray = [
-  "Źródło",
-  "Gildia",
-  "Kopalnia",
-  "Huta",
-  "Generator",
-  "Sąd",
-  "Wieża",
-  "Krąg kupców",
-  "Orbita",
-  "Konwerter",
-  "Monolit",
-  "Portal",
+  { name: "Źródło", type: 0, activities: [0, 0, 0] },
+  { name: "Gildia", type: 1, activities: [0, 0, 0] },
+  { name: "Kopalnia", type: 2, activities: [0, 0, 0] },
+  { name: "Huta", type: 2, activities: [0, 0, 0] },
+
+  { name: "Generator", type: 0, activities: [0, 0, 0] },
+  { name: "Sąd", type: 0, activities: [0, 0, 0] },
+
+  { name: "Wieża", type: 1, activities: [0, 0, 0] },
+  { name: "Orbita", type: 1, activities: [0, 0, 0] },
+  { name: "Konwerter", type: 1, activities: [0, 0, 0] },
+  { name: "Mała Świątynia", type: 1, activities: [0, 0, 0] },
+
+  { name: "Krąg kupców", type: 2, activities: [0, 0, 0] },
+  { name: "Monolit", type: 2, activities: [0, 0, 0] },
+
+  { name: "Portale", type: 3, activities: [0, 0, 0] },
 ];
 
 const testBTN = document.querySelector(".test-btn");
 testBTN.addEventListener("click", function () {
   console.log(currentGame);
   console.log(currentPlayer);
-
-  // currentPlayer.resources[0] = 20;
-  // currentPlayer.resources[1] = 10;
-  // currentPlayer.resources[2] = 10;
-  // currentPlayer.resources[3] = 10;
-  // currentGame.prices[0] = 20;
-  // currentGame.prices[1] = 20;
-  // currentGame.prices[2] = 20;
-  // currentGame.prices[3] = 20;
-
-  // currentPlayer.resources[0] =   currentPlayer.resources[0] + 0.1
-  // currentPlayer.feeLevel = 0.9;
   passTurn();
   updateDB();
   updatePricesAndValues();
@@ -255,10 +250,11 @@ function roundNumber(number, decimals) {
 const changePrice = function (value, src) {
   // losuje od 15 do 30 sec.
   // const time = Math.floor((Math.random() * 5000) + 5000);
-  const time = Math.floor(Math.random() * 3000 + 2000);
+  const time = Math.floor(Math.random() * 1000);
   console.log("time", time);
 
   setTimeout(() => {
+    /*
     let allExistingResources = 0;
     // Podliczenie ile łącznie jest danego surwca w grze
     Object.keys(currentGame.gameOrder).forEach((chairId) => {
@@ -278,6 +274,12 @@ const changePrice = function (value, src) {
     } else {
       currentGame.prices[src] = 1;
     }
+    */
+    console.log(currentGame.prices[src]);
+    const newValue = currentGame.prices[src] + value;
+    currentGame.prices[src] = newValue;
+    console.log(newValue);
+
     updateDB();
   }, time);
 };
@@ -435,8 +437,6 @@ allNavigateBtns.forEach((btn) => {
   btn.addEventListener("click", function (event) {
     let btnName = event.target.classList[2];
 
-    console.log(btnName);
-
     if (btnName === "new-game-BTN") {
       Visibility(mainScreen, "left", "hide");
       Visibility(firstCreateScreen, "left", "show");
@@ -455,7 +455,6 @@ allNavigateBtns.forEach((btn) => {
     }
 
     if (btnName === "buildings" && currentScreen !== buildingScreen) {
-      console.log(currentScreen.classList[2]);
       if (currentScreen.classList[2] === "exchange") {
         Visibility(currentScreen, "right", "hide");
         Visibility(buildingScreen, "right", "show");
@@ -487,12 +486,14 @@ goToMain.forEach((btn) => {
   btn.addEventListener("click", function () {
     Visibility(currentScreen, "right", "hide");
     Visibility(mainScreen, "right", "show");
+    clearFields()
   });
 });
 
 goToFirst.addEventListener("click", function () {
   Visibility(chairScreen, "right", "hide");
   Visibility(firstCreateScreen, "right", "show");
+  clearFields()
 });
 
 ////////////////
@@ -756,7 +757,7 @@ finalNewGameBTN.addEventListener("click", function () {
   let buildings = {};
 
   for (let i = 0; i < allBuildingsArray.length; i++) {
-    buildings[i] = { build: false, activities: [] };
+    buildings[i] = { name: allBuildingsArray[i].name, type: allBuildingsArray[i].type, build: false, activities: allBuildingsArray[i].activities };
   }
 
   currentGame.buildings = buildings;
@@ -899,7 +900,6 @@ keys.forEach((key) => {
       return;
     }
     ongoingPIN = ongoingPIN + event.target.classList[2];
-    console.log(ongoingPIN);
     key.style.background = "var(--main-colour)";
     setTimeout(() => {
       key.style.filter = "none";
@@ -958,7 +958,6 @@ finalJoinGameBTN.addEventListener("click", function () {
     finalJoinGameBTN.style.filter = "var(--drop-shadow-item)";
   }, 200);
   let enteredPin = formatInputValue(ongoingPIN, "number");
-  console.log(ongoingPIN);
   if (finalJoinGameBTN.classList[3] === "btn-inactive") {
     pinBox.classList.add("invalid");
     setTimeout(() => {
@@ -1092,37 +1091,22 @@ const updatePricesAndValues = function (origin) {
     removeOldList();
 
     for (let i = 0; i < allBuildingsArray.length; i++) {
-      let kind;
-      if (i === 0 || i === 4 || i === 5 || i === 6) {
-        kind = 0;
-      }
-      if (i === 1 || i === 7 || i === 12) {
-        kind = 1;
-      }
-      if (i === 2 || i === 8 || i === 9 || i === 10) {
-        kind = 2;
-      }
-      if (i === 3 || i === 11 || i === 12) {
-        kind = 3;
-      }
-
+      
       const newBuildingDiv = document.createElement("div");
       newBuildingDiv.innerHTML = `
       <div class="bu-container">
-      <h2 class="bu-label">${allBuildingsArray[i]}</h2>
-      ${sourceBTNS[kind]}
+      ${sourceBTNS[allBuildingsArray[i].type]}
+      <h2 class="bu-label">${allBuildingsArray[i].name}</h2>
       <div class="bu-bar bu-bar-id-${i}"></div>
       <div class="btn-container ">
         <div class="btn btn-super-small">...</div>
       </div>
     </div>`;
-      if (i === 4) {
-        newBuildingDiv.style = "margin-top: 40px";
-      }
+      // if (i === 4) {
+      //   newBuildingDiv.style = "margin-top: 40px";
+      // }
       allBuildingsContainer.appendChild(newBuildingDiv);
       const targetBar = document.querySelector(`.bu-bar-id-${i}`);
-      const newDot = document.createElement("div");
-      newDot.className = "bu-dot";
 
       if (
         currentGame.buildings[i].activities &&
@@ -1136,6 +1120,7 @@ const updatePricesAndValues = function (origin) {
       }
     }
   };
+  // updateBuildingsScreen();
 
   const tokenCoinsValue = document.querySelector(".token-coins-value");
   const tokenDaninaValue = document.querySelector(".token-danina-value");
@@ -1242,7 +1227,6 @@ const updatePricesAndValues = function (origin) {
       }
     };
     multiplier = multiplier(max);
-    console.log("max =", max, multiplier);
     bar.style.height = currentPrice * multiplier + "px";
     element.forEach((el) => {
       el.innerHTML = roundNumber(currentPrice, 0);
@@ -1283,39 +1267,47 @@ const updatePricesAndValues = function (origin) {
 
   const cloneElementsToHomeScreen = function () {
     const originalContainerPrices = document.getElementById(
-      "originalContainerPrices"
+        "originalContainerPrices"
     );
     const originalContainerDanina = document.getElementById(
-      "originalContainerDanina"
+        "originalContainerDanina"
     );
 
     const clonedContainerPrices = originalContainerPrices.cloneNode(true);
     const clonedContainerDanina = originalContainerDanina.cloneNode(true);
 
-    const mirroredContainerPrices = document.querySelector(
-      ".mirrored-container-prices"
+    // Znajdź wszystkie elementy .mirrored-container-prices
+    const mirroredContainersPrices = document.querySelectorAll(
+        ".mirrored-container-prices"
     );
+
+    // Usuń stare elementy z każdego mirroredContainerPrices
+    mirroredContainersPrices.forEach((container) => {
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+        // Dodaj sklonowane elementy
+        container.appendChild(clonedContainerPrices.cloneNode(true));
+    });
+
     const mirroredContainerDanina = document.querySelector(
-      ".mirrored-container-danina"
+        ".mirrored-container-danina"
     );
 
-    // Usuń stare elementy
-    while (mirroredContainerPrices.firstChild) {
-      mirroredContainerPrices.removeChild(mirroredContainerPrices.firstChild);
-    }
-
+    // Usuń stare elementy z mirroredContainerDanina
     while (mirroredContainerDanina.firstChild) {
-      mirroredContainerDanina.removeChild(mirroredContainerDanina.firstChild);
+        mirroredContainerDanina.removeChild(mirroredContainerDanina.firstChild);
     }
 
-    mirroredContainerPrices.appendChild(clonedContainerPrices);
+    // Dodaj sklonowane elementy
     mirroredContainerDanina.appendChild(clonedContainerDanina);
-  };
+};
 
-  setTimeout(() => {
+setTimeout(() => {
     sortBars();
     cloneElementsToHomeScreen();
-  }, 500);
+}, 500);
+
 };
 
 //////////////////////
@@ -1447,7 +1439,7 @@ const startGame = function () {
       }
       updateDB();
     });
-  });
+  })
 
   // ta funkcja wrzuca aktualną liczbę elementów do konterów danina-container
   const fillDaninaContainer = function () {
@@ -1473,7 +1465,11 @@ const startGame = function () {
     updateUserScreen();
     updatePricesAndValues();
   }, 500);
-};
+
+
+  }
+
+
 
 // ///////////////////////////
 // ///////////////////////////
@@ -1510,6 +1506,7 @@ const checkIfstandalone = function () {
   }
 };
 
+
 // setInterval(() => {
 //   checkIfstandalone();
 // }, 3000);
@@ -1518,7 +1515,7 @@ const checkIfstandalone = function () {
 const skipLogin = function (arg) {
   Visibility(mainScreen, "left", "hide");
   Visibility(homeScreen, "right", "show");
-  currentGame = gamesArray[0];
+  currentGame = gamesArray[gamesArray.length - 1];
 
   setTimeout(() => {
     currentPlayer = currentGame.gameOrder[arg];
@@ -1570,3 +1567,8 @@ preventSleep();
 //     updateUserScreen();
 //   }
 // }, 5000);
+
+
+
+console.log(currentGame);
+console.log(currentPlayer);

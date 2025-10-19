@@ -49,12 +49,25 @@
 
 .price-container,
 .danina-container {
-  height: 200px;
-  width: 140px;
+  /* height: 200px;
+  width: 140px; */
   display: flex;
   padding: 10px;
   background-color: var(--black);
 }
+
+.price-container-half {
+  height: 200px;
+  width: 140px;
+}
+
+.price-container-full {
+  height: 200px;
+  width: 300px;
+}
+
+
+
 
 .btn-full {
   width: 300px;
@@ -131,6 +144,15 @@
 /* --------------------- */
 /* Home screen */
 
+#label-prices,
+#label-danina {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  margin: 10px 0px 20px 0px;
+  position: absolute;
+  transform: translateX(-10px); /*wyrównanie z paddingu contenera*/
+}
 
 .home-screen {
   flex-direction: column;
@@ -167,6 +189,27 @@
 /* --------------------- */
 /* --------------------- */
 /* --------------------- */
+/* Building screen */
+.bu-container {
+  display: flex;
+  flex-direction: row;
+  width: 300px;
+  margin: 10px;
+}
+
+.bu-label {
+  margin-left: 10px;
+}
+
+.bu-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* --------------------- */
+/* --------------------- */
+/* --------------------- */
 /* EXCHANGE SCREEN */
 
 .element {
@@ -174,7 +217,18 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  .label{
+  .label {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    margin: 10px 0px 20px 0px;
+    position: absolute;
+    transform: translateX(-10px); /*wyrównanie z paddingu contenera*/
+  }
+  .label-center {
+    position: absolute;
+    width: 140px;
+    text-align: center;
     width: 100%;
     text-align: center;
     position: absolute;
@@ -200,14 +254,14 @@
     align-content: end;
     align-items: center; /* Wyśrodkowanie kulek */
   }
-  
+
   .dot {
     width: 9px;
     height: 9px;
     border-radius: 50%;
     margin: 1px; /* Odstęp między kropkami */
   }
-  
+
   .plus {
     color: white;
     position: absolute;
@@ -217,7 +271,6 @@
     filter: drop-shadow(-2px 2px 5px #000000);
     opacity: 0;
   }
-  
 }
 
 .exchange-screen {
@@ -233,7 +286,6 @@
     margin-top: 10px;
   }
 }
-
 
 .ciecz .dot {
   background-color: var(--ciecz);
@@ -252,28 +304,26 @@
 }
 
 /* EXCHANGE */
-#exchange-element{
+#exchange-element {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  .bar-container{
+  .bar-container {
     width: 300px;
     height: 40px;
     flex-direction: row;
   }
-  .bar{
+  .bar {
     margin: 0px;
     width: 75px;
     height: 20px;
   }
   .label-sell,
-  .label-buy{
+  .label-buy {
     margin: 20px 0px 10px 0px;
   }
 }
-
-
 
 /* --------------------- */
 /* --------------------- */

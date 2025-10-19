@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- https://favicon.io/ -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="apple-mobile-web-app-bg-color" content="#FF0000" />
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="animation.css" />
+    <link rel="stylesheet" href="style-game.css" />
+    <title>KOROAH</title>
+  </head>
+
+  <body>
+
+    <!-- SKYTPTY DO UZUPEŁNIANIAN LOGO -->
+    <script>
+      fetch("html-svgs/go-back-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".go-back-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <script>
+      fetch("html-svgs/arrow-down-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".arrow-down-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <script>
+      fetch("html-svgs/delete-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".delete-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <script>
+      fetch("html-svgs/coin-token.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens =
+            document.querySelectorAll(".user-coins-tokens"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <script>
+      fetch("html-svgs/move-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".move-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <script>
+      fetch("html-svgs/danina-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".danina-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <script>
+      fetch("html-svgs/hammer-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".hammer-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <!-- Logotypy w menu -->
+    <script>
+      fetch("html-svgs/laubray-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".laubray-svg");
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <script>
+      fetch("html-svgs/home-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".home-svg");
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <script>
+      fetch("html-svgs/building-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens =
+            document.querySelectorAll(".btn-building-svg");
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+    <script>
+      fetch("html-svgs/user-screen-svg.html")
+        .then((response) => response.text())
+        .then((data) => {
+          const userCoinsTokens = document.querySelectorAll(".user-screen-svg");
+          userCoinsTokens.forEach((coin) => {
+            coin.innerHTML = data;
+          });
+        });
+    </script>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="script.js" type="module"></script>
+  </body>
+</html>
