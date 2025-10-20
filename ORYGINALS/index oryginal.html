@@ -1,0 +1,502 @@
+
+
+<body>
+
+  <!--  -->
+  <!--  -->
+  <!--  -->
+
+
+
+  <!-- FIRST-CREATE-SCREEN -->
+  <div class="screen first-create-screen no-active">
+    <div class="go-back-svg go-to-main"></div>
+    <div class="container h150">
+      <h2 class="label">NAZWA GRY</h2>
+      <input class="input name-game-input" type="text" />
+    </div>
+    <div class="container h150">
+      <h2 class="label">ilość graczy</h2>
+      <div class="circle-container">
+        <div class="btn btn-small cricle toggle">3</div>
+        <div class="btn btn-small cricle toggle">4</div>
+        <div class="btn btn-small cricle toggle">5</div>
+      </div>
+    </div>
+    <div class="container h150">
+      <div class="btn btn-big go-to-chair-screen-BTN btn-inactive">Dalej</div>
+    </div>
+  </div>
+
+  <!--  -->
+  <!--  -->
+  <!-- CHAIR-SCREEN -->
+  <div class="screen chair-screen no-active">
+    <div class="go-back-svg go-to-first-screen"></div>
+    <div class="container h400">
+      <div class="table"></div>
+      <div class="chair chair-1" data-chair-id="1"></div>
+      <div class="chair chair-2" data-chair-id="2"></div>
+      <div class="chair chair-3" data-chair-id="3"></div>
+      <div class="chair chair-4" data-chair-id="4"></div>
+      <div class="chair chair-5" data-chair-id="5"></div>
+    </div>
+    <div class="btn btn-big final-new-game-BTN btn-inactive">STWÓRZ</div>
+    <div class="avatars-container no-active">
+      <div class="avatar acalas" id="avatar-acalas"></div>
+      <div class="avatar umza" id="avatar-umza"></div>
+      <div class="avatar raona" id="avatar-raona"></div>
+      <div class="avatar hess" id="avatar-hess"></div>
+      <div class="avatar layao" id="avatar-layao"></div>
+    </div>
+  </div>
+
+  <!--  -->
+  <!--  -->
+  <!-- FIRST-JOIN-SCREEN -->
+
+
+
+  <!--  -->
+  <!--  -->
+  <!-- PIN-SCREEN -->
+  <div class="screen pin-screen no-active">
+    <div class="go-back-svg go-to-main"></div>
+    <div class="container h100">
+      <h2>Kim grasz?</h2>
+      <div class="icon-container"></div>
+    </div>
+    <div class="container h100">
+      <div class="pin-box no-active">
+        <h2 class="pin-label">Stwórz PIN</h2>
+        <div class="pin-dots">
+          <div class="pin-dot pin-dot-0"></div>
+          <div class="pin-dot pin-dot-1"></div>
+          <div class="pin-dot pin-dot-2"></div>
+          <div class="pin-dot pin-dot-3"></div>
+        </div>
+      </div>
+    </div>
+    <div class="container h400">
+      <div class="keyboard no-active">
+        <div class="btn key 1">1</div>
+        <div class="btn key 2">2</div>
+        <div class="btn key 3">3</div>
+        <div class="btn key 4">4</div>
+        <div class="btn key 5">5</div>
+        <div class="btn key 6">6</div>
+        <div class="btn key 7">7</div>
+        <div class="btn key 8">8</div>
+        <div class="btn key 9">9</div>
+        <div class="btn key 9 null"></div>
+        <div class="btn key 0">0</div>
+        <div class="btn key del">
+          <div class="delete-svg"></div>
+        </div>
+      </div>
+    </div>
+    <div class="container h150">
+      <div class="btn btn-big final-join-game-BTN btn-inactive">START</div>
+    </div>
+  </div>
+
+
+
+  <!-- GAME -->
+
+
+  <!-- TURN-SCREEN -->
+  <div class="screen turn-screen turn no-active">
+    <div class="top-bar">
+      <div class="token-container">
+        <h1 class="name-label"></h1>
+      </div>
+    </div>
+    <div class="price-container shadow-element price-container-half " id="originalContainerPrices">
+      <div id="label-prices">PRICES</div>
+      <div class="bar-container">
+        <div class="measure measure-1 ciecz"></div>
+        <div class="small-circle ciecz">
+          <img src="svg/ciecz.svg" alt="" />
+        </div>
+        <h2 class="price-bar-value price-1">3</h2>
+      </div>
+      <div class="bar-container">
+        <div class="measure measure-2 krysztal"></div>
+        <div class="small-circle krysztal">
+          <img src="svg/krysztal.svg" alt="" />
+        </div>
+        <h2 class="price-bar-value price-2">3</h2>
+      </div>
+      <div class="bar-container">
+        <div class="measure measure-3 skala"></div>
+        <div class="small-circle skala">
+          <img src="svg/skala.svg" alt="" />
+        </div>
+        <h2 class="price-bar-value price-3">2</h2>
+      </div>
+      <div class="bar-container">
+        <div class="measure measure-4 zelazo"></div>
+        <div class="small-circle zelazo">
+          <img src="svg/zelazo.svg" alt="" />
+        </div>
+        <h2 class="price-bar-value price-4">3</h2>
+      </div>
+    </div>
+
+    <div class="bars-container danina-container shadow-element price-container-half " id="originalContainerDanina">
+      <div id="label-danina">DANINA</div>
+    </div>
+    <div class="btn btn-full shadow-element">Wybuduj / Przejmij</div>
+    <div class="btn btn-full shadow-element">Zapłać</div>
+    <div class="btn btn-half shadow-element">Zagraj kartę akcji</div>
+    <div class="btn btn-half shadow-element">Wykonaj akcję budynku</div>
+    <div class="btn btn-full shadow-element">Przekaz turę</div>
+  </div>
+
+  <!--  -->
+  <!--  -->
+  <!-- HOME-SCREEN -->
+  <div class="screen home-screen home no-active">
+    <div class="top-bar">
+      <div class="token-container">
+        <h1 class="name-label"></h1>
+      </div>
+    </div>
+    <div class="upper-part">
+      <img class="home-screen-bg" src="img/raona.png" alt="" />
+    </div>
+    <div class="bottom-part">
+      <div class="mirrored-container-prices"></div>
+      <div class="mirrored-container-danina"></div>
+    </div>
+  </div>
+
+  <!--  -->
+  <!--  -->
+  <!-- BUILDING-SCREEN -->
+  <div class="screen building-screen buildings no-active ">
+    <div class="all-buildings-container"></div>
+  </div>
+
+  <!--  -->
+  <!--  -->
+  <!-- EXCHANGE-SCREEN -->
+  <div class="screen exchange-screen exchange no-active">
+    <!-- TOP BAR -->
+    <div class="top-bar">
+      <div class="token-container" style="flex-grow: 4">
+        <h1 class="name-label"></h1>
+      </div>
+      <div class="token-container">
+        <h2 class="token-coins-value">0</h2>
+        <div class="user-coins-tokens"></div>
+      </div>
+      <div class="token-container">
+        <h2 class="token-danina-value">0</h2>
+        <div class="danina-svg"></div>
+      </div>
+      <div class="token-container">
+        <h2 class="token-move-value">0</h2>
+        <div class="move-svg"></div>
+      </div>
+
+      <!-- <div class="token-container">
+          <h2 class="token-fee-value">0</h2>
+          <h2 style="color: var(--orange)">%</h2>
+        </div> -->
+    </div>
+
+    <!-- PRICES -->
+    <div class="h130 element prices">
+      <div class="label-center">PRICES</div>
+      <div class="mirrored-container-prices"></div>
+      <!-- <div class="bar">
+          <div class="small-circle ciecz">
+            <img src="svg/ciecz.svg" alt="" />
+          </div>
+          <h2 class="price-bar-value price-1">3</h2>
+        </div>
+
+        <div class="bar">
+          <div class="small-circle krysztal">
+            <img src="svg/krysztal.svg" alt="" />
+          </div>
+          <h2 class="price-bar-value price-2">3</h2>
+        </div>
+        <div class="bar">
+          <div class="small-circle skala">
+            <img src="svg/skala.svg" alt="" />
+          </div>
+          <h2 class="price-bar-value price-3">2</h2>
+        </div>
+        <div class="bar">
+          <div class="small-circle zelazo">
+            <img src="svg/zelazo.svg" alt="" />
+          </div>
+          <h2 class="price-bar-value price-4">3</h2>
+        </div> -->
+    </div>
+
+    <!-- RESOURCES -->
+    <div class="h180 element resources">
+      <div class="label-center">RESOURCES</div>
+      <div class="bar">
+        <div class="plus plus-1">+</div>
+        <div class="resources-box box-1 ciecz"></div>
+        <h2 class="resource-bar-value resource-value-1">3</h2>
+      </div>
+      <div class="bar">
+        <div class="plus plus-2">+</div>
+        <div class="resources-box box-2 krysztal"></div>
+        <h2 class="resource-bar-value resource-value-2">3</h2>
+      </div>
+      <div class="bar">
+        <div class="plus plus-3">+</div>
+        <div class="resources-box box-3 skala"></div>
+        <h2 class="resource-bar-value resource-value-3">3</h2>
+      </div>
+      <div class="bar">
+        <div class="plus plus-4">+</div>
+        <div class="resources-box box-4 zelazo"></div>
+        <h2 class="resource-bar-value resource-value-4">3</h2>
+      </div>
+    </div>
+
+    <!-- EXCHANGE -->
+    <div class="h200 element shadow-element exchange" id="exchange-element">
+      <!-- e-icons - sell-BAR -->
+
+      <div class="label-sell">SELL</div>
+
+      <div class="bar-container">
+        <div class="bar sell-bar">
+          <div class="btn e-source-btn e-source-btn-0 e-source-btn-sell">
+            <div class="small-circle ciecz">
+              <img src="svg/ciecz.svg" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <div class="bar sell-bar">
+          <div class="btn e-source-btn e-source-btn-1 e-source-btn-sell">
+            <div class="small-circle krysztal">
+              <img src="svg/krysztal.svg" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <div class="bar sell-bar">
+          <div class="btn e-source-btn e-source-btn-2 e-source-btn-sell">
+            <div class="small-circle skala">
+              <img src="svg/skala.svg" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <div class="bar sell-bar">
+          <div class="btn e-source-btn e-source-btn-3 e-source-btn-sell">
+            <div class="small-circle zelazo">
+              <img src="svg/zelazo.svg" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="label-buy">BUY</div>
+
+      <div class="bar-container">
+        <div class="bar buy-bar">
+          <div class="btn e-source-btn e-source-btn-0 e-source-btn-buy">
+            <div class="small-circle ciecz">
+              <img src="svg/ciecz.svg" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <div class="bar buy-bar">
+          <div class="btn e-source-btn e-source-btn-1 e-source-btn-buy">
+            <div class="small-circle krysztal">
+              <img src="svg/krysztal.svg" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <div class="bar buy-bar">
+          <div class="btn e-source-btn e-source-btn-2 e-source-btn-buy">
+            <div class="small-circle skala">
+              <img src="svg/skala.svg" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <div class="bar buy-bar">
+          <div class="btn e-source-btn e-source-btn-3 e-source-btn-buy">
+            <div class="small-circle zelazo">
+              <img src="svg/zelazo.svg" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- e-icons - buy-BAR -->
+  </div>
+
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!-- MENU -->
+
+  <div class="game-menu-bar no-active">
+    <div class="circle-sign"></div>
+    <div class="game-menu-btn navigate-btn turn laubray-svg" id="game-menu-btn-turn"></div>
+    <div class="game-menu-btn navigate-btn home selected home-svg" id="game-menu-btn-home"></div>
+    <div class="game-menu-btn navigate-btn buildings btn-building-svg"></div>
+    <div class="game-menu-btn navigate-btn exchange user-screen-svg"></div>
+  </div>
+
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+  <!--  -->
+
+  <!-- SKYTPTY DO UZUPEŁNIANIAN LOGO -->
+  <script>
+    fetch("html-svgs/go-back-svg.html")
+      .then((response) => response.text())
+      .then((data) => {
+        const userCoinsTokens = document.querySelectorAll(".go-back-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+        userCoinsTokens.forEach((coin) => {
+          coin.innerHTML = data;
+        });
+      });
+  </script>
+
+  <script>
+    fetch("html-svgs/arrow-down-svg.html")
+      .then((response) => response.text())
+      .then((data) => {
+        const userCoinsTokens = document.querySelectorAll(".arrow-down-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+        userCoinsTokens.forEach((coin) => {
+          coin.innerHTML = data;
+        });
+      });
+  </script>
+
+  <script>
+    fetch("html-svgs/delete-svg.html")
+      .then((response) => response.text())
+      .then((data) => {
+        const userCoinsTokens = document.querySelectorAll(".delete-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+        userCoinsTokens.forEach((coin) => {
+          coin.innerHTML = data;
+        });
+      });
+  </script>
+
+  <script>
+    fetch("html-svgs/coin-token.html")
+      .then((response) => response.text())
+      .then((data) => {
+        const userCoinsTokens =
+          document.querySelectorAll(".user-coins-tokens"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+        userCoinsTokens.forEach((coin) => {
+          coin.innerHTML = data;
+        });
+      });
+  </script>
+
+  <script>
+    fetch("html-svgs/move-svg.html")
+      .then((response) => response.text())
+      .then((data) => {
+        const userCoinsTokens = document.querySelectorAll(".move-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+        userCoinsTokens.forEach((coin) => {
+          coin.innerHTML = data;
+        });
+      });
+  </script>
+
+  <script>
+    fetch("html-svgs/danina-svg.html")
+      .then((response) => response.text())
+      .then((data) => {
+        const userCoinsTokens = document.querySelectorAll(".danina-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+        userCoinsTokens.forEach((coin) => {
+          coin.innerHTML = data;
+        });
+      });
+  </script>
+
+  <script>
+    fetch("html-svgs/hammer-svg.html")
+      .then((response) => response.text())
+      .then((data) => {
+        const userCoinsTokens = document.querySelectorAll(".hammer-svg"); // w pliku html wpisać <div class="token user-coins-tokens"></div>
+        userCoinsTokens.forEach((coin) => {
+          coin.innerHTML = data;
+        });
+      });
+  </script>
+
+  <!-- Logotypy w menu -->
+  <script>
+    fetch("html-svgs/laubray-svg.html")
+      .then((response) => response.text())
+      .then((data) => {
+        const userCoinsTokens = document.querySelectorAll(".laubray-svg");
+        userCoinsTokens.forEach((coin) => {
+          coin.innerHTML = data;
+        });
+      });
+  </script>
+
+  <script>
+    fetch("html-svgs/home-svg.html")
+      .then((response) => response.text())
+      .then((data) => {
+        const userCoinsTokens = document.querySelectorAll(".home-svg");
+        userCoinsTokens.forEach((coin) => {
+          coin.innerHTML = data;
+        });
+      });
+  </script>
+
+  <script>
+    fetch("html-svgs/building-svg.html")
+      .then((response) => response.text())
+      .then((data) => {
+        const userCoinsTokens =
+          document.querySelectorAll(".btn-building-svg");
+        userCoinsTokens.forEach((coin) => {
+          coin.innerHTML = data;
+        });
+      });
+  </script>
+
+  <script>
+    fetch("html-svgs/user-screen-svg.html")
+      .then((response) => response.text())
+      .then((data) => {
+        const userCoinsTokens = document.querySelectorAll(".user-screen-svg");
+        userCoinsTokens.forEach((coin) => {
+          coin.innerHTML = data;
+        });
+      });
+  </script>
+
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script defer src="script.js" type="module"></script>
+</body>
+
+</html>
