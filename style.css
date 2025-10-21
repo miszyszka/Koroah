@@ -101,7 +101,7 @@ h3 {
 /* SEGMENTS */
 /* kazdy screen składa się z pionowych segmentów - elementów */
 .segment {
-  border: solid 2px red;
+  /* border: solid 1px rgba(255, 0, 0, 0.164); */
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -137,11 +137,11 @@ h3 {
   height: 20%;
 }
 
-.h15{
+.h15 {
   height: 15%;
 }
 
-.h10{
+.h10 {
   height: 10%;
 }
 
@@ -181,7 +181,6 @@ h3 {
   opacity: 1;
 }
 
-
 /* --------------------- */
 /* BTNS */
 
@@ -201,6 +200,7 @@ h3 {
 .selected {
   filter: var(--drop-shadow-active);
   transform: scale(0.92);
+  color: var(--main-colour);
 }
 
 .btn-big {
@@ -225,6 +225,10 @@ h3 {
   left: 30px;
 }
 
+.go-back-btn {
+  cursor: pointer;
+}
+
 /* --------------------- */
 /* OTHERS (in create screens) */
 
@@ -239,6 +243,11 @@ h3 {
   outline: none;
   border: 1px solid var(--main-colour);
   background-color: var(--black);
+}
+
+.name-game-input{
+  background-color: var(--black)
+  z-index: 20;
 }
 
 .invalid {
@@ -267,6 +276,30 @@ h3 {
   height: 80px;
   justify-content: space-evenly;
   align-items: center;
+}
+
+
+.warning-container {
+  width: 300px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center
+
+}
+
+.warning-element {
+  color: var(--zelazo-colour);
+  z-index: 9;
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out; 
+  transform: translateY(-20px);
+  opacity: 0;
+  pointer-events: none; /* Element nie przeszkadza w klikaniu, gdy jest ukryty/animowany */
+}
+
+.warning-element.active {
+  transform: translateY(0px); /* Zjeżdża na swoje miejsce */
+  opacity: 1; /* Staje się widoczny */
 }
 
 /* CHAIR SCREEN */
@@ -433,7 +466,6 @@ h3 {
   height: 15px;
   margin: 5px;
 }
-
 
 /* -------------- */
 
@@ -654,9 +686,6 @@ h3 {
   justify-content: center;
 }
 
-
-
-
 .ciecz .dot {
   background-color: var(--ciecz);
 }
@@ -672,10 +701,6 @@ h3 {
 .zelazo .dot {
   background-color: var(--zelazo);
 }
-
-
-
-
 
 /* --------------------- */
 /* MEDIA */

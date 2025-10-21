@@ -21,31 +21,8 @@ const buildingScreen = document.querySelector(".building-screen");
 const exchangeScreen = document.querySelector(".exchange-screen");
 const gameMenuBar = document.querySelector(".game-menu-bar");
 
-// DATABASE
 
-const appSettings = {
-  databaseURL:
-    "https://koroah-947d1-default-rtdb.europe-west1.firebasedatabase.app/",
-};
 
-const app = initializeApp(appSettings);
-const database = getDatabase(app);
-const gamesDB = ref(database, "games");
-const gamesArray = [];
-let allNots = {};
-
-let allScreensArray = [];
-allScreens.forEach((screen) => {
-  allScreensArray.push(screen);
-});
-
-let currentGame = {}; // Object to store information about the created game
-let gameOrder = {}; // Object to store information about the selected avatar for each chair-id
-let currentPlayer;
-
-let numberOfPlayersSelected = false;
-let inputForNewGame;
-let gameStarted = false;
 
 const classNumber = {
   0: "one",
@@ -338,46 +315,7 @@ const Visibility = function (item, direction, action) {
   }
 };
 
-// UPDATE CURRENT GAME
-// reading game from DB and making currentGamme & currentPlayer really current
-///////////////
-const updateCurrentGame = function (gameName) {
-  let passedGameName = gameName;
-  if (!gameName) {
-    passedGameName = currentGame.name;
-  }
 
-  console.log("=== RUNNING FUNCTION updateCurrentGame ===");
-  const foundGame = gamesArray.find((game) => game.name === passedGameName);
-
-  console.log(foundGame);
-  if (currentPlayer) {
-    const foundPlayer = foundGame.gameOrder.find(
-      (player) => player.player === currentPlayer.player
-    );
-    currentPlayer = foundPlayer;
-    console.log("CURRENT PLAYER UPDATED");
-  }
-
-  if (foundGame) {
-    currentGame = foundGame;
-
-    allNots = currentGame.notifications;
-    // updatePrices("from = updateCurrentGame()");
-
-    // usunięcie 0 z liczb dziesiętnych
-    for (let i = 0; i < currentGame.prices.length; i++) {
-      const value = parseFloat(currentGame.prices[i]);
-      currentGame.prices[i] = value;
-    }
-    return foundGame;
-  } else {
-    console.log("updateCurrentGame FAILED");
-  }
-
-  console.log("=== ENDING update === CURENT GAME IS:");
-  console.log(currentGame);
-};
 
 // UPDATE DB
 ///////////////////////////
@@ -417,70 +355,8 @@ const updateDB = function () {
 ////////////////
 // MANAGING SCREENS AND ELEMENTS
 ///////////////
-let currentScreen;
 
-allNavigateBtns.forEach((btn) => {
-  btn.addEventListener("click", function (event) {
-    let btnName = event.target.classList[2];
 
-    if (btnName === "new-game-BTN") {
-      Visibility(mainScreen, "left", "hide");
-      Visibility(firstCreateScreen, "left", "show");
-      currentScreen = firstCreateScreen;
-    }
-    if (btnName === "join-game-BTN") {
-      Visibility(mainScreen, "left", "hide");
-      Visibility(firstJoinScreen, "left", "show");
-      currentScreen = firstJoinScreen;
-    }
-
-    if (btnName === "exchange" && currentScreen !== exchangeScreen) {
-      Visibility(currentScreen, "left", "hide");
-      Visibility(exchangeScreen, "left", "show");
-      currentScreen = exchangeScreen;
-    }
-
-    if (btnName === "buildings" && currentScreen !== buildingScreen) {
-      if (currentScreen.classList[2] === "exchange") {
-        Visibility(currentScreen, "right", "hide");
-        Visibility(buildingScreen, "right", "show");
-      } else {
-        Visibility(currentScreen, "left", "hide");
-        Visibility(buildingScreen, "left", "show");
-      }
-      currentScreen = buildingScreen;
-    }
-
-    if (btnName === "turn" && currentScreen !== turnScreen) {
-      Visibility(currentScreen, "right", "hide");
-      Visibility(turnScreen, "right", "show");
-      currentScreen = turnScreen;
-    }
-
-    if (btnName === "home" && currentScreen !== homeScreen) {
-      Visibility(currentScreen, "right", "hide");
-      Visibility(homeScreen, "right", "show");
-      currentScreen = homeScreen;
-    }
-  });
-});
-
-const goToMain = document.querySelectorAll(".go-to-main");
-const goToFirst = document.querySelector(".go-to-first-screen");
-
-goToMain.forEach((btn) => {
-  btn.addEventListener("click", function () {
-    Visibility(currentScreen, "right", "hide");
-    Visibility(mainScreen, "right", "show");
-    clearFields()
-  });
-});
-
-goToFirst.addEventListener("click", function () {
-  Visibility(chairScreen, "right", "hide");
-  Visibility(firstCreateScreen, "right", "show");
-  clearFields()
-});
 
 ////////////////
 // CREATING GAME ELEMENTS
@@ -544,107 +420,12 @@ const clearFields = function (arg) {
   });
 };
 
-let isWarning = false;
 
-function clearWarning() {
-  messageContainer.style.transform = "translateY(-200px)";
-  isWarning = false;
-  setTimeout(() => {
-    messageContainer.innerHTML = "";
-  }, 50);
-}
-
-function makeWarning(message) {
-  if (isWarning) {
-    console.log("there is an old warning");
-    clearWarning();
-    setTimeout(() => {
-      makeWarning(message);
-    }, 200);
-  }
-
-  setTimeout(() => {
-    messageContainer.style.display = "flex";
-    messageContainer.innerHTML = `<h3>${message}</h3>`;
-    setTimeout(() => {
-      messageContainer.style.transform = "translateY(0px) ";
-    }, 30);
-    setTimeout(() => {
-      clearWarning();
-    }, 3000);
-  }, 100);
-}
 
 ///////////
 ///////////
-// FIRST-CREATE-SCREEN - creating new game
 
-const goToChairScreenBTN = document.querySelector(".go-to-chair-screen-BTN");
-const nameInput = document.querySelector(".name-game-input");
-const circleButtons = document.querySelectorAll(".circle-container .cricle");
-const allChairs = document.querySelectorAll(".chair");
-const finalNewGameBTN = document.querySelector(".final-new-game-BTN");
-const avatarsContainer = document.querySelector(".avatars-container");
-const avatars = document.querySelectorAll(".avatar");
-const chairs = document.querySelectorAll(".chair");
-let matchingGame;
 
-const checkIfFirsScreenGood = function (input) {
-  if (
-    inputForNewGame.length > 0 &&
-    numberOfPlayersSelected == true &&
-    !matchingGame
-  ) {
-    Visibility(goToChairScreenBTN, "btn-active");
-  } else {
-    Visibility(goToChairScreenBTN, "btn-inactive");
-  }
-};
-
-nameInput.addEventListener("input", function () {
-  const enteredGameName = this.value.trim().toUpperCase();
-  matchingGame = gamesArray.find((game) => game.name === enteredGameName);
-
-  if (!matchingGame) {
-    inputForNewGame = this.value.toUpperCase();
-    checkIfFirsScreenGood(inputForNewGame);
-  } else if (matchingGame) {
-    Visibility(nextNewGameBTN, "btn-inactive");
-    // makeWarning("taka gra juz istnieje");
-  }
-});
-
-circleButtons.forEach((button) => {
-  button.addEventListener("click", function () {
-    circleButtons.forEach((btn) => btn.classList.remove("selected"));
-    this.classList.toggle("selected");
-    numberOfPlayersSelected = true;
-    checkIfFirsScreenGood();
-  });
-});
-
-goToChairScreenBTN.addEventListener("click", function () {
-  if (goToChairScreenBTN.classList[3] === "btn-inactive") {
-    goToChairScreenBTN.classList.add("invalid");
-    setTimeout(() => {
-      goToChairScreenBTN.classList.remove("invalid");
-    }, 500);
-    return;
-  }
-
-  const selectedCircleButtons = document.querySelectorAll(
-    ".circle-container .cricle.selected"
-  );
-  const numberOfPlayers = Array.from(selectedCircleButtons)
-    .map((button) => parseInt(button.textContent))
-    .reduce((total, value) => total + value, 0);
-
-  const gameName = nameInput.value.toUpperCase();
-
-  currentGame = {
-    name: gameName,
-    numberOfPlayers: numberOfPlayers,
-  };
 
   // NUBER OF CHAIRS NEEDED
 

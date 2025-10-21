@@ -31,7 +31,7 @@ const joinGameBTN = document.querySelector(".join-game-BTN");
 
 const testBTN = document.querySelector(".testBTN");
 testBTN.addEventListener("click", function () {
-  console.log(screenHistory);
+  console.log(currentGame);
 });
 
 // DATABASE
@@ -57,7 +57,7 @@ let gameOrder = {}; // Object to store information about the selected avatar for
 let currentPlayer;
 
 let numberOfPlayersSelected = false;
-let inputForNewGame;
+let inputForNewGame = false;
 let gameStarted = false;
 
 const classNumber = {
@@ -122,6 +122,22 @@ allButtons.forEach((btn) => {
       }, 200);
     }
   });
+});
+
+// Handling going back in navigation
+function goBack() {
+  if (screenHistory.length <= 1) return;
+  screenHistory.pop();
+  const lastScreen = screenHistory[screenHistory.length - 1];
+  const lastScreenElement = lastScreen;
+
+  Visibility(currentScreen, "right", "hide");
+  Visibility(lastScreenElement, "right", "show");
+  currentScreen = lastScreen; // Aktualizacja na NUMER
+}
+
+goBackBTNs.forEach((btn) => {
+  btn.addEventListener("click", goBack);
 });
 
 function formatInputValue(inputValue, arg) {
@@ -274,6 +290,78 @@ const changePrice = function (value, src) {
   }, time);
 };
 
+const warningElement1 = document.querySelector(".warning-element1");
+const warningElement2 = document.querySelector(".warning-element2");
+
+const hideTimers = [null, null, null];
+const isWarningActive = [false, false, false];
+
+function getWarningElement(place) {
+    if (place === 1) {
+        return warningElement1;
+    } else if (place === 2) {
+        return warningElement2;
+    }
+    console.error("Nieprawidłowa wartość argumentu 'place'. Użyj 1 lub 2.");
+    return null;
+}
+
+function clearWarning(place) {
+    const warningElement = getWarningElement(place);
+    if (!warningElement) return;
+
+    if (hideTimers[place]) {
+        clearTimeout(hideTimers[place]);
+        hideTimers[place] = null;
+    }
+
+    warningElement.classList.remove("active");
+    isWarningActive[place] = false;
+
+    setTimeout(() => {
+        warningElement.innerHTML = "";
+    }, 500);
+}
+
+function startWarningDisplay(message, place) {
+    const warningElement = getWarningElement(place);
+    if (!warningElement) return;
+
+    warningElement.innerHTML = `<h3>${message}</h3>`;
+    isWarningActive[place] = true;
+
+    warningElement.classList.add("active");
+
+    hideTimers[place] = setTimeout(() => {
+        clearWarning(place);
+    }, 3000);
+}
+
+function makeWarning(message, place) {
+    const warningElement = getWarningElement(place);
+    if (!warningElement) return;
+
+    if (hideTimers[place]) {
+        clearTimeout(hideTimers[place]);
+        hideTimers[place] = null;
+    }
+
+    if (isWarningActive[place]) {
+        warningElement.classList.remove("active");
+        warningElement.style.transition = "none";
+
+        warningElement.innerHTML = `<h3>${message}</h3>`;
+
+        setTimeout(() => {
+            warningElement.style.transition = "";
+            startWarningDisplay(message, place);
+        }, 50);
+        return;
+    }
+
+    startWarningDisplay(message, place);
+}
+
 // UPDATE CURRENT GAME
 // reading game from DB and making currentGamme & currentPlayer really current
 ///////////////
@@ -362,7 +450,6 @@ onValue(gamesDB, (snapshot) => {
 ///////////////
 let currentScreen = createScreen1;
 
-////////////////
 // VISIBILITY
 // Zmiana ekranów
 ///////////////
@@ -372,7 +459,6 @@ const screenHistory = [];
 
 // WAŻNE: Na początku dodaj pierwszy ekran do historii
 screenHistory.push(currentScreen);
-console.log(screenHistory);
 
 const Visibility = function (item, direction, action) {
   if (direction === "btn-active") {
@@ -440,12 +526,24 @@ const Visibility = function (item, direction, action) {
 
 allNavigateBtns.forEach((btn) => {
   btn.addEventListener("click", function (event) {
+    if (this.classList.contains("btn-inactive")) {
+      if (this.classList.contains("next-btn-2")) {
+        // warunki jaki komunikat ma być jak się wciśnie przycisk dalej
+        checkIfGameNameOK()
+        if (inputForNewGame === false) {
+          makeWarning("wpisz nazwę", 1);
+          console.log("brak nazwy");
+        }
+        if (numberOfPlayersSelected === false) {
+          console.log("brak liczby graczy");
+          makeWarning("wybiesz liczbę graczy", 2);
+        }
+      }
+      return;
+    }
+
     const btnClass = event.target.classList[3];
-
-    // Wyciągnij numer z nazwy klasy (np. z "next-btn-1" uzyskaj "1")
     const currentScreenNumber = parseInt(btnClass.slice(9), 10);
-
-    // Oblicz numer ekranu docelowego
     const targetScreenNumber = currentScreenNumber + 1;
     const currentScreenElement = document.querySelector(
       `.create-screen-${currentScreenNumber}`
@@ -454,12 +552,10 @@ allNavigateBtns.forEach((btn) => {
       `.create-screen-${targetScreenNumber}`
     );
 
-      Visibility(currentScreenElement, "left", "hide");
-
-      Visibility(targetScreenElement, "left", "show");
-      currentScreen=targetScreenElement
-            screenHistory.push(currentScreen);
-
+    Visibility(currentScreenElement, "left", "hide");
+    Visibility(targetScreenElement, "left", "show");
+    currentScreen = targetScreenElement;
+    screenHistory.push(currentScreen);
 
     // Możesz dodać tu sekcję else if dla niestandardowych przycisków
     // if (btnClass === "join-game-BTN") {
@@ -468,24 +564,112 @@ allNavigateBtns.forEach((btn) => {
   });
 });
 
-// Handling going back in navigation
-function goBack() {
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
 
-  if (screenHistory.length <= 1) return;
-  screenHistory.pop();
-  const lastScreen = screenHistory[screenHistory.length - 1];
-  const lastScreenElement = lastScreen;
+// FIRST-CREATE-SCREEN - creating new game
 
-  Visibility(currentScreen, "right", "hide");
-  Visibility(lastScreenElement, "right", "show");
-  currentScreen = lastScreen; // Aktualizacja na NUMER
+const nextBtn2 = document.querySelector(".next-btn-2");
+const nameInput = document.querySelector(".name-game-input");
+const circleButtons = document.querySelectorAll(".circle-container .cricle");
 
-}
+let matchingGame;
 
-goBackBTNs.forEach((btn) => {
-  btn.addEventListener("click", goBack);
+const checkIfGameNameOK = function (input) {
+  console.log("checking if game ok...");
+  if (
+    inputForNewGame.length > 0 &&
+    numberOfPlayersSelected == true &&
+    !matchingGame
+  ) {
+    Visibility(nextBtn2, "btn-active");
+  } else {
+    Visibility(nextBtn2, "btn-inactive");
+  }
+  if (inputForNewGame.length <= 0){
+ inputForNewGame = false
+  }
+};
+
+nameInput.addEventListener("input", function () {
+  const enteredGameName = this.value.trim().toUpperCase();
+  matchingGame = gamesArray.find((game) => game.name === enteredGameName);
+
+  if (!matchingGame) {
+    inputForNewGame = this.value.toUpperCase();
+    checkIfGameNameOK(inputForNewGame);
+  } else if (matchingGame) {
+    Visibility(nextBtn2, "btn-inactive");
+    // makeWarning("taka gra juz istnieje");
+  }
 });
 
+circleButtons.forEach((button) => {
+  button.addEventListener("click", function () {
+    circleButtons.forEach((btn) => btn.classList.remove("btn-active"));
+    this.classList.add("btn-active");
+    numberOfPlayersSelected = true;
+    checkIfGameNameOK();
+  });
+});
+
+nextBtn2.addEventListener("click", function () {
+  const selectedCircleButtons = document.querySelectorAll(
+    ".circle-container .cricle.selected"
+  );
+  const numberOfPlayers = Array.from(selectedCircleButtons)
+    .map((button) => parseInt(button.textContent))
+    .reduce((total, value) => total + value, 0);
+
+  const gameName = nameInput.value.toUpperCase();
+  const gameNameLabel = document.querySelector(".game-name-label"); // Nazwa gry w kolejnym ekranie
+  currentGame = {
+    name: gameName,
+    numberOfPlayers: numberOfPlayers,
+  };
+
+  const namingGameLable = function () {
+    gameNameLabel.textContent = gameName;
+  };
+  namingGameLable();
+});
+
+// ///////////////////////////
+// Ekran 3 - dodanie nazwy gracza (hosta)
+
+// ///////////////////////////
+
+// Ekran 5 - umiejscownie graczy
+// const allChairs = document.querySelectorAll(".chair");
+// const finalNewGameBTN = document.querySelector(".final-new-game-BTN");
+// const avatarsContainer = document.querySelector(".avatars-container");
+// const avatars = document.querySelectorAll(".avatar");
+// const chairs = document.querySelectorAll(".chair");
+
+//  (goToChairScreenBTN.classList[3] === "btn-inactive") {
+//     goToChairScreenBTN.classList.add("invalid");
+//     setTimeout(() => {
+//       goToChairScreenBTN.classList.remove("invalid");
+//     }, 500);
+//     return;}
+
+// ///////////////////////////
+// ///////////////////////////
+// ///////////////////////////
+// ///////////////////////////
+// ///////////////////////////
+// ///////////////////////////
+// ///////////////////////////
+// ///////////////////////////
+// ///////////////////////////
+// ///////////////////////////
 // ///////////////////////////
 // ///////////////////////////
 // ///////////////////////////
