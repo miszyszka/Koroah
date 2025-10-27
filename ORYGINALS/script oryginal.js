@@ -128,87 +128,7 @@ function formatInputValue(inputValue, arg) {
   }
 }
 
-function highestKey(obj) {
-  // Sprawdź, czy obiekt nie jest pusty
-  if (Object.keys(obj).length === 0) {
-    return null; // Lub inna wartość w przypadku pustego obiektu
-  }
-  // Znajdź najwyższy klucz
-  const maxKey = Math.max(...Object.keys(obj).map(Number));
 
-  const objectWithMaxKey = obj[maxKey];
-  return objectWithMaxKey;
-}
-
-const makeNotification = function (i) {
-  const message = `Player ${i.player} ${i.action} ${i.value} ${i.resource}`;
-  const notificationDiv = document.createElement("div");
-  notificationDiv.textContent = message;
-
-  if (notificationContainer.firstChild) {
-    notificationContainer.insertBefore(
-      notificationDiv,
-      notificationContainer.firstChild
-    );
-  } else {
-    // Jeśli kontener jest pusty, dodaj normalnie
-    notificationContainer.appendChild(notificationDiv);
-  }
-
-  const moveOldNotifications = function () {
-    const notificationDIVs = document.querySelectorAll(".notification");
-    notificationDIVs.forEach((not) => {
-      const oldClassList = not.classList[1].match(/\d+$/);
-      let matchedNumber = parseInt(oldClassList);
-      if (matchedNumber === 1) {
-        not.style.transform = "translateY(20px)";
-        not.classList.remove("position1");
-        not.classList.add("position2");
-      } else {
-        const transformedValue = `translateY(calc(${matchedNumber} * 20px))`;
-        const transformedOpacity = `calc(1 - ${matchedNumber * 0.15})`;
-        not.style.transform = transformedValue;
-        not.style.opacity = transformedOpacity;
-
-        not.classList.remove(`position${matchedNumber}`);
-        matchedNumber++;
-        not.classList.add(`position${matchedNumber}`);
-      }
-    });
-  };
-  moveOldNotifications();
-
-  notificationDiv.classList.add("notification");
-  notificationDiv.classList.add("position1");
-  notificationDiv.style.transform = "translateY(-100px)";
-
-  setTimeout(() => {
-    notificationDiv.style.transform = "translateY(0px)";
-  }, 10);
-};
-
-const makeCircle = function () {
-  const circleSign = document.querySelector(".circle-sign");
-  circleSign.style.display = "flex";
-  setTimeout(() => {
-    circleSign.classList.add("newTurnSign");
-    setTimeout(() => {
-      circleSign.classList.remove("newTurnSign");
-    }, 500);
-    setTimeout(() => {
-      circleSign.style.display = "none";
-    }, 500);
-  }, 500);
-
-  setTimeout(() => {
-    gameMenuBTNTurn.click();
-  }, 1500);
-};
-
-function roundNumber(number, decimals) {
-  var newnumber = new Number(number + "").toFixed(parseInt(decimals));
-  return parseFloat(newnumber);
-}
 
 const changePrice = function (value, src) {
   // losuje od 15 do 30 sec.
@@ -251,69 +171,6 @@ const changePrice = function (value, src) {
 // VISIBILITY
 ///////////////
 
-const Visibility = function (item, direction, action) {
-  if (direction === "btn-active") {
-    item.classList.remove("btn-active");
-    item.classList.remove("btn-inactive");
-    item.classList.add("btn-active");
-    return;
-  }
-  if (direction === "btn-inactive") {
-    item.classList.remove("btn-active");
-    item.classList.remove("btn-inactive");
-    item.classList.add("btn-inactive");
-    return;
-  }
-
-  const addNoActive = function (i) {
-    setTimeout(() => {
-      i.classList.add("no-active");
-    }, 500);
-  };
-
-  item.classList.remove("hide-left");
-  item.classList.remove("hide-right");
-  item.classList.remove("active");
-  item.classList.remove("no-active");
-
-  if (action === "hide") {
-    if (direction === "left") {
-      item.classList.add("hide-left");
-      addNoActive(item);
-    }
-    if (direction === "right") {
-      item.classList.add("hide-right");
-      addNoActive(item);
-    }
-    if (direction === "down") {
-      item.classList.add("hide-down");
-      addNoActive(item);
-    }
-  }
-  if (action === "show") {
-    if (direction === "right") {
-      item.classList.add("hide-left");
-      setTimeout(() => {
-        item.classList.remove("hide-left");
-        item.classList.add("active");
-      }, 10);
-    }
-    if (direction === "left") {
-      item.classList.add("hide-right");
-      setTimeout(() => {
-        item.classList.remove("hide-right");
-        item.classList.add("active");
-      }, 10);
-    }
-    if (direction === "down") {
-      item.classList.add("hide-down");
-      setTimeout(() => {
-        item.classList.remove("hide-down");
-        item.classList.add("active");
-      }, 10);
-    }
-  }
-};
 
 
 
@@ -358,67 +215,9 @@ const updateDB = function () {
 
 
 
-////////////////
-// CREATING GAME ELEMENTS
-///////////////
 
-const checkPIN = function (pin, oryginalPin) {
-  pin = formatInputValue(pin, "number");
-  if (pin === oryginalPin) {
-    console.log("podano PIN PRAWIDŁOWY ktory jest w db");
-    return true;
-  } else {
-    console.log("NIEPRAWIDŁOWY PIN (ponizej podany i pin i oryginalny pin");
-    console.log(pin, oryginalPin);
-    pinBox.classList.add("invalid");
-    setTimeout(() => {
-      pinBox.classList.remove("invalid");
-    }, 500);
-    makeWarning("nieprawidłowy");
-    return false;
-  }
-};
 
-const createPIN = function (pin) {
-  console.log("creating PIN START");
-  Object.keys(currentGame.gameOrder).forEach((chairId) => {
-    const player = currentGame.gameOrder[chairId].player;
 
-    if (player === currentPlayer.player) {
-      const pinRef = ref(
-        database,
-        `games/${currentGame.id}/gameOrder/${chairId}`
-      );
-
-      update(pinRef, {
-        pin: pin,
-      });
-    }
-  });
-};
-
-const clearFields = function (arg) {
-  const allInputs = document.querySelectorAll(".input");
-
-  allInputs.forEach((input) => {
-    input.value = "";
-  });
-  circleButtons.forEach((button) => {
-    button.classList.remove("selected");
-  });
-
-  // if (arg !== "retain currentGame") {
-  //   currentGame = {};
-  // }
-
-  gameOrder = {};
-  numberOfPlayersSelected = false;
-  inputForNewGame = "";
-  chairs.forEach((chair) => {
-    chair.classList.remove("acalas", "umza", "raona", "hess");
-    chair.style.display = "block";
-  });
-};
 
 
 
@@ -542,7 +341,6 @@ finalNewGameBTN.addEventListener("click", function () {
 // JOIN GAME
 
 const joinGameInput = document.querySelector(".join-game-input");
-
 const pinGameInput = document.querySelector(".pin-game-input");
 const goToPinBNT = document.querySelector(".go-to-pin-BTN");
 const finalJoinGameBTN = document.querySelector(".final-join-game-BTN");

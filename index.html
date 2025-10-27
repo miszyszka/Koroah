@@ -20,7 +20,8 @@
     <h1>LOADING....</h1>
   </div>
 
-  <div class="testBTN btn-big">TEST</div>
+  <div class="testBTN1">TEST</div>
+  <div class="testBTN2">EREASE</div>
 
   <!--  -->
   <!--  -->
@@ -58,10 +59,6 @@
       <h2 class="label">NAZWA GRY</h2>
       <input class="input name-game-input" type="text" />
 
-      <div class="warning-container">
-        <div class="warning-element warning-element1"></div>
-      </div>
-
     </div>
     <div class="segment h20">
       <h2 class="label">ilość graczy</h2>
@@ -73,7 +70,7 @@
     </div>
     <div class="segment h15">
       <div class="warning-container">
-        <div class="warning-element warning-element2"></div>
+        <div class="warning-element"></div>
       </div>
     </div>
     <div class="segment h10">
@@ -104,11 +101,10 @@
       <div class="go-back-svg go-back-btn" style="z-index: 100"></div>
     </div>
     <div class="segment h20">
-      <h2 class="game-name-label">nazwa gry</h2>
     </div>
     <div class="segment h20">
       <h2 class="label">Twoje imię</h2>
-      <input class="input name-game-input" type="text" />
+      <input class="input player-name-input" type="text" />
     </div>
     <div class="segment h15"></div>
     <div class="segment h10">
@@ -138,16 +134,90 @@
   </div>
 
   <!-- CREATE SCREEN 7 -->
+  <!-- dołączanie do gry - nazwa i imię gracza -->
+
   <div class="screen create-screen-7 no-active">
-    <div class="go-back-svg go-back-btn" style="z-index: 100"></div>
-    <div class="btn btn-big navigate-btn next-btn-7">dalej</div>
+    <div class="segment h20">
+      <div class="go-back-svg go-back-btn" style="z-index: 100"></div>
+    </div>
+    <div class="segment h20">
+      <h2 class="label">NAZWA GRY</h2>
+      <input class="input join-name-game-input" type="text" />
+    </div>
+    <div class="segment h20">
+      <div class="segment segment-join-player">
+        <h2 class="label">Twoje imię</h2>
+        <input class="input join-player-name-input" type="text" />
+      </div>
+    </div>
+    <div class="segment h15">
+      <div class="warning-container">
+        <div class="warning-element"></div>
+      </div>
+    </div>
+    <div class="segment h10">
+      <div class="btn btn-big navigate-btn next-btn-7 btn-inactive">DALEJ</div>
+    </div>
+    <div class="segment h15"></div>
 
   </div>
   <!-- CREATE SCREEN 8 -->
+  <!-- PIN SCREEN -->
   <div class="screen create-screen-8 no-active">
-    <div class="go-back-svg go-back-btn" style="z-index: 100"></div>
+    <div class="segment h10">
+      <div class="go-back-svg go-back-btn" style="z-index: 100"></div>
+    </div>
+    <div class="segment h10">
+      <h2>Kim grasz?</h2>
+      <div class="icon-container"></div>
+    </div>
+    <div class="segment h10">
+      <div class="pin-box no-active">
+        <h2 class="pin-label">Stwórz PIN</h2>
+        <div class="pin-dots">
+          <div class="pin-dot pin-dot-0"></div>
+          <div class="pin-dot pin-dot-1"></div>
+          <div class="pin-dot pin-dot-2"></div>
+          <div class="pin-dot pin-dot-3"></div>
+        </div>
+      </div>
+    </div>
+    <div class="segment h45">
+      <div class="keyboard no-active">
+        <div class="btn key 1">1</div>
+        <div class="btn key 2">2</div>
+        <div class="btn key 3">3</div>
+        <div class="btn key 4">4</div>
+        <div class="btn key 5">5</div>
+        <div class="btn key 6">6</div>
+        <div class="btn key 7">7</div>
+        <div class="btn key 8">8</div>
+        <div class="btn key 9">9</div>
+        <div class="btn key 9 null"></div>
+        <div class="btn key 0">0</div>
+        <div class="btn key del">
+          <div class="delete-svg"></div>
+        </div>
+      </div>
+    </div>
+    <div class="segment h10">
+      <div class="btn btn-big navigate-btn next-btn-8 btn-inactive">DALEJ</div>
+    </div>
+    <div class="segment h15">
+    </div>
 
 
+  </div>
+
+  <!-- CREATE SCREEN 9 -->
+  <!-- WAITING ROOM SCREEN -->
+  <div class="screen create-screen-9 no-active">
+    <div class="segment h10">
+      <div class="go-back-svg go-back-btn" style="z-index: 100"></div>
+    </div>
+    <div class="segment h10">
+      <div>Waiting</div>
+    </div>
   </div>
 
   <!--  -->
@@ -161,7 +231,26 @@
   <!--  -->
   <!--  -->
   <!--  -->
-  <!--  -->
+
+
+  <!-- Upewnianie się co do dołączenia gracza -->
+  <!-- <div class="screen confirm-screen active">
+    <div class="segment h20">
+      <div class="go-back-svg close-btn" style="z-index: 100"></div>
+    </div>
+    <div class="segment h20">
+      <h2 class="label">Czy chcesz stworzyć nowego gracza?</h2>
+    </div>
+    <div class="segment h20">
+    </div>
+    <div class="segment h15">
+    </div>
+
+    <div class="segment h10">
+      <div class="btn btn-big navigate-btn next-btn-7 btn-active">Potwierdź</div>
+    </div>
+    <div class="segment h15"></div>
+  </div> -->
 
   <!-- SKYTPTY DO UZUPEŁNIANIAN LOGO -->
   <script>

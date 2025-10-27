@@ -80,6 +80,34 @@ h3 {
   background-color: var(--zelazo);
 }
 
+.testBTN1 {
+  position: absolute;
+  top: 10px;
+  left: 10px; /* możesz ustawić według potrzeby */
+  padding: 12px 24px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  background-color: #1d1d1d;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.testBTN2 {
+  position: absolute;
+  top: 100px;
+  left: 10px; /* możesz ustawić według potrzeby */
+  padding: 12px 24px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  background-color: #1d1d1d;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 /* --------------------- */
 /* --------------------- */
 /* --------------------- */
@@ -101,7 +129,7 @@ h3 {
 /* SEGMENTS */
 /* kazdy screen składa się z pionowych segmentów - elementów */
 .segment {
-  /* border: solid 1px rgba(255, 0, 0, 0.164); */
+  border: solid 1px rgba(255, 0, 0, 0.164);
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -119,6 +147,10 @@ h3 {
 
 .h50 {
   height: 50%;
+}
+
+.h45 {
+  height: 40%;
 }
 
 .h40 {
@@ -210,6 +242,13 @@ h3 {
   margin: 5px;
 }
 
+.btn-half {
+  width: 10px;
+  height: 80px;
+  border-radius: 35px;
+  margin: 5px;
+}
+
 .btn-small {
   width: 50px;
   height: 50px;
@@ -223,14 +262,26 @@ h3 {
   position: absolute;
   top: 30px;
   left: 30px;
-}
-
-.go-back-btn {
   cursor: pointer;
 }
 
+
+
 /* --------------------- */
 /* OTHERS (in create screens) */
+.segment-join-player {
+  z-index: 9;
+  transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+  transform: translateY(30px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.segment-join-player.visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
 
 .input {
   font-family: "bebas neue";
@@ -245,9 +296,21 @@ h3 {
   background-color: var(--black);
 }
 
-.name-game-input{
-  background-color: var(--black)
+.name-game-input {
+  background-color: var(--black);
   z-index: 20;
+}
+
+.join-name-game-input.input-disabled-style {
+  /* Usuwa obramowanie */
+  border: none !important;
+
+  /* Opcjonalnie: usuwa tło i zmienia kursor */
+  background-color: transparent;
+  cursor: default;
+
+  /* Opcjonalnie: usuwa obramowanie po kliknięciu/focusie */
+  outline: none;
 }
 
 .invalid {
@@ -278,20 +341,18 @@ h3 {
   align-items: center;
 }
 
-
 .warning-container {
   width: 300px;
   height: 30px;
   display: flex;
   justify-content: center;
-  align-items: center
-
+  align-items: center;
 }
 
 .warning-element {
   color: var(--zelazo-colour);
   z-index: 9;
-  transition: transform 0.5s ease-out, opacity 0.5s ease-out; 
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
   transform: translateY(-20px);
   opacity: 0;
   pointer-events: none; /* Element nie przeszkadza w klikaniu, gdy jest ukryty/animowany */
@@ -416,9 +477,9 @@ h3 {
 
 .keyboard {
   position: absolute;
-  width: 100vw;
-  height: 400px;
-  padding: 10vw;
+  border: red solid 1px;
+  width: 215px;
+  height: 285px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -426,9 +487,10 @@ h3 {
 }
 
 .key {
-  width: 70px;
-  height: 70px;
-  margin: 1vh 15px;
+  border: rgb(170, 95, 95) solid 1px;
+  width: 60px;
+  height: 60px;
+  margin: 5px;
   border-radius: 50%;
   border: var(--main-colour) 1px solid;
   filter: none;
