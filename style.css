@@ -145,6 +145,10 @@ h3 {
   height: 60%;
 }
 
+.h55 {
+  height: 55%;
+}
+
 .h50 {
   height: 50%;
 }
@@ -265,8 +269,6 @@ h3 {
   cursor: pointer;
 }
 
-
-
 /* --------------------- */
 /* OTHERS (in create screens) */
 .segment-join-player {
@@ -301,7 +303,7 @@ h3 {
   z-index: 20;
 }
 
-.join-name-game-input.input-disabled-style {
+.input-disabled-style {
   /* Usuwa obramowanie */
   border: none !important;
 
@@ -381,7 +383,6 @@ h3 {
   position: absolute;
   margin: 20px; /* Dodanie marginesu 20px */
   cursor: pointer;
-  display: block;
 }
 
 .acalas {
@@ -404,7 +405,7 @@ h3 {
   background-color: var(--layao);
 }
 
-.avatars-container {
+/* .avatars-container {
   background-color: var(--black);
   position: absolute;
   width: 100vw;
@@ -415,32 +416,16 @@ h3 {
   justify-content: center;
   align-items: center;
   transition: 0.3s ease;
+  display: none;
 }
 
 .avatar {
   width: 80vw;
   height: 100px;
   margin: 10px;
-}
+} */
 
-.icon-container {
-  /* border: #aca687 solid 1px; */
-  position: relative;
-  height: 400px;
-  width: 90px;
-}
-
-.icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  margin: 15px; /* Dodanie marginesu 20px */
-  cursor: pointer;
-  transition: ease 0.5s;
-  position: absolute;
-}
-
-.icon.one {
+/* .icon.one {
   transform: translateY(0px);
 }
 
@@ -462,7 +447,7 @@ h3 {
 
 .icon-up {
   transform: translateY(0px) !important;
-}
+} */
 
 .pin-box {
   position: absolute;
@@ -478,19 +463,19 @@ h3 {
 .keyboard {
   position: absolute;
   border: red solid 1px;
-  width: 215px;
-  height: 285px;
+  width: 70%;
+  height: 50%;
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   transition: 0.5s ease;
 }
 
 .key {
-  border: rgb(170, 95, 95) solid 1px;
-  width: 60px;
-  height: 60px;
-  margin: 5px;
+  width: 70px;
+  height: 70px;
+  margin: 10px;
   border-radius: 50%;
   border: var(--main-colour) 1px solid;
   filter: none;
@@ -501,6 +486,7 @@ h3 {
 }
 
 .delete-svg {
+  transform: translateY(1px) translateX(-1px) scale(0.8);
   width: 25px;
   height: 25px;
   fill: var(--main-colour);
@@ -527,6 +513,40 @@ h3 {
   width: 15px;
   height: 15px;
   margin: 5px;
+}
+
+/* Choose Character-SCREEN */
+.characters-container {
+  z-index: 10;
+  height: 100%;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.character-container {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+}
+
+.circle-character {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  transition: ease-in-out 0.8s;
+}
+
+.character-name {
+  display: inline;
+  margin-left: 10px;
 }
 
 /* -------------- */
@@ -574,6 +594,15 @@ h3 {
 
 .selected svg path {
   fill: var(--orange);
+}
+
+.key.del {
+  background-color: #1f1f1f;
+}
+
+/* efekt dla przycisku .del – nie zmienia fill */
+.btn.del.selected svg path {
+  fill: inherit; /* lub np. var(--main-colour) jeśli chcesz konkretnie */
 }
 
 .game-menu-btn.turn {

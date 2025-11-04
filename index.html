@@ -168,8 +168,6 @@
       <div class="go-back-svg go-back-btn" style="z-index: 100"></div>
     </div>
     <div class="segment h10">
-      <h2>Kim grasz?</h2>
-      <div class="icon-container"></div>
     </div>
     <div class="segment h10">
       <div class="pin-box no-active">
@@ -182,8 +180,8 @@
         </div>
       </div>
     </div>
-    <div class="segment h45">
-      <div class="keyboard no-active">
+    <div class="segment h50">
+      <div class="keyboard">
         <div class="btn key 1">1</div>
         <div class="btn key 2">2</div>
         <div class="btn key 3">3</div>
@@ -193,8 +191,8 @@
         <div class="btn key 7">7</div>
         <div class="btn key 8">8</div>
         <div class="btn key 9">9</div>
-        <div class="btn key 9 null"></div>
-        <div class="btn key 0">0</div>
+        <!-- <div class="btn key 9 null"></div> -->
+        <!-- <div class="btn key 0">0</div> -->
         <div class="btn key del">
           <div class="delete-svg"></div>
         </div>
@@ -203,15 +201,64 @@
     <div class="segment h10">
       <div class="btn btn-big navigate-btn next-btn-8 btn-inactive">DALEJ</div>
     </div>
-    <div class="segment h15">
+    <div class="segment h10">
     </div>
 
 
   </div>
 
   <!-- CREATE SCREEN 9 -->
-  <!-- WAITING ROOM SCREEN -->
+  <!-- Choosing character -->
   <div class="screen create-screen-9 no-active">
+    <div class="segment h10">
+      <div class="go-back-svg go-back-btn" style="z-index: 100"></div>
+    </div>
+    <div class="segment h10">
+    </div>
+    <div class="segment h10">
+      <div class="pin-box no-active">
+        <h2 class="label">Kim grasz?</h2>
+      </div>
+    </div>
+    <div class="segment h50">
+      <div class=" characters-container">
+        <div class="character-container acalas-container">
+          <div class="circle-character acalas"></div>
+          <div class="character-name">Acalas</div>
+        </div>
+        <div class="character-container umza-container">
+          <div class="circle-character umza"></div>
+          <div class="character-name">Umza</div>
+        </div>
+        <div class="character-container raona-container">
+          <div class="circle-character raona"></div>
+          <div class="character-name">Raona</div>
+        </div>
+        <div class="character-container hess-container">
+          <div class="circle-character hess"></div>
+          <div class="character-name">Hess</div>
+        </div>
+        <div class="character-container layao-container">
+          <div class="circle-character layao"></div>
+          <div class="character-name">Layao</div>
+        </div>
+      </div>
+    </div>
+    <div class="warning-container" style="position: absolute; bottom: 100px;">
+      <div class="warning-element"></div>
+    </div>
+    <div class="segment h10">
+      <div class="btn btn-big navigate-btn next-btn-9 btn-inactive">DALEJ</div>
+    </div>
+    <div class="segment h10">
+    </div>
+
+
+  </div>
+
+  <!-- CREATE SCREEN 10 -->
+  <!-- WAITING ROOM SCREEN -->
+  <div class="screen create-screen-10 no-active">
     <div class="segment h10">
       <div class="go-back-svg go-back-btn" style="z-index: 100"></div>
     </div>
@@ -220,6 +267,25 @@
     </div>
   </div>
 
+
+  <!-- okno potwierdzenia -->
+  <div class="screen confirm-screen no-active">
+    <div class="segment h20"></div>
+    <div class="segment h20"></div>
+    <div class="segment h20">
+      <h2 class="label" id="confirm-message"></h2>
+    </div>
+    <div class="segment h15" style="position: relative">
+      <div class="warning-container" style="position: absolute; bottom: 100px;">
+        <div class="warning-element"></div>
+      </div>
+    </div>
+    <div class="segment h10" style="flex-direction: row">
+      <div class="btn btn-half go-back-btn btn-active go-back-to-screen7">Nie</div>
+      <div class="btn btn-half navigate-btn confirm-btn btn-active">Tak</div>
+    </div>
+    <div class="segment h15"></div>
+  </div>
   <!--  -->
   <!--  -->
   <!--  -->

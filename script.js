@@ -11,6 +11,7 @@ import {
   update,
   remove,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+// import { act } from "react";
 
 // MAIN
 const allNavigateBtns = document.querySelectorAll(".navigate-btn");
@@ -27,12 +28,16 @@ const createScreen5 = document.querySelector(".create-screen-5");
 const createScreen6 = document.querySelector(".create-screen-6");
 const createScreen7 = document.querySelector(".create-screen-7");
 const createScreen8 = document.querySelector(".create-screen-8");
+const createScreen9 = document.querySelector(".create-screen-9");
+const confirmScreen = document.querySelector(".confirm-screen");
 
 // BTN's
 const goBackBTNs = document.querySelectorAll(".go-back-btn");
 const newGameBTN = document.querySelector(".new-game-BTN");
 const joinGameBTN = document.querySelector(".join-game-BTN");
+const nextBtn7 = document.querySelector(".next-btn-7");
 const nextBtn8 = document.querySelector(".next-btn-8");
+const nextBtn9 = document.querySelector(".next-btn-9");
 
 // DATABASE
 
@@ -60,6 +65,8 @@ let numberOfPlayersSelected = false;
 let inputForNewGame = false;
 let gameStarted = false;
 let hostIsPassing = false;
+let pinVerified = false;
+let gameIsFull = false;
 
 const classNumber = {
   0: "one",
@@ -108,6 +115,45 @@ const allBuildingsArray = [
 
   { name: "Portale", type: 3, activities: [0, 0, 0] },
 ];
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
 
 ////////////////
 // USEFULL FUNCTION
@@ -123,7 +169,6 @@ allButtons.forEach((btn) => {
   btn.addEventListener("click", function () {
     if (!btn.classList.contains("toggle")) {
       btn.classList.add("selected");
-
       setTimeout(() => {
         btn.classList.remove("selected");
       }, 200);
@@ -260,25 +305,96 @@ function roundNumber(number, decimals) {
 }
 
 const clearFields = function (arg) {
+  console.log("RUNINNING CLEAR FIELDS");
   const allInputs = document.querySelectorAll(".input");
+  const dotsForFill = document.querySelectorAll(".pin-dot");
+
+  // resetowanie kropek PIN
+  for (let i = 0; i < dotsForFill.length; i++) {
+    dotsForFill[i].style.background = "var(--black)";
+  }
+  ongoingPIN = "";
+
+  keys.forEach((key) => {
+    key.classList.remove("btn-inactive");
+    key.classList.add("btn-active");
+    key.style.pointerEvents = "auto";
+  });
 
   allInputs.forEach((input) => {
     input.value = "";
   });
   circleButtons.forEach((button) => {
-    button.classList.remove("selected");
+    button.classList.remove("btn-active");
   });
 
-  // if (arg !== "retain currentGame") {
-  //   currentGame = {};
-  // }
+  joinNameGameInput.disabled = false;
+  joinNameGameInput.classList.remove("input-disabled-style");
+  nameGameInput.value = "";
+  nameGameInput.disabled = false;
+  nameGameInput.classList.remove("input-disabled-style");
+};
 
-  gameOrder = {};
-  numberOfPlayersSelected = false;
-  inputForNewGame = "";
-  chairs.forEach((chair) => {
-    chair.classList.remove("acalas", "umza", "raona", "hess");
-    chair.style.display = "block";
+const showSegmentJoinPlayer = function () {
+  if (matchingGame) {
+    segmentJoinPlayer.classList.add("visible");
+  } else {
+    segmentJoinPlayer.classList.remove("visible");
+  }
+};
+
+const checkGameFullness = function () {
+  const playerSlots = Object.values(currentGame.gameOrder);
+  gameIsFull = true;
+
+  for (const slot of playerSlots) {
+    if (slot.id === "") {
+      gameIsFull = false;
+      break;
+    }
+  }
+};
+
+// UPDATE SCREEN 9 - wskazywanie który charakter jest ju wybrany
+const updateScreen9 = function () {
+  console.log("updating screen 9...");
+  console.log(currentGame);
+
+  const container = document.querySelector(".characters-container");
+  const AllnameDiv = document.querySelectorAll(".character-name");
+
+  // 🧹 Usuń wszystkie istniejące divy z nazwami zajętych postaci
+  container
+    .querySelectorAll(".taken-character-name")
+    .forEach((el) => el.remove());
+  AllnameDiv.forEach((nameDiv) => {
+    nameDiv.style.opacity = "1"; // Przywróć pełną widoczność nazw
+  });
+
+  Object.values(currentGame.gameOrder).forEach((player) => {
+    const character = player.character;
+    const playerName = player.name;
+
+    if (!character) return; // pomiń puste wpisy
+
+    const charContainer = container.querySelector(
+      `.character-container .circle-character.${character}`
+    );
+
+    if (charContainer) {
+      const parentContainer = charContainer.closest(".character-container");
+      const nameDiv = parentContainer.querySelector(".character-name");
+      if (nameDiv) {
+        nameDiv.style.opacity = "0.2"; // 🎯 wyszarzenie
+        console.log(playerName);
+        const chairNameDiv = document.createElement("div");
+        chairNameDiv.classList.add("taken-character-name");
+        chairNameDiv.textContent = `(${playerName})`;
+        chairNameDiv.style.marginLeft = "10px";
+        chairNameDiv.style.opacity = "20%";
+        nameDiv.insertAdjacentElement("afterend", chairNameDiv);
+      }
+    }
   });
 };
 
@@ -353,10 +469,6 @@ function startWarningDisplay(message) {
   });
 
   isWarningActive = true;
-
-  hideTimer = setTimeout(() => {
-    clearWarning();
-  }, 3000);
 }
 
 function makeWarning(message) {
@@ -387,12 +499,46 @@ function makeWarning(message) {
   startWarningDisplay(message);
 }
 
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
 // MANAGING SCREENS AND ELEMENTS
 ///////////////
 
@@ -404,7 +550,11 @@ screenHistory.push(currentScreen);
 
 // VISIBILITY
 ///////////////
-const Visibility = function (item, direction, action) {
+const Visibility = function (item, direction, action, message) {
+  if (item === createScreen8 && action === "hide") {
+    clearFields();
+  }
+
   if (direction === "btn-active") {
     item.classList.remove("btn-active");
     item.classList.remove("btn-inactive");
@@ -494,6 +644,27 @@ allNavigateBtns.forEach((btn) => {
       return;
     }
 
+    if (this.classList.contains("next-btn-8")) {
+      console.log(currentPlayer.pin);
+      setTimeout(() => {
+        nextBtn8.style.filter = "var(--drop-shadow-item)";
+      }, 200);
+      let enteredPin = formatInputValue(ongoingPIN, "string");
+      if (nextBtn8.classList[3] === "btn-inactive") {
+        pinBox.classList.add("invalid");
+        setTimeout(() => {
+          pinBox.classList.remove("invalid");
+        }, 500);
+        return;
+      }
+      if (currentPlayer.pin) {
+        if (checkPIN(enteredPin, currentPlayer.pin)) {
+        }
+      } else {
+        createPIN(enteredPin);
+      }
+    }
+
     const btnClass = event.target.classList[3];
     const currentScreenNumber = parseInt(btnClass.slice(9), 10);
     const targetScreenNumber = currentScreenNumber + 1;
@@ -511,6 +682,24 @@ allNavigateBtns.forEach((btn) => {
       currentScreen = createScreen7;
       setHostIsPassing(true);
       console.log("changing host is passing...");
+    } else if (currentScreenElement === createScreen7) {
+      Visibility(currentScreenElement, "left", "hide");
+      Visibility(confirmScreen, "left", "show");
+      currentScreen = confirmScreen;
+    } else if (currentScreen === confirmScreen) {
+      Visibility(confirmScreen, "left", "hide");
+      Visibility(createScreen8, "left", "show");
+      currentScreen = createScreen8;
+    } else if (currentScreen === createScreen9 && hostIsPassing) {
+      console.log(
+        "host is passing -> przechodzimy do zaczekania na wszystkich graczy"
+      );
+      Visibility(createScreen9, "left", "hide");
+      Visibility(createScreen5, "left", "show");
+      currentScreen = createScreen5;
+    } else if (currentScreen === createScreen8 && !pinVerified) {
+      console.log(pinVerified);
+      return;
     } else {
       Visibility(currentScreenElement, "left", "hide");
       Visibility(targetScreenElement, "left", "show");
@@ -530,35 +719,84 @@ allNavigateBtns.forEach((btn) => {
 
 // Przyciski "go back"
 ///////////////
+const goBackScreen = function () {
+  screenHistory.pop();
+
+  const lastScreen = screenHistory[screenHistory.length - 1];
+  const lastScreenElement = lastScreen;
+
+  Visibility(currentScreen, "right", "hide");
+  Visibility(lastScreenElement, "right", "show");
+
+  currentScreen = lastScreen;
+
+  // Dezaktywacja pola nazwy gry na ekranie tworzenia gry, jeśli gra już istnieje
+  // if (currentScreen === createScreen2 && currentGame) {
+
+  // }
+};
+
 goBackBTNs.forEach((btn) => {
   btn.addEventListener("click", () => {
     console.log("running going back...");
-    console.log(screenHistory);
 
-    if (screenHistory.length <= 1) return;
-
-    screenHistory.pop();
-
-    const lastScreen = screenHistory[screenHistory.length - 1];
-    const lastScreenElement = lastScreen;
-
-    Visibility(currentScreen, "right", "hide");
-    Visibility(lastScreenElement, "right", "show");
-
-    currentScreen = lastScreen;
-
-    if (screenHistory.length === 1) {
-      location.reload();
+    if (btn.classList.contains("go-back-to-screen7")) {
+      console.log("wracamy do wyboru gry i nazwy gracza");
+      joinPlayerNameInput.value = "";
+      Visibility(nextBtn7, "btn-inactive");
+      showSegmentJoinPlayer();
     }
+
+    // if (screenHistory.length <= 1) return;
+    if (screenHistory.length === 2) {
+      console.log("jesteśmy na ekranie 1");
+      // location.reload();
+      clearFields();
+    }
+    goBackScreen();
   });
 });
 
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
-//////////////////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
 // Databases
 ///////////////
 
@@ -568,14 +806,12 @@ goBackBTNs.forEach((btn) => {
 const updateCurrentGame = function (gameName) {
   console.log("=== START UPDATE CURRENT GAME ===");
   let passedGameName = gameName;
-  console.log(passedGameName);
   if (!gameName) {
     passedGameName = currentGame.name;
   }
 
   const foundGame = gamesArray.find((game) => game.name === passedGameName);
   currentGame = foundGame;
-  console.log(foundGame);
 
   if (currentPlayer && currentPlayer.id) {
     const gameOrderValues = Object.values(currentGame.gameOrder);
@@ -583,7 +819,6 @@ const updateCurrentGame = function (gameName) {
       (chair) => chair.id === currentPlayer.id
     );
     currentPlayer = foundChair;
-    console.log("CURRENT PLAYER UPDATED");
   }
 
   // if (foundGame) {
@@ -605,9 +840,10 @@ const updateCurrentGame = function (gameName) {
     joinNameGameInput.value = currentGame.name;
     joinNameGameInput.disabled = true;
     joinNameGameInput.classList.add("input-disabled-style");
+    nameGameInput.value = currentGame.name;
+    nameGameInput.disabled = true;
+    nameGameInput.classList.add("input-disabled-style");
   }
-
-  console.log("=== END UPDATE CURRENT GAME ===");
 };
 
 // UPDATE DB
@@ -620,27 +856,28 @@ const updateDB = function () {
   update(userRef, game);
 };
 
-// //NASŁUCHIWANIE (zmiany w DB)
-// onValue(gamesDB, (snapshot) => {
-//   console.log("OCURRED CHANGE IN DB!");
-//   const gamesData = snapshot.val();
-//   gamesArray.length = 0;
+//NASŁUCHIWANIE (zmiany w DB)
+onValue(gamesDB, (snapshot) => {
+  console.log("OCURRED CHANGE IN DB!");
+  const gamesData = snapshot.val();
+  gamesArray.length = 0;
 
-//   if (gamesData) {
-//     Object.keys(gamesData).forEach((gameId) => {
-//       gamesArray.push({
-//         id: gameId,
-//         ...gamesData[gameId],
-//       });
-//     });
-//   }
-//   if (currentGame.name !== undefined) {
-//     const name = currentGame.name;
-//     // updateCurrentGame(name);
-//     // updatePricesAndValues();
-//     // updateUserScreen();
-//   }
-// });
+  if (gamesData) {
+    Object.keys(gamesData).forEach((gameId) => {
+      gamesArray.push({
+        id: gameId,
+        ...gamesData[gameId],
+      });
+    });
+  }
+  if (currentGame.name !== undefined) {
+    const name = currentGame.name;
+    updateCurrentGame(name);
+    updateScreen9();
+    // updatePricesAndValues();
+    // updateUserScreen();
+  }
+});
 
 // 🔹 Helper function — fills gamesArray from snapshot
 function fillGamesArray(snapshot) {
@@ -703,6 +940,26 @@ firstFillGamesArray(gamesDB);
 ////////////////
 ////////////////
 
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
 // FIRST-CREATE-SCREEN - creating new game
 
 const nextBtn2 = document.querySelector(".next-btn-2");
@@ -728,12 +985,13 @@ const checkIfGameNameOK = function (input) {
 };
 
 nameGameInput.addEventListener("input", function () {
-  const enteredGameName = this.value.trim().toUpperCase();
+  const enteredGameName = nameGameInput.value.trim().toUpperCase();
   matchingGame = gamesArray.find((game) => game.name === enteredGameName);
 
   if (!matchingGame) {
     inputForNewGame = this.value.toUpperCase();
     checkIfGameNameOK(inputForNewGame);
+    console.log("nie ma jeszcze takiej gry");
   } else if (matchingGame) {
     Visibility(nextBtn2, "btn-inactive");
     makeWarning("taka gra juz istnieje");
@@ -755,6 +1013,14 @@ nextBtn2.addEventListener("click", function () {
   const textValue = activeBtn.textContent.trim();
   const numberOfPlayers = parseInt(textValue, 10);
 
+  console.log(currentGame.name);
+  if (currentGame.name) {
+    currentGame.maxPlayers = numberOfPlayers;
+    updateDB();
+    updateCurrentGame();
+    return;
+  }
+
   const createNewGame = function (numberOfPlayers, gameName) {
     const gameOrder = {}; // <--- tu jest różnica! tworzymy nowy obiekt
     for (let i = 1; i <= numberOfPlayers; i++) {
@@ -764,6 +1030,7 @@ nextBtn2.addEventListener("click", function () {
         name: "", // Nazwa gracza
         pin: "",
         ready: false,
+        host: false,
         randomValue: "some value",
       };
     }
@@ -808,7 +1075,6 @@ nextBtn2.addEventListener("click", function () {
 const segmentJoinPlayer = document.querySelector(".segment-join-player");
 const joinNameGameInput = document.querySelector(".join-name-game-input");
 const joinPlayerNameInput = document.querySelector(".join-player-name-input");
-const nextBtn7 = document.querySelector(".next-btn-7");
 
 // CHECK IF THERE IS A GAME TO JOIN
 if (!hostIsPassing)
@@ -816,42 +1082,67 @@ if (!hostIsPassing)
     const enteredGameName = this.value.trim().toUpperCase();
     matchingGame = gamesArray.find((game) => game.name === enteredGameName);
     currentGame = matchingGame;
-
-    if (matchingGame) {
-      Visibility(nextBtn7, "btn-active");
-      segmentJoinPlayer.classList.add("visible");
-    } else {
-      Visibility(nextBtn7, "btn-inactive");
-      segmentJoinPlayer.classList.remove("visible");
-    }
+    showSegmentJoinPlayer();
   });
+
+joinPlayerNameInput.addEventListener("input", function () {
+  const joinPlayerNameInputValue = this.value.trim().toUpperCase();
+
+  if (joinPlayerNameInputValue.length === 0) {
+    Visibility(nextBtn7, "btn-inactive");
+  } else {
+    Visibility(nextBtn7, "btn-active");
+  }
+});
 
 // JOINGAME FUNCTION
 
 const joinGame = function (playerName) {
-  console.log("...starting joying game", playerName);
+  console.log("...starting joining game", playerName);
 
-  if (!currentGame) {
-    makeWarning("nie ma takiej gry!");
-  }
   const playerSlots = Object.keys(currentGame.gameOrder);
+  let found = false;
 
+  // najpierw sprawdzamy, czy gracz już istnieje
   for (const slotKey of playerSlots) {
     const slot = currentGame.gameOrder[slotKey];
-
-    if (slot.id === "") {
-      const slotNumber = parseInt(slotKey.trim().slice(-1), 10);
-      slot.id = slotNumber;
-      slot.name = playerName;
-
-      currentPlayer = slot; // USTAWIENIE PO RAZ PIERWSZY currentPlayer
-
+    if (slot.name === playerName) {
+      currentPlayer = slot;
+      found = true;
       console.log(
-        `Gracz ${playerName} dołączył do gry na pozycji: ${slotNumber}`
+        `Gracz ${playerName} już istnieje — ustawiono jako currentPlayer.`
       );
       break;
     }
   }
+
+  // jeśli nie znaleziono, dopiero wtedy tworzymy nowego
+  if (!found) {
+    checkGameFullness();
+    if (gameIsFull) {
+      console.log("Gra jest pełna, nie można dołączyć nowego gracza.");
+      makeWarning("gra jest pełna");
+      return;
+    }
+    for (const slotKey of playerSlots) {
+      const slot = currentGame.gameOrder[slotKey];
+      if (slot.id === "") {
+        const slotNumber = parseInt(slotKey.trim().slice(-1), 10);
+        slot.id = slotNumber;
+        slot.name = playerName;
+        currentPlayer = slot;
+        if (slotNumber === 1) {
+          currentPlayer.host = true;
+        }
+
+        console.log(
+          `Nowy gracz ${playerName} dołączył do gry na pozycji: ${slotNumber}`
+        );
+        break;
+      }
+    }
+  }
+
   updateDB();
   updateCurrentGame();
 };
@@ -860,18 +1151,14 @@ const joinGame = function (playerName) {
 nextBtn7.addEventListener("click", function () {
   const playerName = joinPlayerNameInput.value.trim().toUpperCase();
 
-  if (!playerName) {
-    alert("Podaj nazwę gracza!");
-    return;
-  }
-
-  // sprawdzanie czy gracz istnieje
+  // szukamy gracza
   let found = false;
   let existingPlayer = null;
 
   for (const playerKey in currentGame.gameOrder) {
     const player = currentGame.gameOrder[playerKey];
     if (player.name === playerName) {
+      console.log(player);
       found = true;
       existingPlayer = player;
       currentPlayer = player;
@@ -879,54 +1166,22 @@ nextBtn7.addEventListener("click", function () {
     }
   }
 
-  // tworzenie nowego ekranu potwierdzenia
-  const confirmScreen = document.createElement("div");
-  confirmScreen.className = "screen confirm-screen active";
-  confirmScreen.innerHTML = `
-    <div class="segment h20">
-    </div>
-    <div class="segment h20">
-    </div>
-    <div class="segment h20">
-          <h2 class="label">
-        ${
-          found
-            ? `Gracz ${existingPlayer.name} już istnieje </br> Czy to ty? `
-            : "Czy chcesz stworzyć nowego gracza?"
-        }
-      </h2></div>
-    <div class="segment h15"></div>
-    <div class="segment h10" style="flex-direction: row">
-          <div class="btn btn-half navigate-btn close-btn btn-active">Nie</div>
-      <div class="btn btn-half navigate-btn confirm-btn btn-active">Tak</div>
-    </div>
-    <div class="segment h15"></div>
-  `;
+  // pobieramy elementy z DOM
+  const confirmMessage = document.getElementById("confirm-message");
 
-  // dodaj do DOM
-  document.body.appendChild(confirmScreen);
+  confirmMessage.innerHTML = found
+    ? `Gracz ${existingPlayer.name} już istnieje </br> Czy to ty?`
+    : "Czy chcesz stworzyć nowego gracza?";
 
-  // obsługa przycisku potwierdzenia
-  const confirmBtn = confirmScreen.querySelector(".confirm-btn");
-  confirmBtn.addEventListener("click", () => {
-    confirmScreen.remove();
-    if (!found) {
-      joinGame(playerName);
-    }
-  });
-
-  // obsługa zamykania (kliknięcie X)
-  const closeBtn = confirmScreen.querySelector(".close-btn");
-  closeBtn.addEventListener("click", () => {
-    confirmScreen.remove();
-        screenHistory.pop();
-
-    const lastScreen = screenHistory[screenHistory.length - 1];
-    const lastScreenElement = lastScreen;
-
-    Visibility(currentScreen, "right", "hide");
-    Visibility(lastScreenElement, "right", "show");
-  });
+  document.querySelector(".confirm-btn").onclick = () => {
+    joinGame(playerName);
+  };
+  if (currentPlayer.pin) {
+    console.log("ten gracz juz ma pin!");
+    pinLabel.textContent = "podaj PIN";
+  } else {
+    pinLabel.textContent = "Stwórz PIN";
+  }
 });
 
 // ///////////////////////////
@@ -940,12 +1195,15 @@ const keys = document.querySelectorAll(".key");
 let ongoingPIN = "";
 
 const checkPIN = function (pin, oryginalPin) {
-  pin = formatInputValue(pin, "number");
+  pin = formatInputValue(pin, "string").trim();
+
   if (pin === oryginalPin) {
     console.log("podano PIN PRAWIDŁOWY ktory jest w db");
+    pinVerified = true;
     return true;
   } else {
     console.log("NIEPRAWIDŁOWY PIN (ponizej podany i pin i oryginalny pin");
+    pinVerified = false;
     console.log(pin, oryginalPin);
     pinBox.classList.add("invalid");
     setTimeout(() => {
@@ -975,64 +1233,6 @@ const createPIN = function (pin) {
   });
 };
 
-// ta fukncja jest uruchamiana po wejściu w okno pinScreen
-const logIn = function () {
-  const createIcons = function () {
-    for (let i = 0; i < currentGame.gameOrder.length; i++) {
-      const foundPlayer = currentGame.gameOrder[i];
-      const iconDiv = document.createElement("div");
-      iconDiv.className = `icon ${foundPlayer.player} ${classNumber[i]}`;
-      iconContainer.appendChild(iconDiv);
-    }
-  };
-  createIcons();
-
-  // DODANIE EVENT LISTINEROW DO STWORZONYCH IKON
-  const icons = document.querySelectorAll(".icon");
-  let rollDown = true;
-
-  icons.forEach((icon) => {
-    icon.addEventListener("click", function () {
-      const IconName = icon.classList[1];
-      currentPlayer = currentGame.gameOrder.find(
-        (game) => game.player === IconName
-      );
-      console.log(currentPlayer);
-
-      if (rollDown === true) {
-        icons.forEach((i) => {
-          if (currentPlayer.pin) {
-            pinLabel.innerHTML = "PODAJ PIN";
-          } else {
-            pinLabel.innerHTML = "STWÓRZ PIN";
-          }
-
-          Visibility(pinBox, "left", "show");
-          Visibility(keyboard, "left", "show");
-          i.classList.add("icon-up");
-          i.style.zIndex = "1";
-          if (i !== icon) {
-            icon.style.zIndex = "2";
-          }
-        });
-        rollDown = false;
-      } else {
-        icons.forEach((i) => {
-          Visibility(pinBox, "right", "hide");
-          Visibility(keyboard, "right", "hide");
-          i.classList.remove("icon-up");
-          i.style.zIndex = "1";
-        });
-        rollDown = true;
-        ongoingPIN = "";
-        pinDots.forEach((dot) => {
-          dot.style.background = "var(--black)";
-        });
-      }
-    });
-  });
-};
-
 // Funkcja obsługi klawiszy i ekranu PIN
 keys.forEach((key) => {
   key.addEventListener("click", function (event) {
@@ -1040,7 +1240,8 @@ keys.forEach((key) => {
     if (key.classList[2] === "del") {
       setTimeout(() => {
         key.style.filter = "var(--drop-shadow-item)";
-      }, 200);
+        console.log(key);
+      }, 600);
       const dotForFill = document.querySelector(
         `.pin-dot-${ongoingPIN.length - 1}`
       );
@@ -1067,6 +1268,8 @@ keys.forEach((key) => {
     fillDots();
     if (ongoingPIN.length === 4) {
       Visibility(nextBtn8, "btn-active");
+      console.log(currentPlayer.pin);
+      currentPlayer.pin = ongoingPIN;
       keys.forEach((key) => {
         if (!key.classList.contains("del")) {
           key.classList.remove("btn-active");
@@ -1085,25 +1288,39 @@ keys.forEach((key) => {
   });
 });
 
-// Przycisk w ekranie 8
-nextBtn8.addEventListener("click", function () {
-  setTimeout(() => {
-    nextBtn8.style.filter = "var(--drop-shadow-item)";
-  }, 200);
-  let enteredPin = formatInputValue(ongoingPIN, "number");
-  if (nextBtn8.classList[3] === "btn-inactive") {
-    pinBox.classList.add("invalid");
-    setTimeout(() => {
-      pinBox.classList.remove("invalid");
-    }, 500);
-    return;
-  }
-  if (currentPlayer.pin) {
-    if (checkPIN(enteredPin, currentPlayer.pin)) {
+// Logika dla klawisza w ekranie 8 znajduje się w funkcji obsługi przycisków "dalej"
+
+// Ekran 9 - wybór charakteru
+let characterisChosen = false;
+
+const AllCharactersContainer = document.querySelectorAll(
+  ".character-container"
+);
+
+const backToDefaultCharacters = function () {
+  AllCharactersContainer.forEach((characterContainer) => {
+    const circle = characterContainer.querySelector(".circle-character");
+    circle.style.transform = "scale(1)";
+  });
+};
+
+AllCharactersContainer.forEach((characterContainer) => {
+  characterContainer.addEventListener("click", function (event) {
+    if (characterisChosen) {
+      backToDefaultCharacters();
     }
-  } else {
-    createPIN(enteredPin);
-  }
+    const container = event.target.closest(".character-container");
+    const circle = container.querySelector(".circle-character");
+    circle.style.transform = "scale(1.1)";
+
+    // przykładowa logika
+    nextBtn9.classList.remove("btn-active");
+    nextBtn9.classList.add("btn-inactive");
+
+    currentPlayer.character = circle.classList[1];
+    characterisChosen = true;
+    updateDB();
+  });
 });
 
 // Funkcja startująca grę
@@ -1127,19 +1344,45 @@ nextBtn8.addEventListener("click", function () {
 //   }, 500);
 // };
 
-// ///////////////////////////
-// ///////////////////////////
-// ///////////////////////////
-// ///////////////////////////
-// ///////////////////////////
-// ///////////////////////////
-// ///////////////////////////
-// ///////////////////////////
-// ///////////////////////////
-// ///////////////////////////
-// ///////////////////////////
-// ///////////////////////////
-// ///////////////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
+////////////////
 
 // const checkIfstandalone = function () {
 //   console.log("checking");
@@ -1155,14 +1398,13 @@ const skipLogin = function (arg) {
   setTimeout(() => {
     updateCurrentGame("1");
     Visibility(createScreen1, "left", "hide");
-    Visibility(createScreen8, "right", "show");
+    Visibility(createScreen9, "right", "show");
     currentGame = gamesArray[gamesArray.length - 1];
     currentPlayer = currentGame.gameOrder["player-2"];
-    console.log(currentPlayer, currentGame);
   }, 400);
 };
 
-// skipLogin();
+skipLogin();
 
 /////////// PREVENT SLEEP
 async function preventSleep() {
@@ -1192,7 +1434,7 @@ preventSleep();
 
 const testBTN1 = document.querySelector(".testBTN1");
 testBTN1.addEventListener("click", function () {
-  console.log(currentPlayer);
+  updateScreen9();
 });
 
 const deleteAllGames = async () => {
@@ -1221,3 +1463,20 @@ const testBTN2 = document.querySelector(".testBTN2");
 testBTN2.addEventListener("click", function () {
   deleteAllGames();
 });
+
+//   checkGameFullness()
+//   if (!gameIsFull) {
+//     if (matchingGame) {
+//       segmentJoinPlayer.classList.add("visible");
+//     } else {
+//       segmentJoinPlayer.classList.remove("visible");
+//     }
+// } else {
+//   makeWarning("gra jest pełna");
+// }
+
+// NOTATKI
+// Lokalny obiek CurrentGame jest tworzony po raz pierwszy po przejściu z ekranu 2 do 7 (czyli po stworzeniu gry przez hosta).
+// Następnie jest on aktualizowany za każdym razem, gdy następuje zmiana w bazie danych (dzięki nasłuchiwaniu onValue).
+// Gdy gracz dołącza do gry na ekranie 7, CurrentGame jest ponownie aktualizowany, aby odzwierciedlić najnowszy stan gry z bazy danych.
+// Dzięki temu CurrentGame zawsze zawiera aktualne informacje o grze i jej uczestnikach.
