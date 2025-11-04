@@ -360,11 +360,18 @@ const updateScreen9 = function () {
   console.log("updating screen 9...");
   console.log(currentGame);
 
-  const container = document.querySelector(".characters-container");
+  const characterContainer = document.querySelector(".characters-container");
+  const AllcharacterContainers = document.querySelectorAll(
+    ".character-container"
+  );
   const AllnameDiv = document.querySelectorAll(".character-name");
 
+  AllcharacterContainers.forEach((con) => {
+    con.classList.remove("taken-character");
+  });
+
   // 🧹 Usuń wszystkie istniejące divy z nazwami zajętych postaci
-  container
+  characterContainer
     .querySelectorAll(".taken-character-name")
     .forEach((el) => el.remove());
   AllnameDiv.forEach((nameDiv) => {
@@ -377,22 +384,36 @@ const updateScreen9 = function () {
 
     if (!character) return; // pomiń puste wpisy
 
-    const charContainer = container.querySelector(
+    const charContainer = characterContainer.querySelector(
       `.character-container .circle-character.${character}`
     );
 
     if (charContainer) {
       const parentContainer = charContainer.closest(".character-container");
+      parentContainer.classList.add("taken-character");
       const nameDiv = parentContainer.querySelector(".character-name");
+
+      console.log(currentPlayer.character);
+      console.log(nameDiv.innerHTML);
+
       if (nameDiv) {
-        nameDiv.style.opacity = "0.2"; // 🎯 wyszarzenie
-        console.log(playerName);
         const chairNameDiv = document.createElement("div");
         chairNameDiv.classList.add("taken-character-name");
-        chairNameDiv.textContent = `(${playerName})`;
-        chairNameDiv.style.marginLeft = "10px";
-        chairNameDiv.style.opacity = "20%";
+        chairNameDiv.textContent = ` - ${playerName}`;
+        chairNameDiv.style.marginLeft = "5px";
+        chairNameDiv.style.fontSize = "10px";
+
+        if (currentPlayer.character === nameDiv.innerHTML) {
+          nameDiv.style.opacity = "1";
+          chairNameDiv.style.opacity = "100%";
+        } else {
+          nameDiv.style.opacity = "0.2"; // 🎯 wyszarzenie
+          chairNameDiv.style.opacity = "20%";
+        }
+
         nameDiv.insertAdjacentElement("afterend", chairNameDiv);
+      }
+      if (currentPlayer.character === nameDiv.innerHTML) {
       }
     }
   });
@@ -1306,6 +1327,9 @@ const backToDefaultCharacters = function () {
 
 AllCharactersContainer.forEach((characterContainer) => {
   characterContainer.addEventListener("click", function (event) {
+    if (characterContainer.classList.contains("taken-character")) {
+      return;
+    }
     if (characterisChosen) {
       backToDefaultCharacters();
     }
@@ -1314,12 +1338,13 @@ AllCharactersContainer.forEach((characterContainer) => {
     circle.style.transform = "scale(1.1)";
 
     // przykładowa logika
-    nextBtn9.classList.remove("btn-active");
-    nextBtn9.classList.add("btn-inactive");
+    nextBtn9.classList.remove("btn-inactive");
+    nextBtn9.classList.add("btn-active");
 
     currentPlayer.character = circle.classList[1];
     characterisChosen = true;
     updateDB();
+    updateCurrentGame();
   });
 });
 
@@ -1400,11 +1425,9 @@ const skipLogin = function (arg) {
     Visibility(createScreen1, "left", "hide");
     Visibility(createScreen9, "right", "show");
     currentGame = gamesArray[gamesArray.length - 1];
-    currentPlayer = currentGame.gameOrder["player-2"];
+    currentPlayer = currentGame.gameOrder["player-1"];
   }, 400);
 };
-
-// skipLogin();
 
 /////////// PREVENT SLEEP
 async function preventSleep() {
@@ -1435,6 +1458,11 @@ preventSleep();
 const testBTN1 = document.querySelector(".testBTN1");
 testBTN1.addEventListener("click", function () {
   updateScreen9();
+});
+
+const testBTN3 = document.querySelector(".testBTN3");
+testBTN3.addEventListener("click", function () {
+  skipLogin();
 });
 
 const deleteAllGames = async () => {

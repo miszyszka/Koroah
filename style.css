@@ -107,6 +107,20 @@ h3 {
   border-radius: 6px;
   cursor: pointer;
 }
+.testBTN3 {
+  position: absolute;
+  top: 200px;
+  left: 10px; /* możesz ustawić według potrzeby */
+  padding: 12px 24px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  background-color: #1d1d1d;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 
 /* --------------------- */
 /* --------------------- */
