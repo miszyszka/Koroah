@@ -1404,7 +1404,7 @@ const skipLogin = function (arg) {
   }, 400);
 };
 
-skipLogin();
+// skipLogin();
 
 /////////// PREVENT SLEEP
 async function preventSleep() {
